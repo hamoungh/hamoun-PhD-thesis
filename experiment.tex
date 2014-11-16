@@ -1,0 +1,19 @@
+\chapter{Case Study} 
+\label{ch:experiments}
+
+\section{Work That Remains}   
+ 
+  So far we have done a set of experiments for  testing  estimation and autoscaling of service-based systems.  The results for the estimation was presented in chapter \ref{ch:estimation}. 
+   
+  A set of experiments has been done with the heuristic autoscaler.  The same set of experiments has to be done for the proposed autoscaling controller in this dissertation.  We plan to use the SAVI infrastructure that provides virtual machine instances through IaaS management system as a test bed.  SAVI is a collaborative project between several universities to provide a test bed for development of cloud related research.
+   We have some in-house systems built in our group  (e.g. Xcamp) that allow easy instantiation of services into virtual machines, and the mechanisms to pull the monitoring data from instances and services.  We need to still   implement the management logic for autoscaling.   Part of this management logic has been implemented before; as addition into RightScale platform.  For these experiments, however we intend to use fully open-source software including Xcamp and Chef. 
+   
+ We have our own in-house load generator developed by the author of this proposal.  The load generator launches a set of emulated browsers (EB) that send HTTP request according to a predefined workload to a set of Web services. This load generator will be used to test both autoscaling and replica placement.  We also have written in a application specifically for testing service related management.  The application provides a configurable service that can put desired service demand per request.  Although the have not decided whether to use one instance of the application to emulate all the services or to deploy multiple instances of the application.  The trade-off is between having the container to do the scheduling between different service requests or to let the operating system do that. We need to do some preliminary experiment to figure out which mechanism can best prove the underpinning theories. 
+  
+ Regarding the MPC based placement, we have not yet performed the tests on real infrastructure.  The tests that we are planning to do are proof of concept; we do not intend to develop a generic framework. A set of large virtual machines are going to leased from SAVI infrastructure.  These high-capacity VMs are going to be treated as physical machines.  For simplicity, we intend to have replicas of all the services on all of the VMs.  Moving service replicas around will be realized using load-balancing strategies. The load balancer implementation will be done through service registry and naming.  At each interval, the emulated browsers are going to ask a naming service for the location of replicas of a service that they intend to use.  The registry assigns each EB with a set of replicas according to ratios calculated by the controller.  The result should be consistent with what provided in the simulation. 
+ 
+ %  Finally, the estimation and placement or autoscaling need to be put together in one loop.
+
+    
+
+

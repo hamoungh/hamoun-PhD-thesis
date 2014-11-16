@@ -1,0 +1,1017 @@
+
+% Template for Elsevier CRC journal article
+% version 1.1 dated 16 March 2010
+
+% This file (c) 2010 Elsevier Ltd.  Modifications may be freely made,
+% provided the edited file is saved under a different name
+
+% This file contains modifications for Procedia Computer Science
+% but may easily be adapted to other journals
+
+% Changes since version 1.0
+% - elsarticle class option changed from 1p to 3p (to better reflect CRC layout)
+
+%-----------------------------------------------------------------------------------
+
+%% This template uses the elsarticle.cls document class and the extension package ecrc.sty
+%% For full documentation on usage of elsarticle.cls, consult the documentation "elsdoc.pdf"
+%% Further resources available at http://www.elsevier.com/latex
+
+%-----------------------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                          %%
+%% Important note on usage                  %%
+%% -----------------------                  %%
+%% This file must be compiled with PDFLaTeX %%
+%% Using standard LaTeX will not work!      %%
+%%                                          %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% The '3p' and 'times' class options of elsarticle are used for Elsevier CRC
+\documentclass[3p,times,twocolumn]{elsarticle}
+
+%% The `ecrc' package must be called to make the CRC functionality available
+\usepackage{ecrc}
+
+%% The ecrc package defines commands needed for running heads and logos.
+%% For running heads, you can set the journal name, the volume, the starting page and the authors
+
+%% set the volume if you know. Otherwise `00'
+\volume{00}
+
+%% set the starting page if not 1
+\firstpage{1}
+
+%% Give the name of the journal
+\journalname{Future Generation Computer Systems % The International Journal of Grid Computing and eScience
+}
+
+%% Give the author list to appear in the running head
+%% Example \runauth{C.V. Radhakrishnan et al.}
+\runauth{H. Ghanbari et al.}
+
+%% The choice of journal logo is determined by the \jid and \jnltitlelogo commands.
+%% A user-supplied logo with the name <\jid>logo.pdf will be inserted if present.
+%% e.g. if \jid{yspmi} the system will look for a file yspmilogo.pdf
+%% Otherwise the content of \jnltitlelogo will be set between horizontal lines as a default logo
+
+%% Give the abbreviation of the Journal.
+\jid{FGCS}
+
+%% Give a short journal name for the dummy logo (if needed)
+\jnltitlelogo{Future Generation Computer Systems}
+
+%% Hereafter the template follows `elsarticle'.
+%% For more details see the existing template files elsarticle-template-harv.tex and elsarticle-template-num.tex.
+
+%% Elsevier CRC generally uses a numbered reference style
+%% For this, the conventions of elsarticle-template-num.tex should be followed (included below)
+%% If using BibTeX, use the style file elsarticle-num.bst
+
+%% End of ecrc-specific commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% \usepackage[dvipdfm,bookmarks=false]{hyperref}
+% bookmarks=true,bookmarksnumbered=true,bookmarkstype=toc
+%\usepackage{cite}
+%\usepackage[square, comma,sort&compress]{natbib} 
+%\usepackage[numbers, sort&compress]{natbib}
+% \usepackage[pdftex,colorlinks]{hyperref} \AtBeginDvi{\special{pdf:tounicode
+% EUC-UCS2}}
+%\usepackage[top=1in,bottom=1in,left=1.5in,right=1in]{geometry}
+\usepackage[linesnumbered]{algorithm2e}
+% \usepackage{times}
+% \usepackage{graphicx}
+% \usepackage{epstopdf} %Simmons added this.
+\usepackage{multicol}
+\usepackage{alltt}
+\usepackage{array}	
+\usepackage{tabularx}
+\usepackage{verbatim}
+\usepackage{url}
+\usepackage{float}
+% \usepackage{subfigure}
+\usepackage{bigdelim}
+\usepackage{bigstrut}
+\usepackage{multirow}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{subfig}
+%
+% \usepackage[a3paper]{geometry}
+% \usepackage{fullpage}
+% \usepackage{ifpdf}
+% \usepackage[utf8]{inputenc}
+% \usepackage[english]{babel}
+% \usepackage{natbib}
+% \usepackage{SIunits}
+% \usepackage{graphicx}
+\usepackage{ctable}
+\usepackage{array}
+\usepackage[]{graphicx} 
+
+\begin{document}
+
+\begin{frontmatter}
+
+% Corresponding author. Clearly indicate who will handle correspondence at all stages of refereeing and publication, also post-publication. 
+% Ensure that telephone and fax numbers (with country and area code) are provided in addition to the e-mail address and the complete postal address. 
+% Contact details must be kept up to date by the corresponding author. 
+
+\author[york,cas]{Hamoun Ghanbari\corref{cor1}\fnref{fn1}}
+\ead{hamoun@cse.yorku.ca}
+\ead[url]{http://www.ceraslabs.com/people/hamoun-ghanbari} 
+
+\author[york]{Bradley Simmons}
+\ead{bsimmons@yorku.ca}
+\ead[url]{http://www.ceraslabs.com/people/dr-bradley-simmons}
+
+\author[york]{Marin Litoiu}
+\ead{mlitoiu@yorku.ca}
+\ead[url]{http://www.ceraslabs.com/people/dr-marin-litoiu}
+
+\author[cas]{Gabriel Iszlai}
+\ead{giszlai@ca.ibm.com} 
+
+\cortext[cor1]{Corresponding author}
+\fntext[fn1]{Tel:+1-416-265-7585}
+
+\address[york]{Department of Computer Science and Engineering, 
+    York University, 4700 Keele St, 
+    Toronto, Ontario, Canada, M3J 1P3 \fnref{label3}}
+
+\address[cas]{Centre for Advanced Studies (CAS), 
+IBM Toronto Lab, 8200 Warden Avenue, Markham, Ontario, Canada, L6G 1C7}
+
+
+\title{Feedback-based Optimization of a Private Cloud}
+
+\begin {abstract}
+The optimization problem addressed by this paper involves the allocation of resources in a private cloud such that cost to the provider is 
+minimized (through the maximization of resource sharing) while attempting to meet all client application requirements (as specified in the SLAs). 
+At the heart of any optimization based resource allocation algorithm, there are two models: one that relates the application level quality of service 
+to the given set of resources and one that maps a given service level, SLA, and resource consumption to profit metrics.
+ In this paper we investigate the optimization loop in which each application's performance model is dynamically updated 
+at runtime to adapt to the changes in the system. These changes could be perturbations in the environment that had not 
+been included in the model. Through experimentation we show that using these tracking models in the optimization loop will result in a more
+ accurate optimization and thus result in the generation of greater profit.  
+%\footnote{This research was supported by the IBM Toronto Centre for Advanced Studies.}
+\end{abstract}
+
+
+\begin{keyword}
+%% keywords here, in the form: keyword \sep keyword
+Optimization \sep Modeling \sep State Estimation \sep Private Cloud \sep PaaS \sep IaaS 
+
+%% MSC codes here, in the form: \MSC code \sep code
+%% or \MSC[2008] code \sep code (2000 is the default)
+
+\end{keyword}
+
+\end{frontmatter}
+
+% \IEEEkeywords
+%\begin{keywords}
+% Keywords-optimization; PaaS; IaaS; model estimation; tracking; 
+%\end{keywords}
+
+\section{Introduction}
+\label{sec:Introduction}
+
+%define cloud
+Advances in virtualization~\cite{PBarhaEtAlSOSP2003} techniques and the
+construction of numerous large commodity data centers around the world
+~\cite{MArmbrustEtAlTR2009} have resulted in a new approach to computing referred
+to as {\it cloud computing}~\cite{BHayesACMComm2008,MArmbrustEtAlTR2009,BRochwergerEtALIBM2009,RBuyyaEtAlFGCS2009} becoming an important topic of research and development. The {\it cloud}, though still in
+its infancy, typically refers to some set of computing resources (infrastructure (IaaS), platform (PaaS) or
+software (SaaS)) being provided on demand over the Internet to users as a service.
+
+A {\it private cloud}  represents a set of virtualized data centers under the ownership of a single administrative domain (i.e., the cloud service provider).    Unlike in a {\it public cloud} where the various layers may be offered by multiple providers the entire stack (IaaS,PaaS and SaaS) is controlled by the single private cloud provider and so it has access to details about and control over the various applciations, middlewares and infrastructure simultaneously.   
+
+The main objective of a private cloud provider is to maximize {\it profit} (i.e., revenue-cost).  Optimization techniques allow the provider to determine resource allocations to various clients in order to best maximize its revenue while minimizing its costs.  Due to these economic benefits, optimization has been the subject of much investigation~\cite{liu_optimal_2007,li_fast_2009,li_performance_2009,li_sla-driven_2010,van_sla-aware_2009,tesauro_utility-function-driven_2005,wang_autonomic_2008,wang_appliance-based_2007}.
+% Optimization is possible for the provider when the price model and service level agreement (SLA) are defined in terms of performance measures, and the amount of  supplied resource is decided by the provider based on the resource cost and SLA targets.
+
+The optimization problem addressed by this paper involves the allocation of 
+resources in a private cloud such that cost to the
+provider is minimized (through a maximization of resource sharing) while attempting to meet
+all client application requirements (as specified in their respective Service Level Agreements (SLA)s~\cite{Sauve2005, IGoiriEtAlNCA09, CKotsokalisEtAlICWS09, AFerrerEtAl2010optimis})
+~\footnote{An SLA is a contract which defines the relationship between a service provider and its clients that fully specifies all obligations for both parties, the price to be paid for the service(s) offered and associated penalties should obligations be unmet.  It can be quite complex and comprehensive (e.g., considering aspects of both functional and non-functional requirements); however, in this work, only performance objectives that can be extracted from an SLA are considered. No attempt is made  to fully model or develop an SLA or an SLA management framework.}.
+
+The decisions made by the provider with regards to deployment of application
+layers in the cloud ({\it placement problem}) and resource allocation to
+application environments ({\it resource allocation problem}) will directly
+impact both the performance of an application and the provider's cost of operations.  
+
+The existing approaches, have addressed these two problems in different ways: 
+For example, ~\cite{liu_optimal_2007, kalyvianaki_self-adaptive_2009-1,
+abdelzaher_performance_2002} tried to satisfy the constraints obtained from SLA using control techniques. 
+While \cite{li_fast_2009,li_performance_2009} tried to minimize
+infrastructure cost subject to performance constraints driven by SLAs. 
+Minimizing cost while maximizing quality of service
+attributes concurrently was proposed~\cite{li_sla-driven_2010} . Finally
+\cite{van_sla-aware_2009,tesauro_utility-function-driven_2005,wang_autonomic_2008,wang_appliance-based_2007}
+ used tunable parameters for the administrator to specify trade-offs between the two.
+
+Although efficient, these approaches assume a static model of the
+system within an optimization loop which results in the detachment of the model
+from reality, deterioration of the model, and inaccurate solutions.
+
+%\subsection{Resource Allocation in Private Clouds}
+ %To ensure good performance, the provider should guarantee that resources are
+%allocated to critical applications, considering limited hardware capacity.
+There are three approaches to resource allocation in a private cloud:
+\begin{itemize}
+\item  {\it Scale-up} involves adding
+more resource to each single virtual machine (VM) (i.e. directly changing
+``relative share'' of the allocated resource). This can be done through the hypervisor's scheduler parameters.
+\item  {\it Scale-out} involves adding
+VMs to an application environment in support of the SLA during workload bursts
+and removal of VMs (i.e., to turn off their resources and save power cost ) when
+possible (i.e., exceeding SLA requirements by some large margin).  This is also
+referred to as provisioning.
+\item  {\it Migration} involves moving VMs over the physical infrastructure.
+This changes the resulting cost though not application performance (in
+non-work-conserving mode).
+\end{itemize}
+
+ In this
+paper we attempt to solve the optimization problem through a feedback-based
+optimization loop. The resulting optimizer will be compared to the one using
+a static model to demonstrate the benefits of this proposed approach.
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=0.45\textwidth]{image1.pdf}		
+	\caption{The interaction of layers in our optimization mechanism.}
+	\label{fig:interaction-of-layers}
+\end{figure}
+
+The remainder of this paper is structured as follows:
+Section \ref{sec:Proposal} describes our feedback based approach for optimization of resource shares in private cloud. 
+subsection \ref{sec:general-defs} includes general formal definitions 
+used during problem formulation in subsection \ref{sec:problem-formulation}.
+Subsections \ref{sec:Modeling-response-time} and \ref{sec:online-model-estimation} describe estimator component of the feedback loop.
+Section \ref{sec:optimization-through-subgradient} explains the optimizer component of the loop.
+The applicability of the proposed approach is demonstrated by the case studies in Section \ref{sec:case-studies}. Related work, conclusions, and future works are discussed in Sections \ref{sec:related-work} and \ref{sec:future-work}, respectively.
+
+
+
+Section \ref{sec:apps-workloads-resources} describes cloud resources and applications that use these resources.
+Section \ref{sec:layered-provisioning} describes a layered approach to automated provisioning. 
+Section \ref{sec:control-theoretic-provisioning} and \ref{sec:rule-based-provisioning} describe the two different common implementations of elasticity policy.
+Finally Section \ref{sec:comparison-of-approaches} compares the approaches and enumerates benefits and drawbacks of each of them. 
+
+
+\section{Proposed Approach}
+\label{sec:Proposal}
+In this paper our focus is on scale-up (i.e.,  application resource share modification).
+% We assume, PaaS only tries to optimize applications performance based on existing fixed set of VMs. 
+We propose feedback based optimization of resource shares using dynamic
+application-specific performance models as shown in
+Figure~\ref{fig:feedback-based-optimization}. 
+In this approach, each application maintains both a dynamically updated
+performance model (see Section~\ref{sec:online-model-estimation}) and a utility model (which defines a specific
+service level objective e.g., response time).  The middleware has access to
+the utility model of each application.  Periodically, each application submits
+its performance model to the middleware.  The middleware performs a
+system-wide, global optimization (see Section~\ref{sec:optimization-through-subgradient}) using this information and
+determines new resource allocations for each application for the following
+period. These allocations are then applied. 
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=0.45\textwidth]{image2.pdf}
+	\caption{Feedback based optimization of resource shares.}
+	\label{fig:feedback-based-optimization}
+\end{figure}
+%BRAD:  aij in terms of MIPS 0 -- MIPS
+%
+%\subsection{Formalization of the Problem}
+%\label{sec:Formalization-of-Problem}
+%
+%In this section we formalize resource allocation problem in the private cloud
+%described in Section~\ref{sec:problem-and-motivation}.
+
+\subsection{General Definitions} 
+\label{sec:general-defs}
+%%COMMENT:  Simmons \ldots. note:  we said set P={p_i, \ldots, p_n} and then
+% physical machine P_i
+Assume there are $n$ physical machines (PM)s in the data center,
+represented by the set $P={p_0,...,p_n}$, hosting $m$ applications with different workloads.
+VMs are hosted on PMs on
+behalf of applications. Let us assume that the physical server environment is homogeneous and each physical
+machine, say $p_i$ has one resource, and, thus has a fixed capacity $c_i$ in
+one dimensional space \footnote{In case of multi-resource modeling  $c_i$ can be substituted with $c^{r}_i$ ,
+where  $c^{r}_i$ is the capacity of resource $r$ of $p_i$.}.
+The allocation of VMs on PMs can be represented by an $n \times m$ matrix $A$.
+Each element $a_{ij}$ of A denotes a resource allocation (i.e., signal),
+defining the percentage of the total resource (i.e. CPU) capacity of the PM $i$
+allocated to a running virtual machine of application $j$.
+
+\subsection{Problem formulation} 
+\label{sec:problem-formulation}
+ 
+A global utility function $U_0$ is expressed as the sum of an
+application-provided resource-level utility functions and an operating cost function as follows: 
+\begin{equation} \label{eq:opt-defa}
+ U_0 = \left(\sum_{j \in App}^{} u_j(s_j(A_j))\right) -k.cost(A)
+ \end{equation}
+where $k$ denotes an adjustable weight (working as tunable parameter for the
+administrator), $s_j$ denotes the the service level function which maps the application $j$'s resource 
+allocations (i.e. $A_j$) to the service level measure (e.g. response time) 
+of the application, $u_j$ is the local utility function for application $j$,
+$A$ represents the allocation matrix of VMs on PMs (defined earlier), and $A_j$ represents $j$'the column of $A$. $U_0$ can
+be associated with the profit of the cloud and the two terms of equation
+(\ref{eq:opt-defa}) represent the revenue and the cost respectively.
+ 
+The objective of this work is to maximize $U_0$ subject to a set of
+capacity constraints which come form the physical layer of the private
+cloud.  The optimization problem addressed here can be expressed as
+follows:
+\begin{equation} \label{eq:opt-def}
+%U_0  
+\begin{split}
+\text{maximize:   } & U_0  \\
+\text{subject to: } 
+& \forall i(\sum_{j\in App}{a_{ij}}<c_i)  \\
+& \forall i\forall j(a_{ij}\in [0,c_i])
+\end{split}
+\end{equation}
+%Comment:  I would use w instead of k - but I didn't want to mess up the
+% formalization.  Please note - I also fixed p_i instead of P_i above earlier\ldots
+It is assumed that each
+allocation signal $a_{ij}$ is constrained to lie in the interval $[0,c_i]$
+ meaning that it can maximally have the whole capacity of a PM. 
+
+% In another formulation $-cost(A)$ could also be replaced by cost savings. For
+% example, free PMs contribute by saving power cost when they
+% are turned off; thus $-cost(A)$  can be the number of idle machines with no job running.    
+
+Notice that the problem has a best effort nature and we treat service level as a soft constraint by 
+incorporating it into the objective function. 
+%As a result bounds on performance metrics are not necessarily guaranteed. 
+
+%Comment:  I do not understand this caption at all
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.45\textwidth]{image3.pdf}
+	\caption{Smooth service level utility function; vertical line indicates the SLA target of an application.}
+	\label{fig:service-level-utility-functions}
+\end{figure}
+
+Figure~\ref{fig:service-level-utility-functions} represents a sample service level utility function
+where the vertical line indicates the SLA target of an application
+and utility decreases as the value of $s_j$ approaches the SLA limit.
+ 
+It is worth noting that any other decreasing differentiable function can also be used and
+the only feature of this function is simplicity of presentation in mathematical form.
+However, one should note that, shape of a function specially after passing the SLA threshold will impact the behavior of the optimization algorithm.
+
+\subsection{Modeling QoS Attributes Based on Resource Allocation}
+\label{sec:Modeling-response-time}
+A performance model can be used to quantitatively relate the physical layer specification of a customer's application (e.g. its given resource shares)
+and its associated workload to a service level attribute (e.g. response time).
+We assume that the service level of each application $j$, referred to as
+$s_j$, can be modeled by a function $g$ with the column $j$ of $A$ ($a_{1j},a_{2j},\dots ,a_{kj}$) and ${\tau }_j$, $d_j$ as parameters:
+\begin{equation} \label{eq:perf-model_general}
+	s_j= g(a_{1j},a_{2j},\dots ,a_{nj},{\tau }_j,d_j)
+\end{equation} 
+ where $a_{ij}$ is the number of allocated CPU cycles (i.e., measured in MIPS),
+ ${\tau }_j$ denotes the request inter-arrival time in seconds associated with
+ the workload of the application~\footnote{$s_j$ is usually the
+ average response time of the application.} and $d_j$ is application $j$'s hardware demand per request (i.e.
+ the number of CPU cycles for each request to be processed).
+  
+The model is further simplified by using the aggregate resource
+capacity measure instead of the vector of individual values and replacing $g$
+with $f$:
+\begin{equation} \label{eq:aggregate-cap}
+ \begin{split}
+  s_j= f(\gamma_j,{\tau }_j,d_j) \\
+  \text{where}\  \gamma_j = \sum_{i=1...n}{a_{ij}}       
+ \end{split}
+\end{equation}
+We will assume that all applications deployed on the infrastructure 
+follow the same parametric function $f$ as the performance model, with configurable parameters. 
+Both linear and non-linear functions can be used to define $f$. 
+
+%While linear models are usually less accurate, non-linear models could also result in over-fitting or fitting to noise. 
+%
+%In all of the models that were explored the predictor variables were $(\gamma_j,\tau_j, d_j)$ and the response variable was $r_j$.
+%
+
+\subsection{Online Estimation}
+\label{sec:online-model-estimation}
+In general the goal of any optimal control approach is to choose a sequence of feasible \textit{control actions} that maximizes a defined \textit{performance criterion} (or objective function)\footnote{One can instead say optimial control minimizes an expected total cost function} or simply regulates the system towards an objective. 
+Since calculating the cost and performance criterion envolves projection of system's behavior and state in future, there is a need to have a \textit{model} of the system over time. This model can be either deterministic or staochastic, and continous-time, discrite time, or steady-state. 
+As an example, stochastic and discrete-time \textit{markovian} models, specified using a difference equation, descibe the relation between state of the system at time $t+1$ (i.e. a X-valued random variable $x_{t+1}$), the action $a_t$ and previous state $x_t$ (i.e. by taking the action $a_t$ at state $x_t$ the system moves towards state $x_{t+1}$). 
+
+In \textit{optimizer} control loops (as opposed to \textit{regulators}), because of use of 
+complex goals and objective functions, the simple schema of simply feeding back control error (like classical linear continuous proportional-integral (PI) controllers) might not be possible. 
+One can instead use a comprehensive and accurate model which takes into account reference and disturbance inputs (i.e open-loop or feedforward control). 
+Such open-loop control cannot, however, compensate for disturbances or noise that is not mentioned in the model. In this case the guarantee of system's good performance is accuracy of the model achived through tuning.
+
+adaptive models are used to dynamically take into account the system differences and re-tune the model. In adaptive models, parameter estimates of a model are bootstraped and improved iteratively over time as more data is revealed. This as opposed to construction of the model using training data in supervised learning.  
+
+In adaptive models the process of estimation (i.e. finding the most likely hidden state sequence given a model and an observation sequence) and model identification (i.e. finding the probabilistic relation state variables over time) are mixed together to form an unsupervised learner. 
+% ++++++++++++
+%in kalman steady state (with fixed gain) we only do estimation because we assume we know the system gain thus we can find the currect Kalman to estimate everyting. A kalman with changing gain show chang in the underlaying model (although im not sure what the exact model is), and the most current gain represents the most current model. Thus one can fix the kalman gain after a while and keep estimating. this includes modeling the stochastic portion of things.  
+% ++++++++++
+Kalman filter is a well-known parameter estimator of this type which can compensate for system differences from the base model at runtime for linear dynamical systems.  We performed dynamic re-tuning of the model coefficients using an extended Kalman filter, a variant of the Kalman filter \cite{welch_introduction_1995} for a non-linear measurement equation. The filter is able to take into account the measurements during runtime and update the model coefficients.
+%%comment - Brad: perhaps should be plural i.e., measurement equations?
+Focusing only on one platform called $j$, let $B_j$ be
+a vector representing the model coefficients %(in our model $\beta_{1j},\beta_{2j}$) 
+and $u_j=\left[\gamma_j,\tau_j,d_j\right]$ be the measured inputs of the system (i.e.
+capacities, inter-arrival time and demand).  Let $z_j$ be the measured system
+output (i.e. response time). The model maps $u_j$ and $B_j$
+to the modeled output $s_j$ the same way as static regression:
+\begin{equation}\label{eq:kalman-model} 
+s_j=f(u_j,B_j)
+\end{equation}
+
+The filter maintains the estimate of $B_j$ as its state and updates it using the
+linear feedback equation once new measurements are ready:  
+\begin{equation}\label{eq:kalman-update} 
+	B_{j,n} = B_{j,n-1}+ K_n(z_n - s_n)
+\end{equation}
+where $n$ denotes a discrete time index, $K_n$, the dynamically computed
+``Kalman Gain'' matrix and $z_n-s_n$ denotes the prediction error. With certain
+assumptions, the calculated Kalman gain $K_n$, is guaranteed to minimize the 
+estimation errors for $B_{j,n}$. The updated state will result in a dynamic
+model $f(B_{j,n},u_n)$ that will be accessed multiple times during optimization
+cycles.
+
+\section{Optimization}
+\label{sec:optimization-through-subgradient}
+In this section, we solve the introduced optimization problem, as defined in equation~\ref{eq:opt-def}, through primal
+decomposition. Algorithm~\ref{algorithm1} represents a centralized solution for this problem 
+using the primal method.  The equations referenced by the algorithm are listed in Table~\ref{tab:equations}. 
+%We assume that global utility function $U_0$ is a
+%concave increasing utility function resembling profit-vs-allocated resources
+%~\footnote{The local utilities defined by equation~\ref{eq:opt-def} are each
+%individually concave functions. Thus, the global utility function $U_0$ which
+%is a sum of concave functions is also concave.}.  
+
+\begin{algorithm}[!h]
+	\small
+	\SetAlgoVlined
+	\SetKwInOut{Input}{input}
+	\SetKwInOut{Output}{output}
+	\SetKwInOut{Initialize}{initialize}
+  \SetAlFnt{\tiny}
+
+\Input{initial capacities $A_0$, $MAX\_ITERS$, performance model $f$ and utility
+model $u_j$ for each app $j$}
+\Output{optimal allocation $x$, maximum utility $fp_{best}$}
+\BlankLine
+
+initialize: $fp=-\infty$, $fp_{best} =-\infty$, $A=A_0$
+
+\While { $k < MAX\_ITERS$}
+{
+	compute constraints values $U_i$ for each PM using equation~\ref{eq-compute-PM-constraint}.\nllabel{al1-step_1}
+	\BlankLine
+	
+	\If {no constraint is violated, move towards optimum: $(max(U_i(A))>0)$ }
+	{
+		compute global utility function using equation~\ref{eq:opt-def}.\nllabel{al1-step_2.1} 
+		\BlankLine
+
+		record the global maxima using equation~\ref{eq-record-global-maxima}.\nllabel{al1-step_2.2} 			
+		\BlankLine
+
+		calculate objective function's subgradient using equation~\ref{eq-calculate-objective-subgradient}.\nllabel{al1-step_2.3} 	
+		\BlankLine
+
+		move towards subgradient and optimum using equation~\ref{eq-moving-towards-objective-function}.\nllabel{al1-step_2.4}			
+		\BlankLine
+	}
+	\ElseIf{there is some violated constraint}{
+
+	  find most violated constraint using equation~\ref{eq-find-most-violated-constraint}.\nllabel{al1-step_3.1}
+	  \BlankLine
+
+		compute the subgradient value of most violated  constraint using equation~\ref{eq-calc-subgr-of-most-violated-constraint}.\nllabel{al1-step_3.2}  
+		\BlankLine
+
+		select step size based on equation~\ref{eq-step-size-select}.\nllabel{al1-step_3.3}
+		\BlankLine
+
+		move away from subgradient and optimum using
+		equation~\ref{eg:project-subgradient}.\nllabel{al1-step_3.4}
+		\BlankLine
+	}
+	project each individual variable based on its local constraint using equation~\ref{eq-check-local-bound}.\nllabel{al1-step_4}  		
+	\BlankLine
+
+	$k = k + 1$\; 	
+	\BlankLine
+}
+\caption{A centralized solution for the
+problem using primal method.  The equations referred to are presented in
+Table~\ref{tab:equations}.}
+\label{algorithm1}
+\end{algorithm}
+
+
+The input to the algorithm includes the initial capacities (i.e., $A_0$), the number of iterations during optimization ($MAX\_ITERS$), the performance model ($s_j$) and utility model $u_j$ for each application. 
+The output of algorithm is the optimal allocation vector $x$, and maximum utility gained from that allocation, $fp_{best}$ which is obtained iteratively using $MAX\_ITERS$ iterations. 
+
+
+\begin{figure}[h]
+	\centering
+		\includegraphics[width=0.45\textwidth]{twoVM_1PM_optimality.pdf}
+		\caption{One sample run of subgradient optimization algorithm, finding the
+		maximum utility using variations in capacity.}   
+	\label{fig:sample-config-space-for-subgradient-optimization}
+\end{figure} 
+
+To demonstrate how the optimization algorithm performs, we optimize a pre-built
+model of one physical machine hosting two applications, each running on a single
+VM. Both applications have CPU demands of 5100 and 4100 MIPS per request
+respectively and response time thresholds (i.e. ${r^\text{thr}}_j$) of 16 and 7
+respectively. The request interarrival time of both applications is 22 seconds,
+ and their max\_util is 10.   A single PM's
+ CPU, which is used to host these applications, has total capacity of 1200 MIPS.
+Assuming capacities $x1$ and $x2$ are the CPU allocation for VM1 and VM2
+Figure~\ref{fig:sample-config-space-for-subgradient-optimization} shows the whole
+configuration space over these allocations, constrained by inequalities:
+ $x1+x2<1200$, $x1>280$, and $x2>280$.
+Notice how the optimizer climbs up the global utility function, hits the
+constraint (i.e., $x1+x2<1200$) then continues to climb and reach the maximum.
+
+
+\section{Case Studies}
+\label{sec:case-studies}
+For case studies of this paper we simulated the cloud with CloudSim~\cite{CLOUDSIM2010} simulator.
+We assumed that the human entity responsible for configuring the feedback optimizer has enough information regarding the deployed applications to construct a simple model of them. 
+
+A data-set of a sample application's performance, was generated synthetically by invoking the CloudSim~\cite{CLOUDSIM2010} simulator using random values for capacity, demand and inter-arrival time (Figure~\ref{fig:arrival-rate-effect-on-response-time} presents a partial visualization of the data-set).
+
+Three models including 
+(i) a simple linear model only containing predictor variables\footnote{The model is linear in the parameters $\beta_i$ not predictor variables ($X$).}
+($f = \beta_1 +  \beta_2 d_j - \beta_3 {\tau}_j - \beta_4 \gamma_j$), 
+(ii) a more complex linear model with interaction terms \footnote{The interaction term is the product of the subset of our original predictors.} $\gamma_j \tau_j$ and $\gamma_j d_j$ to capture the effect of $\gamma_j$ on response time at different arrival rates and demands ($f = \beta_1 + \beta_2 d_j-\beta_3 {\tau}_j-\beta_4 \gamma_j-\beta_5 \gamma_j d_j + \beta_6 \gamma_j {\tau}_j$)
+and (iii) a non-linear model derived from the mean value based formula for open queuing networks ($R=D/1-\lambda D$) \cite{lazowska_quantitative_1984} extended 
+to account for capacity ($f=\frac{\beta_1 d_j}{\gamma_j-\beta_2 d_j/{\tau}_j}$) 
+%which estimates the average response time per request ($R$), based on the requests arrival rate ($\lambda$)
+% and per-request server demand ($D$) \footnote{Server demand is the amount of time each request will spend in the queuing center to be processed.}.
+\footnote{This equation can be derived by substituting $D_j$ with $d_j/\gamma_j$ and ${\lambda}_j$ with $1/{\tau}_j$ from the base formula, and adding model coefficients (i.e. $\beta_1$ and $\beta_2$) to compensate for the differences between the system and pure queuing model. The substitution requires the arrival rate ($\lambda $) to be a homogeneous Poisson process, and inter-arrival times ($\tau $) to be exponentially distributed with parameter $\lambda $ (mean 1/$\lambda $).} were considered. 
+
+%------------------------------------------
+%~\thetb #1
+\newcounter{tb}
+\newenvironment{tb}[1][]{\refstepcounter{tb}}
+
+\begin{tb}\label{eq-compute-PM-constraint}\end{tb} 
+\begin{tb}\label{eq-compute-global-utililty-function}\end{tb}  
+\begin{tb}\label{eq-record-global-maxima}\end{tb} 
+\begin{tb}\label{eq-calculate-objective-subgradient}\end{tb} 
+\begin{tb}\label{eq-moving-towards-objective-function}\end{tb} 
+\begin{tb}\label{eg:project-subgradient}\end{tb} 
+\begin{tb}\label{eq-find-most-violated-constraint}\end{tb} 
+\begin{tb}\label{eq-calc-subgr-of-most-violated-constraint}\end{tb} 
+\begin{tb}\label{eq-step-size-select}\end{tb} 
+\begin{tb}\label{eq-check-local-bound}\end{tb} 
+ 
+\begin{table*}[t]
+\begin{tabular*}{1.0\textwidth}{p{.02\textwidth} >{$\displaystyle}p{.36\textwidth}<{$} p{.55\textwidth}}
+ \toprule
+ \footnotesize Num & \text{Equation}  &  Description\\
+\toprule
+1 &  U_i(A)=\left(\sum_{j\in app}{a_{ij}}\right)-c_i & 
+A constraint for each $PM_i$ ($i>0$) is the sum of all
+resources given to VMs deployed on that PM minus the PM's total capacity. \\ \hline 
+
+2 & U_0 = \left(\sum_{j \in App}  u_j( f(\gamma_j,{\tau }_j,d_j)) \right)-k.cost(A) &
+The global utility function $U_0$. \\ \hline 
+
+3 & fp_{best} = max(U_0(A), fp_{best}) &
+increamental recording of objective value. \\ \hline 
+
+4 & g=\partial U_0(A) / \partial A &
+calculating the objective subgradient as if the problem were unconstrained. \\ \hline 
+
+5 &  A = A + \alpha g_0 &
+moving towards the objective function subgradient 
+with a fixed step size (i.e. optimality update). \\ \hline 
+
+ 6 & A = A - \alpha g_i &
+projecting the current point onto the set of points that satisfy the inequality constraint $i$.\\ \hline 
+
+ 7 & i = argmax_i(\|U_i(A)\|) &
+ choosing the most violated constraint. \\ \hline 
+
+  8 & 
+% \forall k \forall j [\left({\frac{\partial U_i(a)}{\partial A}}\right)_{kj} = 1 \iff (k=i \wedge placement(k,j)=1) 
+% \forall k \forall j [(\partial U_i(a)/\partial A)_{kj} = 1 \iff (k=i \wedge placement(k,j)=1) ]  
+\forall k \forall j \{[(k=i \wedge placement(k,j)=1) \rightarrow (g_i)_{kj} = 1  ]
+\wedge  [k \neq i  \rightarrow (g_i)_{kj} = 0  ] \}
+& Calculating the subgradiet $g_i$ of a constraint $i$ (i.e. $\partial U_i(A)/\partial A$) while $i>0$ . \\ \hline 
+
+9 & \alpha  = (U_i(A) + \epsilon)/(\|g\|^2_2) &
+calculating the step size in feasibility update, while $\epsilon>0$ is a tolerance and set to $10^{-3}$. \\ \hline 
+
+10 & \forall i \forall j \{a_{ij} = min(max(a_{ij},0), c_i )\} &
+check that each allocated capacity is feasible and is between the local bounds. \\ \hline 
+
+\bottomrule
+\end{tabular*}
+\caption{Equations referenced by Algorithm~\ref{algorithm1}.}
+\label{tab:equations}
+\end{table*}
+% %\end{sidewaystable}
+% \end{table}
+%
+%\[
+%\forall i \forall j (\partial U_k(a)/\partial A)_{ij} =  \\
+%\left\{ 
+%			\begin{array}{cc}
+%				0 & i \neq k \\ 
+%				1 & i=k \wedge placement(i,j)=1 
+%			\end{array}
+%		\right.
+%\]
+
+%------------------------------------------
+
+A regression analysis was then performed on the resultant data for each model allowing confidence intervals to be computed for all model coefficients.
+%Usually, use of a predictor variable is meaningful if its estimated coefficient's confidence interval is far from zero\footnote{There is no fully proved way for finding if the interval is far enough from 0.}. Moreover a wide confidence interval usually means lack of accuracy and a need for more data. We formed approximate 95\% confidence intervals for each $\beta_i$ using mean, standard error, and normality assumption, to indicate the accuracy and significance of each $\beta_i$ is.
+%~\footnote{The details are left unreported due to constraints on paper length.} 
+In all cases, the approximate 95\% confidence intervals for coefficients were quite narrow and the margin of error was orders of magnitude smaller than the coefficient. This implies that the amount of data for modeling is adequate.
+However, in linear models the intervals were very near to zero and coefficients were not significant.
+%One possible explanation for this is that for linear models only the fixed portion of response time (i.e. delay at server) was accounted for, not the queuing delay which might grow exponentially. 
+In the end as a result of this analysis, the non-linear model was used.
+
+% +++++++++++++++++++++++
+We furthure considered a very simple local utility function for applications:
+\begin{equation} \label{eq:local-utility-formula}
+u_j = max\_util_j.\frac{\left(\arctan({r^\text{thr}}_j-r_j)+ \pi/2\right)}{\pi} 
+\end{equation}
+where $max\_util_j$ denotes the maximum possible utility as defined by the
+curve, $r^\text{thr}_j$ denotes the SLA limit (in terms of response time) and
+$r_j$ denotes the actual response time.
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.45\textwidth]{demand_response_time.pdf}
+	\includegraphics[width=0.45\textwidth]{response_time_capacity.pdf}
+	\caption{Visualization of pairwise relation between input parameters $($capacity,demand$)$
+	and the response attribute (i.e. response time) for a simulated application running on a single VM.}
+	\label{fig:arrival-rate-effect-on-response-time}
+\end{figure}
+
+
+\subsection{Case Study One}
+\label{sec:case-study-test-simple-deploy}
+ % In this section, we study a simulated example to illustrate the applicability of the proposed approach. 
+Consider a small cloud configuration with three applications
+ (\texttt{app1}, \texttt{app2}, \texttt{app3}) deployed on two PMs with the following placement matrix:
+\[ placement= 
+  \left( \begin{array}{ccc}
+  1 & 1 & 0 \\
+  0 & 1 & 1 \\
+\end{array} \right)\] 
+That is, \texttt{app1} is deployed on PM1, \texttt{app3} is deployed on PM2, and \texttt{app2} uses both PMs by having a VM on each.
+
+Both of the PMs have single core CPUs with each core having processing speed of
+1200 MIPS and 2 GB of ram. The VMs for applications are identical with image size
+of 1 GB, ram of 512 MB, and bandwidth of 1 GB. The CPU resource share for each VM
+is initialized to 280 MIPS but will be adjusted by the optimizer. At the PaaS
+layer applications are assumed to have workloads with mean CPU demand per request
+of 4100, 5700 and 500 MIPS respectively. For \texttt{app2}, the load gets distributed
+evenly between the two VMs. We chose the arrival-rates of applications, from FIFA
+98 workload~\cite{arlitt_workload_2000}. The interarrival time of requests for
+all dynamic pages were extracted, on a per-minute basis, from the first six hours
+of day 21 of FIFA 98 workload. To have the time-of-a-day effect we divided this
+into three 2-hour periods and applied each as an application workload. Moreover
+we multiplied interarrival-times of applications by 14, 11 and 8 respectively.
+The third application is more transactional in nature (i.e. lower demand and
+higher arrival rate) while the other ones are characterized as batch-like.
+
+The utility functions are defined for each application based on
+equation~\ref{eq:local-utility-formula} with the following parameters for each application:
+\begin{align*} R^\text{thr} = & [15,16,2] \\
+Max\_utils = & [20,10,5]      \end{align*}
+
+For each 120 samples of interarrival times, we submit 20 transactions on each application in the simulator. 
+In case of tuned model, the new measurements obtained from the simulator (e.g. response times) are passed to the filter.
+The filter re-tunes the dynamic model's coefficients and passes the model to the optimizer. 
+In case of static model, the optimizer uses the model obtained through regression analysis as-is and no tuning is happening.
+The optimizer then recalculates the new resource allocations, passes the new allocation vector to actuators to apply it to the system. 
+
+Figure~\ref{fig:case-study1} presents the results. The small
+mismatch of model and measurements due to the use of static models by the
+applications (see Figure~\ref{fig:case-study1}\subref{fig:1}) results in a bad
+allocation decision for \texttt{app2}, this leads to failure in meeting its SLA 
+(see Figure~\ref{fig:case-study1}\subref{fig:5}). In contrast, using dynamic
+models results in more efficient resource allocations being made and better
+commitment to SLAs (i.e, response time for \texttt{app2} (see
+Figure~\ref{fig:case-study1}\subref{fig:6}).
+
+
+\begin{figure*}
+	\centering
+\subfloat[][]{\includegraphics[width=0.42\textwidth]{exp_simple_deploy-utility.pdf} 	
+\label{fig:1}}% (a)
+ \subfloat[][]{\includegraphics[width=0.42\textwidth]{exp_simple_deploy_track-utility.pdf}
+ \label{fig:2}}% (b)
+\qquad
+\subfloat[][]{\includegraphics[width=0.42\textwidth]{exp_simple_deploy-response_time.pdf}
+\label{fig:3}}% (c) 
+\subfloat[][]{\includegraphics[width=0.42\textwidth]{exp_simple_deploy_track-response_time.pdf}
+\label{fig:4}}% (d)
+\qquad
+\subfloat[][]{\includegraphics[width=0.42\textwidth]{exp_simple_deploy_track-server1_cpu.pdf}
+\label{fig:5}}% (e) 
+\subfloat[][]{\includegraphics[width=0.42\textwidth]{exp_simple_deploy_track-server2_cpu.pdf}
+\label{fig:6}}% (f)
+\qquad
+\subfloat[][]{\includegraphics[width=0.80\textwidth,height=1in]{exp_simple_deploy-workload.pdf}	
+\label{fig:7}}% (g)
+% \includegraphics[width=0.45\textwidth]{exp_simple_deploy-server1_cpu.pdf}
+% \includegraphics[width=0.45\textwidth]{exp_simple_deploy-server2_cpu.pdf}
+\caption{The \subref{fig:1} measured and \subref{fig:2} modeled	gained global utility using static and dynamic models over time.   
+    The response time of applications together with SLA response times for \subref{fig:3} static and \subref{fig:4} dynamic models. 
+    The allocated capacity to applications over time on \subref{fig:5} server one and \subref{fig:6} server two respectively using dynamic models. 
+    The \subref{fig:7} workload of applications.}
+	\label{fig:case-study1} 
+\end{figure*}
+
+\subsection{Case Study Two}
+\label{sec:case-study2} 
+
+The second case study was performed to demonstrate the ability of our approach to
+successfully update resource shares in a way that compensates for additional
+workload.   Ten applications were deployed on seven PMs. The number of
+PMs and their placement was randomly generated.  All application workloads were set to have an
+interarrival time of 40 seconds except \texttt{app1} whose workload was monotonically
+increasing (i.e., interarrival time was decreasing from 40 to seven seconds).
+
+Figure~\ref{fig:case-study2} presents both before (a) and after (b) snapshots of
+resource allocations.   Notice that both \texttt{app1} (dark blue) and \texttt{app7} (yellow) are
+resident on the same PM.  Initially, \texttt{app1} is allocated approximately 300 MIPS
+while \texttt{app7} is allocated approximately 310 MIPS. After the increase in workload
+\texttt{app1} is allocated approximately 510 MIPS while \texttt{app7} is allocated
+approximately 100 MIPS.
+
+%We omit the full result
+%here due to a lack of space and only present the final result after
+%scale-up had occurred in Figure~\ref{fig:case-study2}.  
+\begin{figure}[tb]
+	\centering
+	\subfloat[][]{\includegraphics[width=0.42\textwidth]{first_step.pdf}~\label{fig:case-study2-a}}
+	\qquad
+	\subfloat[][]{\includegraphics[width=0.42\textwidth]{last_step.pdf}~\label{fig:case-study2-b}}%
+	\caption{A snapshot of resource allocation both (a) before and (b) after an
+	increase in workload is detected.}
+	\label{fig:case-study2} 
+\end{figure}
+
+%\begin{figure}%
+%	\centering%
+%	  \includegraphics[width=0.45\textwidth]{scalability.pdf}		
+%	\caption{The relationship between the number of simulated VMs and the
+%	optimization time for each step.}%
+%	%\label{fig:scalability} 
+%\end{figure}
+
+\section{Related Work}
+\label{sec:related-work}
+
+Maintaining application level quality of service (QoS) guarantees has been the
+subject of much investigation. Recently the satisfying the mutual objective of
+QoS guarantees and server consolidation in cloud computing environments has
+received considerable attention. Current approaches formulate the optimization
+problem in different forms.
+
+One approach attempts to minimize cost subject to performance constraints
+\cite{li_fast_2009,li_performance_2009}. In this approach the SLA represents
+constraints rather than flexible goals. Constraints could be based on response
+time or throughput. For example \cite{li_fast_2009} finds the minimum cost
+deployment subject to processing capacity and user throughput constraints. It
+seeks deployments which minimizes
+the overall cost of the hosts used, subject to meeting average delay and
+throughput constraints for each application as posed by its SLA. It is also
+possible for one to try optimizing a combined QoS measure subject to cost
+constraints, but we are not aware of any example of this method.
+
+
+A second approach attempts to simultaneously minimize cost while maximizing QoS
+attributes, through multi-objective optimization or
+MOO~\cite{li_sla-driven_2010}. For example, pareto-optimal solutions can find a
+good trade-off between conflicting performance and cost-saving goals rather than
+ finding a single global optimum~\cite{soror_automatic_2010}. Geometrically,
+ these well-balanced solutions concentrate around the ``knee'' point of the
+ mutual objectives curve.
+
+A third approach is the one that was used in this paper, that is, to optimize a
+utility function combining application-level SLAs and resource costs with
+tunable parameters for the administrator to specify trade-offs
+between the two~\cite{li_sla-driven_2010}. In this approach a system-level global utility is
+defined in terms of local utilities which are in turn based
+   on the achieved service level of the applications. These local utilities are
+   combined with a set of
+    coefficients that allows for the high level control of performance goal
+    fulfillment and the resource cost savings.
+
+Finally, some techniques try to satisfying SLAs using a pure control-based
+feedback loop
+\cite{liu_optimal_2007,kalyvianaki_self-adaptive_2009-1,abdelzaher_performance_2002}.
+These approaches are categorized as control theoretic constraint satisfaction,
+rather than optimization; however, they are used in our estimation technique. Also
+the idea of dynamically adjusting the resource shares of multiple applications in
+order to meet a specified level of service differentiation, was used in \cite{liu_optimal_2007} and \cite{lim_automated_2009},
+although using adaptive multivariate controller and for a more limited scenario
+than ours (i.e. maximum one PM per application layer).
+
+%For the relation of regression (i.e. least square method) and Kalman
+%see~\cite{watson_kalman_1983}).
+\section{Conclusions and Future Work}
+\label{sec:future-work}
+We investigated model based optimization of a private cloud where applications
+are clustered across a known set of PMs. In this
+optimization, we modified the resource shares of applications, in order to
+minimize the SLA violations. The main contribution of this work was dynamically
+using tracking models (for each application) within the
+global optimization loop. These models update themselves at runtime in order to
+adapt to perturbations in the environment not captured in initial model
+specification.  This results in more accurate models being passed to the
+middleware allowing for better resource utilization on a global scale.
+
+The relationship between the
+number of simulated VMs and optimization time per step was also considered
+and a non-linear relation was observed. While we acknowledge that this
+could pose a problem for our approach (i.e., when working with large numbers of
+VMs) a possible solution would be to split the problem into subsets and solve
+them individually.
+
+One direction for the future work is implementing the optimization algorithm in a
+distributed manner
+ in which applications interact in a peer-to-peer fashion 
+to determine how much resource should be allocated to each. 
+We are also investigating optimizing
+ the dual problem, which is more suitable to be mapped to agent-oriented
+ optimization.
+
+Another direction would be extending the performance model to include more
+details about applications structure.
+For example the model can be aware of different layers of an application such as web server, application server, and database server.
+
+\section*{Acknowledgments}
+This research was supported by OCE, the Ontario Centres
+of Excellence, and by the IBM Toronto Centre for Advanced Studies, as part of
+the program of the Centre for Research in Adaptive Systems (CERAS).
+
+
+\bibliographystyle{elsarticle-num}
+%\bibliography{Ghanbari-opt-centralized}
+\begin{thebibliography}{10}
+\expandafter\ifx\csname url\endcsname\relax
+  \def\url#1{\texttt{#1}}\fi
+\expandafter\ifx\csname urlprefix\endcsname\relax\def\urlprefix{URL }\fi
+\expandafter\ifx\csname href\endcsname\relax
+  \def\href#1#2{#2} \def\path#1{#1}\fi
+
+\bibitem{PBarhaEtAlSOSP2003}
+P.~Barham, B.~Dragovic, K.~Fraser, S.~Hand, T.~Harris, A.~Ho, R.~Neugebauer,
+  I.~Pratt, A.~Warfield, Xen and the art of virtualization, in: SOSP '03:
+  Proceedings of the nineteenth ACM symposium on Operating systems principles,
+  ACM, New York, NY, USA, 2003, pp. 164--177.
+\newblock \href {http://dx.doi.org/http://doi.acm.org/10.1145/945445.945462}
+  {\path{doi:http://doi.acm.org/10.1145/945445.945462}}.
+
+\bibitem{MArmbrustEtAlTR2009}
+M.~Armbrust, A.~Fox, R.~Griffith, A.~D. Joseph, R.~H. Katz, A.~Konwinski,
+  G.~Lee, D.~A. Patterson, A.~Rabkin, I.~Stoica, M.~Zaharia,
+  \href{http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-2009-28.html}{Abo%
+ve the clouds: A berkeley view of cloud computing}, Tech. Rep.
+  UCB/EECS-2009-28, EECS Department, University of California, Berkeley
+  (February 2009).
+\newline\urlprefix\url{http://www.eecs.berkeley.edu/Pubs/TechRpts/2009/EECS-20%
+09-28.html}
+
+\bibitem{BHayesACMComm2008}
+B.~Hayes, Cloud computing, Commun. ACM 51~(7) (2008) 9--11.
+\newblock \href {http://dx.doi.org/http://doi.acm.org/10.1145/1364782.1364786}
+  {\path{doi:http://doi.acm.org/10.1145/1364782.1364786}}.
+
+\bibitem{BRochwergerEtALIBM2009}
+B.~Rochwerger, D.~Breitgand, E.~Levy, A.~Galis, K.~Nagin, I.~M. Llorente,
+  R.~Montero, Y.~Wolfsthal, E.~Elmroth, J.~Caceres, M.~Ben-Yehuda, W.~Emmerich,
+  F.~Galan, The reservoir model and architecture for open federated cloud
+  computing, IBM Journal of Research and Development 53~(4) (2009) 4:1 --4:11.
+\newblock \href {http://dx.doi.org/10.1147/JRD.2009.5429058}
+  {\path{doi:10.1147/JRD.2009.5429058}}.
+
+\bibitem{RBuyyaEtAlFGCS2009}
+R.~Buyya, C.~S. Yeo, S.~Venugopal, J.~Broberg, I.~Brandic, Cloud computing and
+  emerging it platforms: Vision, hype, and reality for delivering computing as
+  the 5th utility, Future Generation Comp. Syst. 25~(6) (2009) 599--616.
+
+\bibitem{Sauve2005}
+J.~Sauv{\'e}, F.~Marques, A.~Moura, M.~C. Samaio, J.~Jornada, E.~Radziuk, Sla
+  design from a business perspective, DSOM 2005: Proceedings of the 16th
+  IFIP/IEEE International Workshop on Distributed Systems: Operations and
+  Management (2005) 72--83.
+
+\bibitem{liu_optimal_2007}
+X.~Liu, X.~Zhu, P.~Padala, Z.~Wang, S.~Singhal, Optimal multivariate control
+  for differentiated services on a shared hosting platform, in: Decision and
+  Control, 2007 46th {IEEE} Conference on, 2007, pp. 3792--3799.
+
+\bibitem{kalyvianaki_self-adaptive_2009-1}
+E.~Kalyvianaki, T.~Charalambous, S.~Hand, Self-adaptive and self-configured
+  {CPU} resource provisioning for virtualized servers using kalman filters, in:
+  Proceedings of the 6th international conference on Autonomic computing,
+  {ACM}, Barcelona, Spain, 2009, pp. 117--126.
+
+\bibitem{abdelzaher_performance_2002}
+T.~F. Abdelzaher, K.~G. Shin, N.~Bhatti, Performance guarantees for web server
+  end-systems: A control-theoretical approach, {IEEE} Transactions on Parallel
+  and Distributed Systems (2002) 80--96.
+
+\bibitem{li_fast_2009}
+J.~Z. Li, J.~Chinneck, M.~Woodside, M.~Litoiu, Fast scalable optimization to
+  configure service systems having cost and quality of service constraints, in:
+  Proceedings of the 6th international conference on Autonomic computing,
+  {ACM}, 2009, pp. 159--168.
+
+\bibitem{li_performance_2009}
+J.~Li, J.~Chinneck, M.~Woodside, M.~Litoiu, G.~Iszlai, Performance model driven
+  {QoS} guarantees and optimization in clouds, in: Proceedings of the 2009
+  {ICSE} Workshop on Software Engineering Challenges of Cloud Computing, {IEEE}
+  Computer Society, 2009, pp. 15--22.
+
+\bibitem{li_sla-driven_2010}
+H.~Li, G.~Casale, T.~Ellahi, {SLA-driven} planning and optimization of
+  enterprise applications, in: Proceedings of the first joint {WOSP/SIPEW}
+  international conference on Performance engineering, {ACM}, 2010, pp.
+  117--128.
+
+\bibitem{van_sla-aware_2009}
+H.~N. Van, F.~D. Tran, J.~M. Menaud, {SLA-Aware} virtual resource management
+  for cloud infrastructures, in: {IEEE} Ninth International Conference on
+  Computer and Information Technology, {IEEE}, 2009, pp. 357--362.
+
+\bibitem{tesauro_utility-function-driven_2005}
+G.~Tesauro, W.~E. Walsh, J.~O. Kephart, {Utility-Function-Driven} resource
+  allocation in autonomic systems, in: Proceedings of the Second International
+  Conference on Automatic Computing, {IEEE} Computer Society, 2005, pp.
+  342--343.
+
+\bibitem{wang_autonomic_2008}
+X.~Wang, Z.~Du, Y.~Chen, S.~Li, D.~Lan, G.~Wang, Y.~Chen, An autonomic
+  provisioning framework for outsourcing data center based on virtual
+  appliances, Springer Netherlands 11~(3) (2008) 229--245.
+
+\bibitem{wang_appliance-based_2007}
+X.~Wang, D.~Lan, G.~Wang, X.~Fang, M.~Ye, Y.~Chen, Q.~Wang, {Appliance-Based}
+  autonomic provisioning framework for virtualized outsourcing data center, in:
+  Proceedings of the Fourth International Conference on Autonomic Computing,
+  {IEEE} Computer Society, 2007, p.~29.
+
+\bibitem{CLOUDSIM2010}
+R.~Calheiros, R.~Ranjan, A.~Beloglazov, C.~De~Rose, R.~Buyya, Cloudsim: A
+  toolkit for modeling and simulation of cloud computing environments and
+  evaluation of resource provisioning algorithms, Software: Practice and
+  Experience.
+
+\bibitem{lazowska_quantitative_1984}
+E.~D. Lazowska, J.~Zahorjan, G.~S. Graham, K.~C. Sevcik, Quantitative system
+  performance: computer system analysis using queueing network models,
+  {Prentice-Hall,} Inc. Upper Saddle River, {NJ,} {USA}, 1984.
+
+\bibitem{welch_introduction_1995}
+G.~Welch, G.~Bishop,
+  \href{http://www.cs.unc.edu/~welch/kalman/kalmanIntro.html}{An introduction
+  to the kalman filter}, University of North Carolina at Chapel Hill, Chapel
+  Hill, {NC}.
+\newline\urlprefix\url{http://www.cs.unc.edu/~welch/kalman/kalmanIntro.html}
+
+\bibitem{arlitt_workload_2000}
+M.~Arlitt, T.~Jin, A workload characterization study of the 1998 world cup web
+  site, Network, IEEE 14~(3) (2000) 30 --37.
+\newblock \href {http://dx.doi.org/10.1109/65.844498}
+  {\path{doi:10.1109/65.844498}}.
+
+\bibitem{soror_automatic_2010}
+A.~Soror, U.~Minhas, A.~Aboulnaga, K.~Salem, P.~Kokosielis, S.~Kamath,
+  Automatic virtual machine configuration for database workloads, {ACM}
+  {TRANSACTIONS} {ON} {DATABASE} {SYSTEMS} 35~(1) (2010) Article 7.
+
+\bibitem{lim_automated_2009}
+H.~C. Lim, S.~Babu, J.~S. Chase, S.~S. Parekh, Automated control in cloud
+  computing: challenges and opportunities, in: Proceedings of the 1st workshop
+  on Automated control for datacenters and clouds, {ACM} New York, {NY,} {USA},
+  2009, pp. 13--18.
+
+\end{thebibliography}
+
+\end{document}
+ 
+
+
+

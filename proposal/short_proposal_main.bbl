@@ -1,0 +1,150 @@
+ \newcommand{\noop}[1]{}
+\begin{thebibliography}{10}
+
+\bibitem{aiber2004autonomic}
+S.~Aiber, D.~Gilat, A.~Landau, N.~Razinkov, A.~Sela, and S.~Wasserkrug.
+\newblock {Autonomic self-optimization according to business objectives}.
+\newblock In {\em Autonomic Computing, 2004. Proceedings. International
+  Conference on}, pages 206--213. IEEE.
+
+\bibitem{badidi-queuing-2005}
+E.~Badidi, L.~Esmahi, and M.A. Serhani.
+\newblock A queuing model for service selection of multi-classes {QoS}-aware
+  web services.
+\newblock In {\em Third IEEE European Conference on Web Services (ECOWS)},
+  page~9, nov 2005.
+
+\bibitem{CLOUDSIM2010}
+R.~Calheiros, R.~Ranjan, A.~Beloglazov, C.~De~Rose, and R.~Buyya.
+\newblock Cloudsim: A toolkit for modeling and simulation of cloud computing
+  environments and evaluation of resource provisioning algorithms.
+\newblock {\em Software: Practice and Experience}, 2010.
+
+\bibitem{ghanbari2014mpc}
+Hamoun Ghanbari, Marin Litoiu, Przemyslaw Pawluk, and Cornel Barna.
+\newblock Replica placement in cloud through simple stochastic model predictive
+  control.
+\newblock In {\em 7th IEEE International Conference on Cloud Computing}, IEEE
+  cloud'14, New York, NY, USA, 2014. ACM.
+
+\bibitem{hamoun_ghanbari_tuning}
+Hamoun Ghanbari, Marin Litoiu, Murray Woodside, Tao Zheng, Johnny Wong, and
+  Gabriel Iszlai.
+\newblock Tuning tracking of performance model parameters using dynamic job
+  classes.
+\newblock In {\em Proceedings of the second {ACM/SPEC} International Conference
+  on Performance Engineering ({ICPE} 2011), to appear}. {ACM}, 2011.
+
+\bibitem{ghanbari_feedback-based_????}
+Hamoun Ghanbari, Bradley Simmons, Marin Litoiu, and Gabriel Iszlai.
+\newblock Feedback-based optimization of a private cloud.
+\newblock {\em Future Generation Computer Systems}, 28(1):104 -- 111, 2012.
+
+\bibitem{li_performance_2009}
+J.~Li, J.~Chinneck, M.~Woodside, M.~Litoiu, and G.~Iszlai.
+\newblock Performance model driven {QoS} guarantees and optimization in clouds.
+\newblock In {\em Proceedings of the 2009 {ICSE} Workshop on Software
+  Engineering Challenges of Cloud Computing}, pages 15--22. {IEEE} Computer
+  Society, 2009.
+
+\bibitem{li_fast_2009}
+J.~Z. Li, J.~Chinneck, M.~Woodside, and M.~Litoiu.
+\newblock Fast scalable optimization to configure service systems having cost
+  and quality of service constraints.
+\newblock In {\em Proceedings of the 6th international conference on Autonomic
+  computing}, pages 159--168. {ACM}, 2009.
+
+\bibitem{li2011fast}
+Jim~Zhanwen Li.
+\newblock {\em Fast Optimization for Scalable Application Deployments in Large
+  Service Centers}.
+\newblock PhD thesis, Carleton University, 2011.
+
+\bibitem{litoiu_hierarchical_2005}
+M.~Litoiu, M.~Woodside, and T.~Zheng.
+\newblock Hierarchical model-based autonomic control of software systems.
+\newblock {\em {ACM} {SIGSOFT} Software Engineering Notes}, 30(4):1--7, May
+  2005.
+
+\bibitem{liu_layered_????}
+T.~K. Liu, S.~Kumaran, and Z.~Luo.
+\newblock Layered queuing models for enterprise javabean applications.
+\newblock In {\em Proc. 5th International Enterprise Distributed Object
+  Computing Conference {(EDOC)}}, pages 4--7, 2001.
+
+\bibitem{petriu_approximate_1994}
+D.~C. Petriu.
+\newblock Approximate mean value analysis of client-server systems with
+  multi-class requests.
+\newblock In {\em Proceedings of the 1994 {ACM} {SIGMETRICS} conference on
+  Measurement and modeling of computer systems}, pages 77--86. {ACM} New York,
+  {NY,} {USA}, 1994.
+
+\bibitem{petriu_approximate_2004}
+D.~C. Petriu and C.~M. Woodside.
+\newblock Approximate mean value analysis based on markov chain aggregation by
+  composition.
+\newblock {\em Linear Algebra and its Applications}, 386:335--358, 2004.
+
+\bibitem{ramesh_multi-layer_1998}
+S.~Ramesh and H.~G. Perros.
+\newblock A multi-layer client-server queueing network model with synchronous
+  and asynchronous messages.
+\newblock In {\em Proceedings of the 1st international workshop on Software and
+  performance}, pages 107--119. {ACM} New York, {NY,} {USA}, 1998.
+
+\bibitem{rolia_method_1995}
+J.~A. Rolia and K.~C. Sevcik.
+\newblock The method of layers.
+\newblock {\em {IEEE} Transactions on Software Engineering}, 21(8):689--700,
+  1995.
+
+\bibitem{sharma_automatic_2008}
+Abhishek~B Sharma, Ranjita Bhagwan, Monojit Choudhury, Leana Golubchik, Ramesh
+  Govindan, and Geoffrey~M Voelker.
+\newblock Automatic request categorization in internet services.
+\newblock {\em ACM SIGMETRICS Performance Evaluation Review}, 36(2):16--25,
+  2008.
+
+\bibitem{woodside_use_2005}
+M.~Woodside, T.~Zheng, and M.~Litoiu.
+\newblock The use of optimal filters to track parameters of performance models.
+\newblock In {\em Quantitative Evaluation of Systems, 2005. Second
+  International Conference on the}, pages 74--83, 2005.
+
+\bibitem{xu_performance_2005}
+J.~Xu, A.~Oufimtsev, M.~Woodside, and L.~Murphy.
+\newblock Performance modeling and prediction of enterprise {JavaBeans} with
+  layered queuing network templates.
+\newblock In {\em Proceedings of the 2005 conference on Specification and
+  verification of component-based systems {(SAVCBS} '05)}, Lisbon, Portugal,
+  2005. {ACM}.
+
+\bibitem{xu_performance_2006}
+Jing Xu, Alexandre Oufimtsev, Murray Woodside, and Liam Murphy.
+\newblock Performance modeling and prediction of enterprise {JavaBeans} with
+  layered queuing network templates.
+\newblock {\em {ACM} {SIGSOFT} Software Engineering Notes}, 31(2):5, 2006.
+
+\bibitem{zhang2012dynamicPlacement}
+Qi~Zhang, Quanyan Zhu, Mohamed~Faten Zhani, and Raouf Boutaba.
+\newblock Dynamic service placement in geographically distributed clouds.
+\newblock In {\em Distributed Computing Systems (ICDCS), 2012 IEEE 32nd
+  International Conference on}, pages 526--535. IEEE, 2012.
+
+\bibitem{zheng_tracking_2005}
+T.~Zheng, J.~Yang, M.~Woodside, M.~Litoiu, and G.~Iszlai.
+\newblock Tracking time-varying parameters in software systems with extended
+  kalman filters.
+\newblock In {\em Proceedings of the 2005 conference of the Centre for Advanced
+  Studies on Collaborative research}, page 345. {IBM} Press, 2005.
+
+\bibitem{zheng-integrated-2011}
+Tao Zheng, Marin Litoiu, and Murray Woodside.
+\newblock Integrated estimation and tracking of performance model parameters
+  with autoregressive trends.
+\newblock In {\em Proceedings of the 2Nd ACM/SPEC International Conference on
+  Performance Engineering}, ICPE '11, pages 157--166, New York, NY, USA, 2011.
+  ACM.
+
+\end{thebibliography}

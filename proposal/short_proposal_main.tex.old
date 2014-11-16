@@ -1,0 +1,194 @@
+
+\documentclass[11pt]{article}
+
+\usepackage{ifpdf}
+\ifpdf 
+    \usepackage[pdftex]{graphicx}   % to include graphics
+    \pdfcompresslevel=9 
+    \usepackage[pdftex,     % sets up hyperref to use pdftex driver
+            plainpages=false,   % allows page i and 1 to exist in the same document
+            breaklinks=true,    % link texts can be broken at the end of line
+            colorlinks=true,
+            pdftitle=Proposal
+            pdfauthor=Hamoun Ghanbari
+           ]{hyperref} 
+    \usepackage{thumbpdf}
+\else 
+    \usepackage{graphicx}       % to include graphics
+    \usepackage{hyperref}       % to simplify the use of \href
+\fi 
+\usepackage{setspace}
+\doublespacing
+
+\title{Model-Based Dynamic Resource Management For Multi Service Information Systems}
+\author{Hamoun Ghanbari}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}  
+ \footnotesize  
+\textit{Cloud computing} aims to provide computational power of Data Centers (e.g., network, storage, computational devices, and services) to a user community (i.e. clients) at very large scale over the Internet.   
+
+
+Currently Clouds are formed by interconnected set of datacenters. A data center environ- ment is composed of communication system, servers, and storage subsystem. These com- puting resources are hosted in controlled environments and under centralized management. Additional set of services provided by datacenters are (i) Infrastructure services such as routing, switching (ii) Application services such as load balancing and caching (iii) Storage services such as SAN architecture, fiber channel switching, and back up.
+
+IaaS multiplexes the hardware layer and offers computing services such as storage, CPU and memory to users. The multiplexing technology employed in IaaS layer is hardware virtualization.
+IaaS multiplexes the hardware layer and offers computing services such as storage, CPU and memory to users. The multiplexing technology employed in IaaS layer is hardware virtualization.
+
+
+. In Software as a Service (SaaS) and Platform as a Service (PaaS) forms of the \textit{Cloud} multiple services given by users, are hosted on Cloud provider's available resources. 
+  
+  
+  
+  
+    A major problem for SaaS and PaaS cloud providers is finding an optimal number of active hardware components, number of service replicas, and optimal deployment of replicas on available hardware. The optimality is measured in terms of obeying the promised Quality of Service (QoS) in terms of performance of services mentioned in Service Level Agreement (SLA) to users while minimizing the overall cost. 
+  %
+  This problem is generally known as Optimal Service Placement (OSP). In general near optimal steady-state solution to OSP of a set of N-tire software systems can be found by iterative improvement algorithms. However, in presence of (i) variable infrastructure cost and workload intensities of applications and (ii) existence of constraints on the number of possible service migrations or resource reservations at each time interval, the overall performance of solution degrades or even becomes infeasible. In this thesis proposal, we utilized Model Predictive Control (MPC), a branch of optimal control theory, to address long-term optimality in a largely shared dynamic application service center. % I used Layered Queuing Models (LQM) as a model of service system. 
+% cluster autoscaling where virtual machines are grouped into a set of homogeneous clusters and the goal is to adjust the size of the cluster to the optimal value with minimal cost over time. 
+ %
+Formally, in this thesis proposal, we address the following three issues: 
+(i) We propose a novel MPC solution for OSR using layered queuing model (LQM) as a model of datacenter which unlike previous non-MPC solutions guarantees long-term optimality and removes limitations of existing MPC solution for service center. 
+ % Constraints on the number of possible service migrations or resource reservations at each time interval are taken into account.  
+(ii) We cast OSP in Virtualized Environment (VE)s into cluster autoscaling where virtual machines are grouped into a set of homogeneous clusters. We propose an approach for adjustment of cluster sizes to their optimal value over time.  % that minimizes cost and SLA violations. 
+
+ (iii) We propose a new approach for estimation of in workloads of user classes and demands of web services. We utilized the Moving Horizon Estimation (MHE). This improves the earlier proposed filter based approaches in terms of convergence and reliability. 
+  
+\end{abstract}
+
+\normalsize 
+\section{Motivations and Our Approaches}  
+ Cloud computing aims to provide computational power of Data Centers (e.g., network, storage, computational devices, and services) to a user community (i.e. clients) at very large scale over the Internet.  
+
+  Currently clouds are formed by interconnected set of datacenters. A data center is a set of physical machines (PM), interconnected with hierarchical network switches,  where PMs  have access to storage units. The main costs associated with the data center are the cost of electricity and cooling.   These costs have direct relationship to the  number physical machines and switches that are active (i.e. not in a standby mode or turned off).  Note that an idle physical machine spends  half  physical machine with full load. 
+ 
+ On top of data centers, hardware virtualization multiplexes the hardware and offers small chunks of storage, CPU and memory called Virtual Machines (VMs). 
+  In a Infrastructure as a Service (IaaS) cloud, allocation of these computing resources are controlled under a centralized management. In fact the actual placement of VMs on PMs is hidden from upper layer entities. 
+ 
+   Typically data center resources  are used to host IT services\footnote{Sometimes referred to as Multi Service Information System (MSIS)\cite{li2011fast}.}. These services can include everything from distributed file system to business level software modules offered over the web. Services can be on placed on virtualized or bare hardware as well as one or one governed by IaaS.  Services can also be replicated into different physical or virtual machines in order to increase the capacity for the incoming workload to the service.  Replication means having separate copies of the same code on different hosts.  
+ In Platform as a Service (PaaS) form of the cloud, services are given by customers of the cloud.  These services, use the generic services such as database and messaging  offered by PaaS provider.  
+ % Similarly, Software as a Service (SaaS) type of Cloud, provides instances of software and applications that are typically installed in businesses’ computer networks or personal computers. Examples of this software include customer relationship management (CRM), accounting, invoicing, human resource management (HRM), and content management (CM)[137].  
+The decisions made concerning deployment and resource allocation for services will directly impact both the performance  experienced by end-users and the cloud provider's cost of operations.   
+ 
+  A major problem for PaaS cloud providers is associating an optimal  amount of physical hardware (including CPU, network, etc. ) to services. %an optimal number of active hardware components, 
+ In a IaaS operated environment, where the IaaS layer  decides the placement of VMs on PMs, this association is controlled by the number of VMs associated with each service in the form of a cluster.  The associated  problem here is Optimal Service Autoscaling (OSA)\cite{moreno-vozmediano_elastic_2009, HGhanbariEtAlCLOUD2011}  were the PaaS provider needs to decide the size and type of instances for each cluster supporting a service.  
+   In a non-IaaS environment where the service center controller can make decisions about placement of its services on physical machines,  amount of physical hardware is enforced by choosing the number of service replicas, and optimal deployment of replicas on available hardware. This problem is generally known as Optimal Service Placement (OSP)\cite{zhang2012dynamicPlacement}. 
+   For both, OSA and OSP, the optimality is measured in terms of obeying the promised Quality of Service (QoS) in terms of performance of services mentioned in Service Level Agreement (SLA) to users while minimizing the overall cost. 
+  
+  Meeting all client application requirements as defined in SLAs\cite{CKotsokalisEtAlICWS09,Sauve2005} is the main objective of OSP and OSA. SLAs are based on a set of performance metrics experienced by applications or classes of customers\footnote{An SLA is a contract which defines the relationship between a service provider and its clients that fully specifies all obligations for both parties, the price to be paid for the service(s) offered and associated penalties should obligations be unmet. It can be quite complex and comprehensive. (e.g., considering aspects of both functional and non-functional requirements); however, in this work, only performance objectives that can be extracted from an SLA are considered. No attempt is made to fully model or develop an SLA or an SLA management framework.}.  
+ Performance metrics usually represent time behavior of the services such as average throughput, mean response time, total percentage of request rejected or not handled within certain time limit. 
+ % \footnote{Other non-functional requirements like security, availability, fault-tolerance, recoverability, resource behavior or stability or functional requirements can be also subject of SLAs, but here we only focus on time related performance metrics.}.
+ % For example for a web applications responsiveness is defined in terms of HTTP protocol request and response times delivered by a server farm. 
+ % For a video conferencing application, this can be network throughput. Other examples include total percentage of rejected request or requests that were not handled within certain time limit (for a transactional workload), mean value or average response time, and total time spent to do a job for batch-oriented system. 
+  
+  Minimizing the infrastructural cost through resource sharing, consolidation and smart allocation is the second objective of OSP and OSA. In a private cloud, in which the user has full ownership of all cloud resources, the cost is associated with the number of active hardware components contributing to the cost of electricity and cooling (e.g., a bank's datacenter may represent a private cloud). When a public infrastructure Cloud is used for resources, the cost is associated with the number and types of resources reserved, and the duration and types of reservation.
+   
+  In general, the near optimal steady-state solution to OSP for a set of N-tier software systems can be found by iterative improvement algorithms such as the one introduced in~\cite{li2011fast}. However, in the presence of (i) variable infrastructure cost and workload intensities of applications and (ii) existence of constraints on the number of changes to service replica placements or resource reservations at each time interval, the overall performance of the solution degrades or even becomes infeasible. 
+  In this thesis proposal, we utilize Model Predictive Control (MPC), a branch of optimal control theory, to address long-term optimality of OSP. % in a massively shared dynamic application service center\footnote{Although the service center can span multiple datacenters, in this thesis we only target a singular service center.}. 
+  
+  Regarding the service autoscaling, a solution to the autoscaling problem  using heuristic feedback controller already exists.  However, the optimality of the  solution is not guaranteed  and  the exact  way to configure the controller to act sub-optimaly is not  proposed yet.  
+ 
+   % I used Layered Queuing Models (LQM) as a model of service system. 
+% cluster autoscaling where virtual machines are grouped into a set of homogeneous clusters and the goal is to adjust the size of the cluster to the optimal value with minimal cost over time. 
+
+  This thesis proposal, addresses the following three issues:   
+(i) We propose a novel MPC solution for OSP which uses a layered queuing model (LQM) as a model of datacenter. Unlike previous non-MPC solutions it guarantees long-term optimality.    
+ % Constraints on the number of possible service migrations or resource reservations at each time interval are taken into account.  
+ 
+(ii) In a IaaS operated environment, we map OSP into optimal cluster autoscaling, where virtual machines are grouped into a set of homogeneous clusters based on services they carry. We propose an approach for adjustment of cluster sizes to their optimal value over time that minimizes cost and SLA violations. 
+
+ (iii) We propose a new approach for estimation of workloads of user classes and demands of services. We utilized the Moving Horizon Estimation (MHE). This improves the earlier proposed filter based approaches in terms of convergence and reliability. 
+
+
+\subsection{Optimal Service Placement and Replication for Fixed Number of Hosts via Model Predictive Control} 
+Most of previous work to support Optimal Service Replication (OSR) and OSP, focuses on deterministic optimization of system's steady-state behavior.  As an example~\cite{li_fast_2009,li_performance_2009,ghanbari_feedback-based_????} attempt to minimize cost of IT resources considering performance objectives concerning response time or throughput. In these techniques, the function to be optimized is usually derived from mean value analysis (MVA) of queuing network models (QNM) such as~\cite{petriu_approximate_1994,petriu_approximate_2004,badidi-queuing-2005} and~\cite{rolia_method_1995-1,ramesh_multi-layer_1998,xu_performance_2006-1} which maps system configuration space to Quality of Service (QoS) attribute values. 
+   The problem with this approach is that if the control interval is considered too short, steady state optimization looses accuracy; the mean values of workload intensities is not obtained with confidence and this leads to trashing or unnecessary service placement changes at the current step, and a lot of cost over time. If the control interval is considered too large (too alleviate this), the service replacements might not be high enough to cope with the rate of changes in the workload of services.  
+   Also, in this case, the new optimization usually suggests a lot of changes to the service placements but there is no guideline on how to distribute these changes over the next intervals.      
+    Therefore, we propose a dynamic service placement algorithm that satisfies the long-term optimality in terms of cost and performance. The long-term optimality is achieved by through MPC by solving an optimization problem at each control step.   
+
+  The solution finds the number of service replicas, and optimal deployment of replicas on available hardware at each step. In addition, it considers constraints on the number of possible service migrations, and different types of servers at each time interval in the overall optimization. 
+
+\section{Optimal Service Provisioning in a Virtualized Environment} 
+Using virtualization, it is possible to offer infrastructure in terms of small chunks, namely virtual machines (VMs). With the infrastructure as a service (IaaS) layer solving the problem of virtual machines placement, one can cast placement and replication of services to provisioning of services using virtual machines. In this scheme, it is assumed that a set of services are grouped together and placed on virtual machine clusters. 
+ Each cluster is homogeneous in terms of both the services it supports and the physical hardware. The number of virtual machines in each cluster is subject control over time (which is referred to as autoscaling). 
+
+Currently, there are instances of heuristic controllers (such as \cite{rightscale_autoscaling})  implementing a resource provisioning solution for individual clusters in Cloud. Using the framework in \cite{rightscale_autoscaling}, one can build an autoscaler that launches additional instance(s) when a majority of the servers are being overworked and then to removes an instance when servers are under-utilized due to a decline in traffic.  
+The major problem with this approach, however, is that the structure and configuration of the controller is left to a human actor. This configuration cannot be deducted automatically in a way that it satisfies an optimality criterion. In~\cite{rightscale_autoscaling} for each service, there are unlimited number of ways that one can  configure the autoscaler.   
+Another problem with heuristic autoscalers is that in this approach it is not clear how to manage the resource cost by tuning the controller configuration. In other words, the trade-off between the costs of control and achieving the performance objectives is not addressed directly. 
+ 
+ In contrast, we construct an optimal controller in which we use a queuing model. 
+ The controller follows MPC style and performs an optimization at each time interval. We take server multiplicity of each cluster over time as an optimization variable and optimize for outputs of queuing model. Constraints regarding the total number of purchased instances at each time step are taken care of in the optimization. Also, 
+in order to avoid trashing during autoscaling we associated a cost to an autoscaling action (i.e. changing the number instances in a cluster or upgrading a single instance). Compared to the heuristic approach, the proposed controller alleviates the need for try-and-error process in configuring the controller. Our controller can just be tuned by tuning the trade-off ratio between infrastructure cost and QoS. 
+
+\section{Models and State Estimstion} 
+Wether the problem of service center management is formulated as autoscaling or service placement, in order to perform optimal control, the workload intensity of user classes and class-specific service demand on infrastructure resources should be known beforehand. Usually these measurements are unknown because monitoring them would introduce lots of extra overhead. 
+Thus, there is a need for an estimator that finds these parameters using the data obtained from the service center in an ongoing fashion.
+
+ Optimistically, the measured data includes response time for service replicas, utilization of different resources on different servers, and throughput of service replicas on different hosts. 
+In this full information scenario, with some assumption such as single resource tier and open workload for user classes, least squares estimation (LSE) can be used to discover the demands for each class on the resource. 
+For example, with utilization and throughput, linear LSE \cite{pacifici_cpu_2008} and with response time and throughput, nonlinear LSE~\cite{menasce2008computing,rolia_parameter_1995,zhang_regression-based_2007,rolia_correlating_1998} has been used for estimation.
+
+The estimation process becomes a lot more difficult if specific data items from the estimation model are missing; and in reality, this is usually the case. For example, response time metrics are only available for each scenario (interaction between several services) rather than individual services. 
+% it is usually not feasible to get response time metrics from services without code manipulation or instrumentation, because it requires setting up extra service proxies (such as HTTP or database proxy), which might in turn reduce the performance of the system. Also, since the proxy usually sits between end-users and front-end services,  
+% Based on the specific situation, a subset of the metrics from a subset of servers might be missing.  
+In case of missing measurements, Bayes filters have been successfully applied before in~\cite{woodside_use_2005,xu_performance_2005,zheng_tracking_2005}.  
+In the Bayesian approach, hidden performance parameters and missing data are both treated as unknown parameters to be estimated from observations. Their probability estimate is updated as additional observations  are made. %One can look at performance data as a sequence of measurements, where. 
+In addition, the trade-off between trusting the old estimates and new measurements is addressed using control parameters of the filter.
+
+  Despite effectiveness, there are two problems with Bayes filter based proposals.
+First, they cannot take into consideration the constraints on the estimated parameters, for example the fact that service demands are positive values or that utilization metrics are within 0 and resource capacity interval. 
+This sometimes results into bad behavior, such as convergence to a wrong value not within the feasible range or not converging at all.
+ We propose using the Moving Horizon Estimation (MHE) to remove this limitation. In MHE, an optimization is solved in every step to estimate the parameters. The constraints are directly addressed in the optimization process.
+  A challenge in this approach is using the nonlinear queuing model within the MHE.  
+    The optimization associated with MHE can only be directly solved using a convex optimization solver if the objective function, has certain forms such as quadratic.   
+   Thus a challenge for us is fit the queuing model into the convex optimization framework. 
+ 
+  The second problem is that calculated service demands in the current related work are 2-dimensional, indexed by classes of service and resource. Since we work on a service center, we have to somehow find the service demands for each service.  This is a more complex problem as the demands are indexed by class of user, service, and resource. 
+  
+     
+\section{Summary of Results Already Obtained} 
+ So far our simulation results show that the proposed MPC placement approach was successful in removing the trashing performed in the conventional steady-state approach.  
+  % Comparison of the approaches should be done in the amount of trashing and energy spent total long-term.    %,  and, second in the complexity of 2 approaches in terms of implementation and scalability.
+   Experiments we had in \cite{ghanbari_feedback-based_????}, showed that the steady-state approach works best with large intervals of control where the system has time to settle and estimation error is less due to a large sample size.    Such controller might fail in quick scale up scenarios where one wants to avoid   saturation and system faults.    
+   % suffers from the fact that with improper control interval length, it can end up being overactive or lazy. A very short control interval brings a lot of trashing and a long control interval results in a lazy controller.
+   
+    On the other hand, from the simulations we performed in \cite{ghanbari2012optimal} we know that  the  mean value assumption made about the future value of workload in our MPC implementation,  and linearization of underlying model, have a negative impact on the quality of control.  An evaluation that will compare the results of both approaches in terms of their performance   considering the length of control interval still needs to be performed. 
+  % However, there, the placement did not have a combinatorial nature and we actually neglected the cost of trashing.  
+  
+  Regarding autoscaling, we have throughly investigated a heuristic autoscaling controller proposed in \cite{rightscale_autoscaling}. In \cite{hamoun_ghanbari_exploring_2011} we documented the effect of different configuration parameters such as metric thresholds, decision duration, resize number, decision threshold, and refractory period on the performance of the controller ; where the performance is quantified in terms of responsiveness, lag, tolerance, trashing, and oscillation. 
+  There, we showed that tuning the behavior of the autoscaler to reach the desired results needs numerous tries and errors. Results also showed that the resulting controller suffers from oscillation and trashing when it is configured to act aggressively and it has a lag when it is configured to act smoothly.  % Finding the fine line between these two behaviors proved to be hard. 
+      
+    In terms of the state estimation we have published a paper (i.e. \cite{hamoun_ghanbari_tuning})  which targets managing the complexity of large scale service demand estimation where  there are large number of resources  and classes of users in the system.  This work however uses the Bayes filtering approach. Concerning the estimation process in a service center, we have formulated the problem and the solution through MHE, but we have not performed experiments yet. 
+             
+  \section{ Thesis Outline}
+   The following the structure is proposed as the structure of this thesis. Each item in the list corresponds to a chapter in the thesis. 
+   \begin{enumerate}
+     \item \textbf{Introduction}. In this chapter, we introduce preliminary concepts such as cloud computing, service center, and service level agreement. We introduce the problem of optimal service placement and provisioning for software services hosted in cloud. We also describe the limitations of existing solutions and motivations of our work.     
+
+  \item  \textbf{Background}. This chapter introduces the necessary background, including autonomic computing, adaptive systems, layered queuing network model, and architecture of a typical service center. 
+
+  \item  \textbf{State of Art in Feedback Based Management of Multi-Service Information Systems}.  This chapter describes state of the art in a feedback-based management of multi-service information systems. Related work is categorized by the type of control technique used into the following: conventional linearized dynamic control, heuristic control, optimal linearized dynamic control, steady-state equivalent control, model predictive control, and emergent behavior. 
+  It also enumerates the weakness of existing approaches and describes the rationale behind the choice of using MPC.   
+
+ \item  \textbf{Optimal Service Placement and Replication for Fixed Number of Hosts via Model Predictive Control}. In this chapter, we formally define the multi-service OSP problem in a private datacenter where virtualization is not used. Then we discuss the solution to the problem via Model Predictive Control.  
+
+  \item  \textbf{Optimal Service Placement in a Virtualized Environment}. In this chapter, we first formally introduce the optimal autoscaling problem in virtualized environment and describe how it is related to OSP. 
+ We introduce a currently known sub-optimal solution to the problem: heuristic utilization feedback   controller and informally describe the effects of the controller configuration parameters in the autoscaling behavior.  We then propose the optimal autoscaling through MPC.  The MPC will be formulated as a set of convex optimization problems over time.
+ \item  \textbf{Models and State Estimation}.  This chapter introduces the proposed approach for estimating the unknown variables of the model including the service demands and workflow components.
+
+ \item  \textbf{Experiments}. Provides case studies and experiments on a real system used in the validation of the approach.  
+
+ \item \textbf{Conclusion}. Concludes and provides the possible future work.  
+\end{enumeration}
+ 
+ \section{Work That Remains} 
+  Regarding the MPC based placement, we need to further test the result in a physical data center or cluster. 
+    We plan to perform a sets of experiments to compare proposed optimal autoscaling  to the heuristic approach discussed in \cite{hamoun_ghanbari_exploring_2011} in terms of performance.  The estimation also has to be done in a real environment.  Finally, the estimation and placement or autoscaling need to be put together in one loop.
+    
+ \small
+\bibliographystyle{plain}
+\bibliography{mybib}
+
+\end{document}  
+

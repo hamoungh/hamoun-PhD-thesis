@@ -1,0 +1,23 @@
+\section{Summary}
+Autonomic computing, a term introduced by IBM, indicates systems that are self-managing, self-tuning, self-healing, self-protecting, self-adapting, self-configuring, and self-organizing (briefly called self-* systems). 
+
+Autonomic computing discipline is relevant to building self-managing complex resource sharing systems that manage themselves in accordance with high-level objectives specified by humans.
+
+A very common architecture to implement autonomic managers is the well-known Monitor-Analyze-Plan-Execute (MAPE) loop suggested by IBM. In this style, adaptation strategies and mechanisms are separated from the applications or systems. The architecture includes components such as a system monitor, analyzer, automated learner, forecaster, and planner that are used to decide about proper action(s) to be taken by execution subsystem based on the current system measures.
+
+ A monitoring subsystem of MAPE loop is responsible for measuring inputs, and outputs of the managed system, quantifying them, sometimes aggregating them, and keeping them as a history. 
+
+ An analyzer subsystem of autonomic management loop targets identification of system under management. This identification enables the autonomic manager to project system's behavior and state under different actions in the future. One way to gain this identification is through obtaining a model of the system. This model can take several forms such as symbolic representation, neural nets, fuzzy rules, or statistical models.  
+A special case of statistical models used in computer systems design are performance models which let better understanding of system properties and internal (the saturation point of the system with respect to various workloads). 
+
+A planner subsystem of autonomic management loop uses the model provided by analyzer subsystem to rapidly explore multiple decisions and find near-optimal solution. The goal of planner is to choose a sequence of feasible control actions that maximizes a defined performance criterion (or objective function) or simply regulates the system towards an objective. 
+Based on the system model given by analyzer the type of search performed by planner to find near optimal solution can be different. The classes of models we targeted here were discrete time-varying and continuous static. 
+
+An execution subsystem is responsible for enforcing management decisions on the system.
+This management decision might be regulation of a system attribute around some value.
+Feedback loops can be used to enforce such decision despite disturbances that might occur in system environment. In general, a feedback loop for this purpose can be constructed by feeding back the control error (difference between a set-point and a measured output) as an input to the system (often with some intermediate processing). 
+
+Although in this report we focused on a specific implementation of autonomic management, other choices in the domain exist. As the most notable example, policy based autonomic management offers somehow a less costly solution by only providing "formal behavioral guides" to systems about potential actions improving the system's behavior rather than searching for optimal actions.
+
+
+

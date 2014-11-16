@@ -1,0 +1,1 @@
+makeindex proposal_thesis.nlo -s nomencl.ist -o proposal_thesis.nls

@@ -1,0 +1,11 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8x]{inputenc}
+
+\begin{document}
+\begin{itemize}
+ \item We investigate model based optimization of applications in a private cloud
+ \item The goal is to minimize the application SLA violations while reducing hardware cost
+ \item Tracked performance models provide environment adaptation within optimization loop
+ \item Tracking models will result in a more accurate optimization and greater profit
+\end{itemize}
+\end{document}

@@ -1,0 +1,49 @@
+
+
+ \chapter{Appendix 1: LQN Solution} 
+ \label{ch:appendix1} 
+This chapter describes one of the solutions to Layered Queuing Networks (LQN). 
+In LQN, two queuing networks, associated with hardware and software, coexist at the same time and are solved in parallel. 
+ Since both the hardware and the software layers affect one another, a fixed point solution for LQN can only be found for the whole network \cite{petriu_approximate_1991} by iterating among the layers of the QNs. The parameters exchanged between the layers are:  
+ \begin{enumerate} 
+ \item From the software to the hardware: the number of blocked users (or processes) at the software level (waiting for a software resource) $\vec{B}=(B_1, \ldots , B_C)$, 
+\nomenclature[M]{$\vec{B}$}{The vector of numbers of blocked users (or processes) in each class at the software level (waiting for a software resource)} where $B_c$ \nomenclature[M]{$B_c$}{The number of class $c$ users (or processes) blocked for a software resource} denotes the number of class $c$ processes blocked for a software resource. 
+ \item From hardware to software: the response time at each hardware queuing centre. 
+ \end{enumerate}
+ The iterative algorithm, taken from Menasc{\'e}'s work~\cite{menasce2004performance,menasce2002simple}, is as follows: 
+ \begin{itemize} 
+\item Step 1 - Initialization:  
+\begin{align} 
+& D_{c,s} \leftarrow \sum_{k} D_{c,s,k}  \\ 
+& D_{c,k} \leftarrow \sum_{s} D_{c,s,k} \label{sum-demands-on-software} \\
+&   \vec{B^0} \leftarrow \vec{0} \text{  initial value for B} \\ 
+& i \leftarrow \text{iteration counter}
+\end{align}  
+
+\item Step 2 - Solve the SQN with $D_{c,s}$ as the service demands and $\vec{N}^s$
+\nomenclature[M]{$\vec{N}^s$}{Number of customers at the software layer of layered queuing network. } as customer population.
+%
+\item Step 3 - Compute the average number of blocked processes per class $B^i$; that is the average number of processes waiting in the software queue. This number is taken from $ \vec{B^i} =(\sum_s B_{1,s}, \ldots, \sum_s B_{C,s})$,  
+where $B_{c,s}$ \nomenclature[M]{$B_{1,s}$}{The average number of class $c$ processes in the waiting line for software resource $s$ in the software queuing network.} is the average number of class $c$ processes in the waiting line for software resource $s$ in the SQN. 
+
+%in the single class case the 
+%formulas are as follows: 
+% B^k=\sum_j (\={n}_j - U_j)
+% where $U_j$ is the utilization of software resource $j$.  
+% and $\={n}_j - U_j$ is the average number of processes in the waiting line for software resource $j$.
+%
+\item Step 4 - Solve the HQN with $D_{c,k}$ as service demands and $\vec{N}^h = \vec{N}^s - \vec{B}^i$ as the population vector. 
+% Note that the solution to a QN with a non-integer customer population can be obtained using Schweitzer approximation [20].
+%
+\item Step 5 - Adjust the service demands at the SQN to account for contention at the physical resources: 
+\begin{align} 
+  D_{c,s} \leftarrow \sum_k \frac{D_{c,s,k}}{D_{c,k}} R_{c,k}(\vec{N}^h)  
+\end{align} 
+
+\item Step 6 (convergence check step): 
+If $\text{max}|(B^i_c-B^{i-1}_c)/B^i_c |>\xi$ then $i\leftarrow i+1$ and goto step 2. 
+ \end{itemize}  
+ Note that in the Menasc{\'e} algorithm (above) the throughput of the system depends saturation levels of software services (e.g. thread pools) and hardware resources. The requests have to wait for an empty thread before they can proceed to use hardware layer resources. A thread pool saturated due to a low resource multiplicity (number of active threads) limits the number of users in the hardware layer, and decreases the overall throughput. If the software resources are not saturated and impose no queuing, the throughput of the system will be almost equal to throughput of underlying hardware. 
+  In addition, the saturation level of software resources depends on departure rate in hardware level. A saturated hardware resource also decreases the overall throughput, and saturates both hardware and software queues. 
+  % Speaking in terms of software queue derivative with respect to hardware or marginal change we can say
+  The bottleneck may switch from hardware resources to software resources and vice versa with a change in the configuration and the multiplicity of resources \cite{Opera,cornel_barna_model-based_2011}.  

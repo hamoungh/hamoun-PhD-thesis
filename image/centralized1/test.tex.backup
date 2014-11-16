@@ -1,0 +1,25 @@
+\documentclass[a4paper,10pt]{article}
+\usepackage[utf8x]{inputenc}
+
+%opening
+\title{h}
+\author{h}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{h}
+\begin{description}[font=\sffamily\bfseries, leftmargin=3cm,
+style=nextline]
+\item[Lo primero que ten\’{\i}a el Quijote] lanza en astillero,
+\item[Lo segundo] adarna antigua,
+\item[Lo tercero] roc\’{\i}n flaco, y
+\item[Y por \’{u}ltimo, lo cuarto] galgo corredor.
+\end{description}
+
+\end{document}

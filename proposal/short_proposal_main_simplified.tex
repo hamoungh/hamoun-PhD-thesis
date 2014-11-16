@@ -1,0 +1,219 @@
+ 
+\documentclass[11pt]{article}
+
+\usepackage{ifpdf}
+\ifpdf 
+    \usepackage[pdftex]{graphicx}   % to include graphics
+    \pdfcompresslevel=9 
+    \usepackage[pdftex,     % sets up hyperref to use pdftex driver
+            plainpages=false,   % allows page i and 1 to exist in the same document
+            breaklinks=true,    % link texts can be broken at the end of line
+            colorlinks=true,
+            pdftitle=Proposal
+            pdfauthor=Hamoun Ghanbari
+           ]{hyperref} 
+    \usepackage{thumbpdf}
+\else 
+    \usepackage{graphicx}       % to include graphics
+    \usepackage{hyperref}       % to simplify the use of \href
+\fi 
+\usepackage{setspace}
+\doublespacing
+
+\title{Model-Based Dynamic Resource Management For Multi Service Information Systems}
+\author{Hamoun Ghanbari}
+\date{}
+
+\begin{document}
+\maketitle
+
+	\begin{abstract}
+	\footnotesize
+	Cloud computing provides the computational power of data centers to a large user community over the web.
+In SaaS and PaaS forms of the cloud, multiple high-level services and end-user applications are hosted on cloud provider's available resources.
+A major problem for SaaS and PaaS cloud providers, is associating the optimal amount of physical hardware to services. The optimality of this association is measured in terms of meeting the promised Quality of Service (QoS) for the applications while minimizing the overall infrastructure cost. 
+We target solving two variations of this problem using model-based feedback loops. We model the cloud infrastructure, the services, and the applications using the Layered Queuing Models (LQM). Estimation techniques to build and maintain such models already exist. 
+%
+In our first contribution, we improve the convergence of the Extended Kalman Filter (EKF) based estimation by dynamically clustering the applications into a smaller set.
+This improve the convergence while keeping the modeling error at an acceptable level.
+%
+The second problem we address involves the allocation of limited resources to a set of applications by tuning the fraction of resource capacity allocated to each application's VM. This is done by tuning the fraction of resource capacity allocated to each application's VMs. 
+The optimization used here works best when there is no restriction or guideline about the number of changes (e.g. reconfiguration cost or the cost of moving service replicas). 
+%
+In presence of such restrictions, this approach can create overhead and perturbations for the running applications.
+To alleviate the above problem, we propose a dynamic service placement algorithm that considers the trashing cost in calculating the optimal configuration using Model Predictive Control (MPC). Through experiments, we validated our hypothesis that model predictive approach performs better than the simple stepwise optimization when the objective functions are long term and when trashing is taken into account. 
+
+
+	\end{abstract}
+	
+ \section{Introduction}   
+ Cloud computing provides the computational power of data centers (e.g., network, storage, computational devices, and services) to a large user community over the web. 
+	 A cloud is formed by an interconnected set of datacenters. 
+	 A data center environment is composed of communication system, servers, and storage subsystem. These computing resources are hosted in controlled environments and under centralized management. 
+		Currently there are three types of cloud computing offerings: Infrastructure as a Service (IaaS), Platform as a Service (PaaS), and Software as a Service (SaaS). IaaS multiplexes the hardware layer and offers computing services such as storage, CPU and memory to users through hardware virtualization. In SaaS and PaaS, multiple higher-level services and end-user applications are hosted on Cloud provider's available resources\footnote{Because SaaS and PaaS host services, they are sometimes referred to as Multi Service Information System (MSIS)\cite{li2011fast} or application service centers.}. % In PaaS offering, services are developed by the customers but in SaaS, they are developed by the cloud provider itself.
+			
+	%		The main costs associated with the data center are the cost of electricity and cooling. These costs have direct relationship to the number of physical machines and switches that are active (i.e. not in a standby mode or turned off). The decisions concerning deployment and resource allocation for services will directly affect both the performance experienced by end-users and the cloud provider's cost of operations.   
+
+  A major problem for SaaS and PaaS cloud providers is associating the optimal amount of physical hardware (including CPUs, networks, etc.) to services. The amount of the physical hardware is fulfilled by choosing the number of service replicas, the optimal deployment of the replicas on the available hardware, and the optimal resource share for each service replica. This problem is generally known as Optimal Service Placement (OSP)\cite{zhang2012dynamicPlacement}. 
+   For OSP, the optimality is measured in terms of meeting the promised Quality of Service (QoS) mentioned in Service Level Agreement (SLA)\footnote{Formally, a SLA is a contract which defines the relationship between a service provider and its clients that fully specifies all obligations for both parties, the price to be paid for the service(s) offered and associated penalties should obligations be unmet. It can be quite complex and comprehensive. (e.g., considering aspects of both functional and non-functional requirements); however, in this work, only performance objectives that can be extracted from an SLA are considered. No attempt is made to fully model or develop an SLA or an SLA management framework.} while minimizing the overall cost. SLAs include a set of performance metrics experienced by applications or classes of customers\footnote{A class of users in the context of this research is composed of a set of users that access the system services using the same pattern.}.
+	Performance metrics usually represent time behavior of the services such as average throughput, mean response time, total percentage of request rejected or not handled within certain time limit. 
+	In a PaaS, the cost is associated with the number of active hardware components contributing to the cost of electricity and cooling. 
+
+In the remainder of this section, we present the fundamentals and assumptions of our work. Subsection \ref{sec:model_based_resource_management_architecture} presents the model-based approach to management. Subsection \ref{sec:layered_queuing_model} presents our model for the service center.
+ 
+\subsection{Model Based Resource Management Architecture}  
+\label{sec:model_based_resource_management_architecture}
+ The approach we propose to address the OSP problem is using a model-based feedback loop.
+ The goal is to choose a sequence of feasible allocation actions over time that maximizes a defined performance criterion (or an objective function) regarding SLAs\footnote{One can instead say the optimal control minimizes an expected total cost function}.
+These allocation decisions are made (according to the feedback based scheme or closed loop control) at each time-step based on the information available from the system up to that time.
+ A controller constantly considers the most recent monitored data for calculating the proper actions. Thus, the original plan is adjusted according to the new observation samples of the environment in the past step. 
+
+ The model-based feedback loop we propose is based on the IBM's MAPE-K loop architecture which is composed of the following four subsystems: a monitoring, an analyzer, a planner and an execution subsystem.
+ The Monitoring subsystem is responsible for measuring inputs, and outputs of the managed system, quantifying them, sometimes aggregating them, and keeping them as a history.
+In our case, the monitored metrics are the service specific performance metrics for different types of server processes (e.g. load balancer, web server, application server, and database server).
+
+   The analyzer subsystem, identifies and tunes a model of the system under management, and estimates unobservable portion of system state. The model enables the planner to project the system's behavior and the state under different actions in the future. A major concern is the ability to synchronize the model based on observed behavior of the system. In our case, the analyzer is composed of a first principle queuing theory based model, encoding the system's knowledge combined with statistical techniques to perform data driven learning. 
+   Queuing theory based models \cite{petriu_approximate_1994,petriu_approximate_2004,badidi-queuing-2005} and Layered Queuing Models (LQM) \cite{rolia_method_1995,ramesh_multi-layer_1998} developed upon Mean Value Analysis (MVA) of queuing networks have been vastly used to capture the behavior of multi-tier distributed applications \cite{litoiu_hierarchical_2005, xu_performance_2006,hamoun_ghanbari_tuning,liu_layered_????}. 
+Queuing Models can be utilized to describe the expected performance of service centers (i.e. response time and throughput) in relation to various inputs. 
+ 
+   A planner uses the model to rapidly explore multiple decisions and find near-optimal solution towards a goal \cite{litoiu_hierarchical_2005,aiber2004autonomic}. 
+  
+	\subsection{Layered Queuing Models (LQM)}  
+	\label{sec:layered_queuing_model}
+	 A service and an application can be modeled by a set of queues where devices are mapped to queuing or delay centers. CPU is the main resource accessed by services. Other resources such as hard disks and network are used from CPU. Applications we consider are e-commerce and transactional applications composed of multiple services that invoke each other. The workload of these applications are the service requests made by end-users through protocols such as HTTP. Based on the physical structure of the data center and the service invocations, one can build a queuing networks model. Then, a general Mean Value Analysis (MVA) of the model can be used to calculate the performance characteristics of the system. 
+	In this subsection, we review the components of the queuing models, including workload and service demands. 
+	
+  
+ % Workload parameters, derived from a workload characterization, include two aspects: workload intensities and service demands. 
+	\subsubsection{Workload} 
+	Workload of a service is driven by its external users. Workload is specified as a \textit{number of users} or a \textit{request rate}. In general, the workload component can be modelled as either {\it closed} or {\it open}. In the open model, customers are assumed to make requests independent of when they receive responses for the previous requests. The open workloads are identified by an average request inter-arrival time, which is measured in seconds, or an arrival rate, which is measured in requests per seconds.
+	Closed models are defined by the number of users and average think time.
+	
+	A service center may contain a large number of services where each service is used by more than one group of users. Each group of users uses the services and the resources in a different way (for example with highly different CPU demands). Thus it is common to refer to each group as a different \textbf{class}. In multi-class models, outputs are given in terms of the individual customer classes. It is therefore reasonable to model each application with a separate class of users with a fixed population. 
+	 
+	\subsubsection{Service Demands}
+	 In queuing models, the way services interact with hardware resources is quantified in terms of service times.  The service time is the time each request spends on each resource type when the service is invoked. Service demands (or demands) are the service times multiplied with the number of per-class visits (or class visit ratio). Here, we assume the basic operations performed at the device when executing the service by the various classes are the  same; thus it is  reasonable  to  assume  that  the  average  service  times across classes are nearly equal. However, it is possible for different customer classes to require different total numbers of visits to the services, thus providing distinct service demands.\footnote{For example TPCW benchmark specifies two web interaction mixes: `` One is intended to simulate a workload where there are few buy orders and the majority of the customer requests are browsing the website. This is accomplished by having 95\% of the web pages accessed be the browsing pages, (Home, New Products, Best Sellers, Product Detail and Search pages) while only 5\% of the Web accesses are to the order web pages. This mix tends to place more pressure on the front-end Web Servers, Image Servers and Web Caches. The second mix is intended to simulate a website with a significant percentage of order requests. This is accomplished by having 50\% of the web page accesses be the browsing pages and 50\% of the accesses be to the order web pages. The second mix stresses the Database Server."}.  
+	
+	There is a systematic way to calculate visit ratio from the the call graph of services as follows: visit ratio for front-end services can be calculated by Consumer Behavior Model Graph (CBMG). Visit ratios for the backend services are algorithmically calculated from the call multiplicities by taking call multiplicities as a directed graph and adding up the contact level of each service to its $i$'th further away services. For example if web service  B and C provide services to A, and  B and C both use web service E, then the contact level from A to E  is calculated as $y_{AB}y_{BE}+y_{AC}y_{CE}$.
+
+	 \subsubsection{Application scaling and optimization through service replication} 
+	An important tool in controlling the performance of applications is to adjust the amount of resource given to their services.
+	Through replication, each service can be distributed across multiple physical machines. Each instance of a service is then called a replica and will handle a portion of the original service's workload.  
+	
+	We represent the placement of the replicas on the available hosts over a time horizon using a three-dimensional array. Conceptually at each time step, this array represents associations between the hosts and the services as a bipartite graph. The actual demand on each resource is obtained by taking into account this association.
+	
+ One can adjust the load on each replica by distributing the accesses to replicas in a desired proportion.
+In fact, in our third contribution, we use optimization to determine the number of replicas, allocation of the replicas to physical machines, and the amount of load on each replica. 
+ 
+
+
+ \section{Contribution 1: Tracking Adaptive Performance Models using Dynamic Clustering of User Classes} 
+\label{models_in_a_state_estimation} 
+The first contribution of this thesis is a method for clustering users requests in classes of services and for estimating the performance characteristic of the classes of services.
+%  In the model-based approach, the workload intensity of user classes and class-specific service demands of service replicas on infrastructure resources needs to be determined. 
+		There is a need for an estimator that finds these parameters using the available measured data in an ongoing fashion and with minimum overhead. Usually, the measured data includes utilization of different resources on different servers, and throughput of classes.   
+Least squares estimation (LSE) can be used to discover the demands for each class on the resource. For example, 
+%having utilization and throughput, linear LSE \cite{pacifici_cpu_2008} and having response time and throughput, nonlinear LSE~\cite{menasce2008computing,rolia_parameter_1995,zhang_regression-based_2007,rolia_correlating_1998} has been used for estimation.
+\cite{pacifici_cpu_2008,zhang_regression-based_2007} employ the multivariate linear regression technique for a one-tier network. However, \cite{zhang_regression-based_2007} focuses more on modeling inter-request dependencies of session-based systems and \cite{pacifici_cpu_2008} focuses on the mechanisms to deal with the issues such as insignificant flows, collinear flows, space and temporal variations, and background noise. 
+ An example of the research where regression splines are utilized is \cite{courtois_using_2000}. To find model parameters in such problems, usually algorithms such as Levenberg-Marquardt \cite{wild_nonlinear_2003} or \cite{dumouchel1989integrating} can be used. In \cite{dumouchel1989integrating}, for example, a weighted nonlinear regression is iteratively refined. In \cite{zhang_workload_2002} and \cite{liu_parameter_2006}, multi-class queuing models were used in a two-tier web cluster, to infer service times per-class at different servers using throughput, utilization, and per-class response time measurements. They try to minimize the sum of predicted response time mean square errors using a non-linear optimization solver and a quadratic minimization program. \cite{kraft_estimating_2009}, also uses a combination of MLE and the queuing model for estimation.  
+ References \cite{gmach_workload_2007,gmach_capacity_2007} claim to perform the demand prediction of enterprise workloads by discovering patterns, but the referred demand is per-application, not per-request; thus they do not tackle the same problem as ours. 
+ 
+The estimation process becomes a lot more difficult if specific data items from the estimation model are missing; and in reality, this is usually the case.  
+For example, response time metrics and number of invocations for backend services are missing. In case of missing measurements, Bayes filters have been successfully applied before in~\cite{woodside_use_2005,xu_performance_2005,zheng_tracking_2005}.  
+In the Bayesian approach, hidden performance parameters and missing data are both treated as unknown parameters to be estimated from observations. Their probability estimate is updated as additional observations are made. 
+In addition, the trade-off between trusting the old estimates and new measurements is addressed using control parameters of the filter. 
+Despite effectiveness, an important issue in using the Bayesian approach is convergence. The convergence requires that at minimum, we have more measured parameters than estimated state parameters. 
+In a system where many services cannot be monitored directly (either due to measurement overhead or due to lack of monitoring agent), convergence requires that the number of classes should be reduced to a certain size.
+%condition puts a limit on the number of classes whose demands are to be estimated. 
+
+We propose clustering of classes into a smaller set with lower cardinality. We propose an algorithm to determine the best choice of the number of clusters and the grouping of classes into these clusters.
+%	The major contribution of our approach is dynamic clustering of user classes, to improve the convergence of the filter and yet leave enough classes to satisfy the accuracy criterion.  
+In the experiments of the paper \cite{hamoun_ghanbari_tuning}, we observed that the modelling error is reduced as the number of clusters increases. We also observed that a clustering with a smaller average distance of classes to centroids (i.e. with less cluster sum-of-squares) has less estimation error; thus showing the usefulness of the K-means algorithm. It was shown that our Extended Kalman filter could track hidden states successfully and the correctness of the filter rose as it tried more classes and re-estimated service demands.
+
+  To the best of our knowledge, the combination of dynamic clustering and parameter estimation has never been investigated before. The only close reference to our work in terms of final goal is \cite{sharma_automatic_2008}. 
+They try to categorize requests based on their resource usage characteristics. However, they ignore the prior knowledge about requests in the system and classify the requests on-the-fly. Thus, their utilized approach is also different, as they use a machine learning technique called Independent Component Analysis (ICA). Of course, their technique will erase the need for server instrumentation but might affect the accuracy due to not using the extra available information.
+
+ \section{Contribution 2: Resource Share Adjustment in Cloud with no Reconfiguration Cost}   
+\label{optimization_no_reconfiguration_cost} 
+% Through Decomposed Per-Application Estimation} 
+%modeling virtualization 
+ %Services are encapsulated within virtual machines
+ %services are exclusive to classes 
+% According to the publicly available data set, FIFA98 \cite{arlitt_workload_2000}, stochastic workloads of many applications are non-stationary processes, varying with time of day. To deal with this non-stationarity, in the steady-state equivalent control of placement, the time is divided into a set of intervals, where the workload in each interval is considered stationary. 
+% This scheme is usually called Point wise Stationary Approximation (PSA).  
+
+The problem we address here involves the allocation of limited resources to a set of applications. 
+Applications are made of a set of services and the services are deployed on VMs. 
+This is done by tuning the fraction of resource capacity allocated to each application's VM. Directly changing ``relative share'' of the allocated resource to each single virtual machine (VM), can be done through the hypervisor's scheduler parameters.
+
+Here, we assume applications are isolated in terms of the services they are using. In other words, the set of services deployed for an application stays exclusive to that application. Thus, we can decompose the monolithic LQM by assuming an individual model for each application (class). This assumption transforms the problem of estimating a single large LQM into estimating a large number of single class LQMs, thus highly reducing the complexity of the estimation. 
+%
+We propose an integrated optimization of utility functions built based on the desired SLAs and the individually tuned models. 
+The objective function obtained by adding up the individual utility functions is quasi-concave. 
+We also propose a fast algorithm to maximize this quasi-concave function. 
+%
+Our proposed approach makes minimal assumptions about the behavior of the applications (i.e. no assumption about the services the application is using). The model characterizes the applications only in terms of hardware usage (i.e. hardware demand for each class). % $d_{c,h}$
+%
+Through experiments we had in \cite{ghanbari_feedback-based_????}, we successfully tested the use of a decomposed LQM for resource allocation. The relationship between the number of simulated VMs and optimization time per step was also considered and a non-linear relation was observed. 
+
+Our approach differs from the previous work in three aspects: use of the decomposed model for better convergence, a custom optimization routine, and the use of utility functions. The works \cite{li_fast_2009,li_performance_2009} find the minimum cost deployment subject to processing capacity and user throughput constraints. However, they assume a monolithic model has already been built.
+\cite{soror_automatic_2010} targets a Pareto-optimal solution, a good trade-off between conflicting performance and cost-saving goals. Also the idea of dynamically adjusting the resource shares of multiple applications in order to meet a specified level of service differentiation, was used in \cite{liu_optimal_2007} and \cite{lim_automated_2009}, although using adaptive multivariate controller and for a more limited scenario than ours (i.e. maximum one PM per application layer).
+
+\section{Contribution 3: Service Placement in Cloud Considering the Reconfiguration Cost}  % through model predictive control 
+Application optimization through service replication and allocation can yield frequent changes in deployments. That can create overheads and perturbations for the running applications.
+
+When there is a restriction or guideline about the number of changes (e.g. reconfiguration cost or the cost of moving service replicas), the single step ahead optimization does not work well. It does not provide any way to distribute the changes over the next intervals to avoid trashing, overhead, and failure. Even if the trashing cost is incorporated in such optimization, it either follows the workload with maximum trashing or weights the trashing so much that does not allocate any resource (depending on the weights assigned to the cost factors). 
+% As a solution, the control interval might be widened. However, in this case the service replacements might not be high enough to cope with the rate of changes in the workload of services.   
+% Also, they can argue that by expanding the length of the control interval, one can reduce trashing. However, in that case responsiveness of the controller drops as well. 
+
+    To alleviate the above problem, we propose a dynamic service placement algorithm that considers the trashing cost in calculating the optimal configuration using Model Predictive Control (MPC). It solves a finite-horizon deterministic control problem at each control step and applies only the current time step's action. The solution of the optimization problem is: the number of service replicas, and optimal deployment of replicas on available hardware at each step. 
+   Through experiments, we validated our hypothesis that model predictive approach performs better than the simple stepwise optimization when the objective functions are long term and when trashing is taken into account. 
+   The result is represented in the paper \cite{ghanbari2014mpc} which is in the review process. 
+  
+		The most notable related work to this contribution is \cite{zhang2012dynamicPlacement}. It targets optimal service placement in geographically distributed clouds with reconfiguration cost taken into account through MPC. However, it has two main differences from our proposal: (i) it uses a single class open queuing network model, which is much simpler than the closed multi-class model we propose. (ii) It derives an analytical solution to a steady state version of the problem first and then targets this solution as a desired state through MPC with a quadratic trashing stage cost. In our case, this was not possible because we needed a sparse deployment at each step. 
+		
+		Other examples of using MPC that we are aware of, are:~\cite{baiefficient,abdelwahed2004control, kandasamy2004self, bhat2006enabling,patikirikorala2011hammerstein}. However, they do not tackle the same problem as ours.
+In \cite{baiefficient,abdelwahed2004control,kandasamy2004self} MPC is used for managing a web server power consumption by changing the frequency at which the CPU is operating. Since, the number of choices of frequencies is quite small (i.e. less than 10 alternatives), changes in the frequency are trivial, and the feedback does not have a lot of delay. They were able to use a very small lookahead horizon and a simple model, and calculate the actual expected value of cost over noise ($w_j$) distribution, for every action path, without getting involved in a state explosion. 
+In \cite{bhat2006enabling} MPC is used to decide about the amount of data each node of a cluster should send through a set of data streams, and the amount to cache to disks. The proposed solution maximizes throughput up to network congestion. 
+ In this paper, the choice of amount of data was continuous and the cost function was quadratic, which greatly helps with solving the MPC problem without any tricks or heuristics. 
+
+ 
+  \section{ Thesis Outline}
+     The following structure is proposed as the structure of this thesis. Each item in the list corresponds to a chapter in the thesis:  
+    \begin{enumerate}
+    
+      \item \textbf{Introduction}. In chapter 1, we introduce the motivation and our approach. We motivate the three investigated problems in the thesis:
+			Performance model estimation using dynamic clustering of user classes, optimal one-step-ahead resource share allocation for services, and optimal service replica placement via model predictive control.
+			
+    \item \textbf{Background}. Chapter 2 introduces the necessary background, including elements of autonomic control and adaptive systems, MAPEK loop, optimal control theory, cloud computing, LQM, Bayesian estimation, and Kalman filter. 
+
+  \item \textbf{Related Work}. Chapter 3 describes the state of the art that is relevant to the introduced problems. Regarding the first problem (i.e. service demand estimation), the related work is classified into three categories: linear regression, nonlinear regression, and Bayesian estimation. We then provide a literature review of the second problem (i.e. service resource allocation with no configuration cost). Third, we provide a literature review for the service replica placement problem considering the trashing cost. Since this is a new research topic, the related work is quite limited.
+	 
+  \item  \textbf{Models and State Estimation}.  
+  Chapter 4 introduces the first contribution, improving the convergence of the estimator by dynamic grouping of the classes of service. We introduced the concept of modeling error and propose a dynamic clustering algorithm to improve the convergence. Then we prove the applicability of the approach through a set of real experiments. We use the FIFA98 workload and the TPC-W benchmark for the experiments. We also perform a set of simulations to assess the result of the estimation and clustering algorithm for highly variable demands.  
+
+\item \textbf{Application Resource Share Management in Cloud without Considering the Trashing Cost}. Chapter 5 discusses our solution for the case that there is no trashing costs. It investigates the use of decomposed LQM and a single step ahead optimization. 
+We first formulate the problem, introduce the modeling and estimation, and then introduce the optimization process. The proposed approach will be assessed by two cases studies of different scales. 
+
+   \item  \textbf{Optimal Service Replica Placement via Model Predictive Control}. 
+ In chapter 6, we target the OSP problem where reconfiguration cost is taken into account. Then we discuss the solution to the problem via Model Predictive Control framework.  
+In this chapter, we first introduced the notation and defined the problem.
+We elaborate on the cost elements. 
+There are a set of challenges in solving the introduced problems, including the non-linearity of the LQM, and the non-linearity of the infrastructure cost.
+We then discussed the fast (but not the exact) solution to the problem. The solution is transformed into a solver friendly format that can be handled by a common convex optimization solver such as \texttt{cvx}.
+
+We then explain the solution that considers the effect of the contention
+We show the behavior of the resulting optimization in a set of experiments using the FIFA98 workload and a synthetic service center. In a second set of simulations, we investigate the effect of lookahead horizon in the performance of the control. This will be done through several cost trade-off curves that compares the variation of the cost factors (i.e. the cost of SLA violations, the cost of resource, and the cost of trashing) four different look ahead horizons.
+ %   \item  \textbf{Optimal Service Placement in a Virtualized Environment}
+ %  In chapter 6, we first formally introduce the optimal autoscaling problem in virtualized environment and describe how it is related to OSP. We introduce a currently known sub-optimal solution to the problem: heuristic utilization feedback   controller and informally describe the effects of the controller configuration parameters in the autoscaling behavior.  We then propose the optimal autoscaling through MPC.  The MPC will be formulated as a set of convex optimization problems over time.
+ 
+\item \textbf{Conclusion}. Chapter 7 concludes and provides the possible future work.  
+
+\end{enumerate}
+
+
+\bibliographystyle{plain}
+\bibliography{mybib}
+%\printindex
+
+\end{document}

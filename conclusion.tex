@@ -1,0 +1,51 @@
+\chapter{Summary and Conclusion}
+\label{ch:conclusion}
+In this thesis, we presented three contributions to the dynamic model-based resource management of multi-service information systems. 
+ In this chapter we summarize our contributions, describe the limitations of our approaches, and discuss the assumptions we made. 
+
+\section{Contributions}
+In the first contribution (Chapter \ref{ch:estimation}) we targeted improving the estimation of performance parameters in multi-class Layered Queuing Models. 
+We proposed a tracking approach which requires less monitoring overhead and computational complexity.  instead of estimating for individual classes it identifies the performance parameters of groups of classes which are relatively similar. We proposed an algorithm that finds the appropriate number of clusters given a desired estimation accuracy. 
+In the experiments, we used a web application and modelled the application's URLs as separate classes.  We showed the usefulness of the K-means algorithm. We also showed that our Extended Kalman filter could track hidden states successfully, and the correctness of the filter rises as it tries more classes and re-estimates the service demands.
+%+++++++++++++++++++++++++++++++++++++++++++++++++
+
+In chapter \ref{ch:optimal_tuning_of_application_resource_shares}, we demonstrated the advantage of dynamically tuned empirical models relative to static ones, in the optimization. We investigated model based optimization of a private cloud where applications are clustered across a known, homogeneous set of physical machines. In this optimization, we modified the resource shares of the applications, in order to minimize their SLA violations. The main contribution of this work was dynamically tracking parameters of the empirical models (for each application) within a global optimization loop. These models update themselves at runtime in order to adapt to aspects in the environment not captured in the initial model specifications. This results in more accurate models being passed to the optimizer, allowing for better resource utilization on a global scale.  
+Another contribution in this chapter was the formulation of the optimization problem based on the adaptive model. The optimization maximizes a utility function defined over SLA and proves the use of adaptive models at runtime.  
+
+%++++++++++++++++++++++++++++++++++++++++
+In  chapter \ref{ch:replica_placement_through_mpc}, we introduced a new optimization model and fast algorithm for optimal service placement (OSP) of a set of N-tier software systems, subject to changes in the workload, SLA, and administrators preferences.
+The OSP problem was posed as a stochastic model predictive control problem.
+ We enumerated several subtleties with the formulated problem such as non-linearity of the LQM, resource cost and reconfiguration cost.
+
+ We proposed a fast solution to the proposed problem, that deals with these issues.	This solution performs well if the system is not saturated. We could easily force this condition (i.e. the system being lightly loaded) so that the solution pushes the system to an un-saturated region. A more precise algorithm with more computational overhead is also proposed. However, the precise algorithm requires solving the actual LQM multiple times to derive an OSP solution for a single step.  
+	
+The experiments validated our hypothesis that the model predictive approach performs better than the simple stepwise optimization when the objective functions are long term and when reconfiguration is taken into account.
+
+\section{Limitations and Future Work}
+In chapter \ref{ch:estimation} (the first contribution), our goal was to minimize both the introduced modeling error and the complexity of the model during estimation.
+We used the maximum acceptable error value of 8\% in the experiments, to control the balance between the introduced error and complexity of the model. 
+However, this control was done implicitly.  
+As a future work, one can model the relationship between the computation complexity and the modelling error explicitly, and try to find the optimal number of clusters which minimizes both.  
+
+Based on our investigation in chapter \ref{ch:estimation}, the Bayesian approach has a number of benefits over regression-based techniques. First, Bayesian estimation provides more flexibility in terms of choosing different models. It also provides more control over different aspects of the estimation. However, Bayesian estimation is very demanding with respect to the number of needed measurements.
+
+ Another research question regarding the first contribution is comparing the moving horizon regression-based estimation techniques for service demand estimation with the Bayesian approach in terms of scalability. We suspect that because of their simplicity, they would actually outperform the Bayesian estimation in terms of scalability.
+ 
+%+++++++++++++++++++++++++++++++++++
+In chapter \ref{ch:optimal_tuning_of_application_resource_shares} (the second contribution), the relationship between the number of simulated VMs and the optimization time per step was considered, and a non-linear but polynomial relation was observed. While this could pose a problem for our proposed approach (i.e., when working with large numbers of VMs) a possible solution would be to split the problem into subsets and solve them individually. Future work will involve implementing the optimization algorithm in a distributed manner in which applications interact in a peer-to-peer fashion, to determine how much resource should be allocated to each application. One can also investigate solving the dual optimization problem, which is more suitable for mapping to an agent-oriented optimization approach (see \cite{huang_macroeconomics_2008,izakian_auction_2010}).  
+%+++++++++++++++++++++++++++++++++++++++++++++
+
+%In chapter \ref{ch:replica_placement_through_mpc} (the third contribution), we should re-visit an important point about the workload prediction. According to the MPC literature, in the Certainly Equivalent Control (CEC) scheme applied in, there is no need for the prediction of the stochastic inputs. The assumption is that the stochastic inputs are stationary, and their mean value is plugged into a deterministic optimization problem. However, in our case, the number of users is not stationary, and we modelled the workload itself as well. The workload model takes a stationary white noise as an input. % Taking this model as a part of the system, we can still think of it as inserting the mean of this white noise as an input in the deterministic optimization problem.
+%This interpreted as having a dynamic linear prediction model (DLM) incorporated into the optimization problem directly while this DLM is driven by a  Gaussian noise. 
+% Note that, while we depend on the accuracy of the model, there is no need to exactly predict the workload. 
+
+One possible future work for chapter \ref{ch:replica_placement_through_mpc} would involve investigating the effect of modeling on the performance of the control. For example, one can consider different models of non-stationary autonomous processes for the workload, and see if these models result into different performances in the overall control. An interesting aspect would be to investigate if under certain workloads (e.g. random walk) the model predictive control is not really needed (i.e. the one-step-ahead optimization would be enough).  
+One can also model the workload as a dynamic system whose inputs are driven by real-world entities such as time (i.e. time of the day, day of the week, or month of the year).   
+
+Another future investigation for the third contribution would be testing different formats of the objective function. For example, one could test the behavior of the controller under quadratic reconfiguration cost. According to our experience, changing the format of the cost function would introduce major changes in the behavior of the controller. For example, switching from first norm to the second norm for the reconfiguration cost makes the controller
+spread the reconfigurations over time in a smooth fashion. On the other hand, our experience shows that solving control problems using convex optimization solvers would result in a non-sparse deployment which is not desired. One can test if the result obtained from other types of solvers (for example a customized one that is written from scratch) would have different properties in terms of the density of the deployment. 
+
+\section{Summary} 
+\label{sec:summary_summary}
+ In this chapter, we provided the summary of this dissertation. We described the tree main contributions of the thesis. We also explained the limitations of our approaches and provided possible directions for the future work.
+

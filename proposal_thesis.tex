@@ -1,0 +1,278 @@
+%\documentclass[10pt,twocolumn]{puthesis}
+% \documentclass[12pt]{report}
+\documentclass[final,fleqn]{york-thesis}
+%========== header/footer set-up  =================
+
+\usepackage{fancyhdr}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{}
+\cfoot{\thepage}
+\rfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\renewcommand\headheight{24pt}
+
+
+%========== citation setup  =================
+\usepackage[square,sort,comma,numbers]{natbib} % I use natbib, but you can use
+
+                                % any citation format; the class file
+                                % is agnostic about citation styles.
+\bibpunct[, ]{[}{]}{,}{a}{}{,}  % This line configures natbib to use
+                                % CMoS in-line citation style 
+
+%========= package setup ================
+\setboolean{masters}{false}      % set true for a Master's thesis;
+                                % false for a PhD dissertation
+\setboolean{hasfigures}{false}  % set true if you have figures
+\setboolean{hastables}{false}   % set true of you have tables
+
+\title{Model-based Dynamic Resource Management for Service Oriented Clouds}     
+% Model-based Dynamic Resource Management for Multi Service Information Systems} 
+
+%Large Scale
+% Platform as a Service Systems
+% Autonomic Management  of Large Scale Resource Sharing Systems}
+% Service  Cloudsf
+
+\author{Hamoun Ghanbari}
+
+\department{Computer Science}   % this is the name of the programme in which
+                          % you are attempting your degree 
+\masterof{Science}           % this is the type of Master's degree you
+                          % are attempting. If the boolean masters is
+                          % false, this has no effect. 
+\degreename{Doctorate} % put the actual name of the degree you are
+                          % attempting 
+\date{August 2014}     % this is the month and year of defence
+
+%========== preliminary matter =================
+\abstractfile{abstract1.tex}
+\coauthorshipfile{coauthorship.tex} 
+\dedicationfile{dedications.tex}
+\acknowledgementsfile{acknowledgments.tex}
+%\prefacefile{preface.tex}
+%\abbreviationsfile{definitions.tex}
+%
+% Your committee members list has to be an enumerated list.
+%
+\committeememberslist{
+  \begin{enumerate}
+    \item Marin Litoiu
+    \item Yves Lesprance
+    \item Sotirios Liaskos
+    \item Hanan Lutfiyya
+		\item Zijiang Yang 
+    \end{enumerate}}
+
+%============ document begins ==================
+%
+
+
+%% \usepackage[margin=0in]{geometry}
+%% \usepackage{layout}
+%%\documentclass[draft]{york-thesis}
+%
+%
+%%\usepackage{cite}
+%%\usepackage[square, comma,sort&compress]{natbib} 
+%%\usepackage[numbers, sort&compress]{natbib}
+%% \usepackage[pdftex,colorlinks]{hyperref} \AtBeginDvi{\special{pdf:tounicode
+%% EUC-UCS2}}
+%%\usepackage[top=1in,bottom=1in,left=1.5in,right=1in]{geometry}
+%%\usepackage[linesnumbered]{algorithm2e}
+%% \usepackage{enumitem} 
+\usepackage[center]{caption}
+\usepackage{kbordermatrix}
+%\usepackage{blkarray}
+%\usepackage{multirow}
+%\usepackage{fancyhdr}
+\usepackage[noend]{algpseudocode}
+%\usepackage{algcompatible}
+%\usepackage[linesnumbered, algoruled, vlined]{algorithm} 
+\usepackage[linesnumbered, algoruled, vlined]{algorithm2e} 
+\usepackage{graphicx}
+\usepackage{multicol}
+\usepackage{array}	
+\usepackage{tabularx}
+\usepackage{url}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{subfig}
+\usepackage{ctable}
+\usepackage{listings} 
+%  
+ \usepackage{acronym}
+   \usepackage{xcolor} 
+  \usepackage[refpage]{nomencl}
+  \usepackage[pdftex,     % sets up hyperref to use pdftex driver
+            plainpages=false,   % allows page i and 1 to exist in the same document
+            breaklinks=true,    % link texts can be broken at the end of line
+            colorlinks=true,
+            pdftitle=My Document
+            pdfauthor=My Good Self
+           ]{hyperref} 
+ \usepackage{ifthen} 
+ %
+ \usepackage{tikz}
+\usetikzlibrary{arrows,shapes}
+\usepackage{dot2texi}
+% Define layers
+\pgfdeclarelayer{background}
+\pgfdeclarelayer{foreground}
+\pgfsetlayers{background,main,foreground}
+ %
+ \renewcommand*{\pagedeclaration}[1]{\unskip\dotfill\hyperpage{#1}}
+  
+  \makenomenclature 
+ \RequirePackage{ifthen}
+ \renewcommand{\nomgroup}[1]{%
+  \ifthenelse{\equal{#1}{A}}{%
+   \medskip\item[\large\textbf{Acronyms}]\medskip%
+    }{%
+    \ifthenelse{\equal{#1}{M}}{%    
+     \medskip\item[\large\textbf{Math Symbols}]\medskip}{%
+            \medskip}
+    }
+}
+
+
+ 
+\usepackage{color}
+\definecolor{lightgray}{rgb}{.9,.9,.9}
+\definecolor{darkgray}{rgb}{.4,.4,.4}
+\definecolor{purple}{rgb}{0.65, 0.12, 0.82}
+
+%\lstdefinelanguage{Ponderscript}{
+  %keywords={subject, target, typeof, new, true, false, catch,
+  %function, return, null, catch, switch, var, if, in, while, on, when, do, else,
+  %case, break, and}, 
+  %keywordstyle=\color{blue}\bfseries, 
+  %ndkeywords={inst, oblig, auth, class, export, boolean, throw, implements,
+  %import, this, &&, ->, |, ||}, 
+  %ndkeywordstyle=\color{darkgray}\bfseries,
+  %identifierstyle=\color{black},
+  %sensitive=false,
+  %comment=[l]{//},
+  %morecomment=[s]{/*}{*/},
+  %commentstyle=\color{purple}\ttfamily,
+  %stringstyle=\color{red}\ttfamily,
+  %morestring=[b]',
+  %morestring=[b]"
+%}
+
+
+%\lstset{
+   %language=Ponderscript,
+   %backgroundcolor=\color{lightgray},
+   %extendedchars=true,
+   %basicstyle=\footnotesize\ttfamily,
+   %showstringspaces=false,
+   %showspaces=false,
+   %%numbers=left,
+   %numberstyle=\footnotesize,
+   %numbersep=9pt,
+   %tabsize=2,
+   %breaklines=true,
+   %showtabs=false,
+   %captionpos=b
+%}
+
+
+% \lstset{
+%         basicstyle=\footnotesize\ttfamily, % Standardschrift
+%         %numbers=left,               % Ort der Zeilennummern
+%         numberstyle=\tiny,          % Stil der Zeilennummern
+%         %stepnumber=2,               % Abstand zwischen den Zeilennummern
+%         numbersep=5pt,              % Abstand der Nummern zum Text
+%         tabsize=2,                  % Groesse von Tabs
+%         extendedchars=true,         %
+%         breaklines=true,            % Zeilen werden Umgebrochen
+%         keywordstyle=\color{red},
+%    		frame=b,         
+% %        keywordstyle=[1]\textbf,    % Stil der Keywords
+% %        keywordstyle=[2]\textbf,    %
+% %        keywordstyle=[3]\textbf,    %
+% %        keywordstyle=[4]\textbf,   \sqrt{\sqrt{}} %
+%         stringstyle=\color{white}\ttfamily, % Farbe der String
+%         showspaces=false,           % Leerzeichen anzeigen ?
+%         showtabs=false,             % Tabs anzeigen ?
+%         xleftmargin=17pt,
+%         framexleftmargin=17pt,
+%         framexrightmargin=5pt,
+%         framexbottommargin=4pt,
+%         %backgroundcolor=\color{lightgray},
+%         showstringspaces=false      % Leerzeichen in Strings anzeigen ?        
+% }
+% \lstloadlanguages{% Check Dokumentation for further languages ...
+%         Java
+% }
+%    %\DeclareCaptionFont{blue}{\color{blue}} 
+%
+%  %\captionsetup[lstlisting]{singlelinecheck=false, labelfont={blue}, textfont={blue}}
+%  \usepackage{caption}
+%\DeclareCaptionFont{white}{\color{white}}
+%\DeclareCaptionFormat{listing}{\colorbox[cmyk]{0.43, 0.35, 0.35,0.01}{\parbox{\textwidth}{\hspace{15pt}#1#2#3}}}
+%\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
+
+\DeclareMathOperator*{\Max}{maximize} 
+\DeclareMathOperator*{\Min}{miniimize} 
+
+%
+%\renewcommand{\rmdefault}{ptm} %for times font
+%
+%%\setlength{\columnsep}{20pt}
+%% \setlength{\columnseprule}{2pt}
+%\marginsize{0.75in}{0.75in}{1in}{1in}
+%  \doublespacing
+% % \singlespacing
+%% \oddsidemargin 0.0in 
+%% \textwidth 6.5 
+% \makeindex 
+%
+%
+%%------
+%%\newcommand{\footnoteremember}[2]{
+%%  \footnote{#2}
+%%  \newcounter{#1}
+%%  \setcounter{#1}{\value{footnote}}
+%%}
+%%\newcommand{\footnoterecall}[1]{
+%%  \footnotemark[\value{#1}]
+%%}
+%%%------
+%
+%
+%%\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+%% \doublespace 
+
+\def\*#1*\ {}
+\renewcommand{\nomname}{List of Abbreviations} 
+%---------------------------------------------
+\input{definitions}
+%---------------------------------------------
+\begin{document}
+\hypersetup{linkcolor = black}
+ \makefrontmatter
+\listoffigures 
+\hypersetup{linkcolor = red}   
+\printnomenclature
+
+  \input{introduction}
+ \input{background} 
+\input{related-work2}
+\input{estimation} 
+\input{opt-centralized2}  
+\input{mpc_nfm} 
+\input{conclusion} 
+\input{appendix1}
+
+\bibliographystyle{plain}
+\bibliography{mybib}
+
+\end{document}
+
+
+

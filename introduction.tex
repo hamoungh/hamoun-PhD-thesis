@@ -1,0 +1,157 @@
+\chapter{Introduction}  
+ \section{Motivation and Approach}   
+ Cloud computing provides the computational power of data centers (e.g., the network, storage, computational devices, and services) to a large user community over the Internet. 
+
+	 A cloud is formed by an interconnected set of data centers. 
+  A data center is a set of physical machines (PM) interconnected by hierarchical network switches.
+%, where PMs have access to storage units.
+ The main costs associated with the data center are the cost of electricity and the cost of cooling.   
+  These costs are directly related to the number of active physical machines and switches (i.e., not in standby mode or powered-down). %\footnote{Note that an idle physical machine spends half of a physical machine with full load.}. 
+ 
+ Hardware virtualization multiplexes the hardware and offers small chunks of storage, CPU and memory in the form of Virtual Machines (VMs). In an Infrastructure as a Service (IaaS) cloud, the allocation of these virtual computing resources is controlled by centralized management software. The actual placement of VMs on PMs is usually hidden from upper layer entities. 
+ 
+   Data center resources are used to provide cloud IT services\footnote{Thus, they are sometimes referred to as Multi Service Information System (MSIS)\cite{li2011fast}.}. These services can include everything from distributed file systems to business level software modules offered over the web. 
+% eervices can be placed on a bare hardware as well as a virtualized hardware governed by a IaaS. 
+Services can be replicated to additional physical or virtual machines to increase the capacity for the incoming workload\footnote{Replication means having separate copies of the same service on different hosts.}. 
+
+ In the Platform as a Service (PaaS) form of the cloud, customers create and manage their own services.
+ Customer services use generic services such as database, load-balancing, and messaging, offered by the PaaS provider. The decisions concerning deployment and resource allocation for services directly affect both the performance experienced by end-users and the cloud provider's cost of operations.
+
+A major problem for SaaS and PaaS cloud providers is the optimal allocation of hardware resources (including CPUs, networks, etc.) to services\footnote{For the PaaS environments, this allocation problem only arises when the entity which controls the software deployment and configuration settings is the cloud provider.}. The amount of resource needs is fulfilled by choosing the optimal deployment and resource share of the services on the available hardware. This problem is generally known as Optimal Service Placement (OSP)\cite{zhang2012dynamicPlacement}. 
+   For OSP, the optimality is measured in terms of meeting the promised Quality of Service (QoS) mentioned in the Service Level Agreement (SLA)\footnote{Formally, a SLA is a contract, which defines the relationship between a service provider and its clients that fully specifies all obligations for both parties, the price to be paid for the service(s) offered and associated penalties should obligations be unmet. It can be quite complex and comprehensive (e.g., considering aspects of both functional and non-functional requirements); however, in this work, only performance objectives that can be extracted from a SLA are considered. No attempt is made to fully model or develop a SLA or a SLA management framework.} while minimizing the overall cost. SLAs are based on performance metrics of the applications or classes of customers\footnote{A class of users in the context of this research is composed of a set of users that access the system services using the same pattern.}.
+	Performance metrics usually represent the time behaviour of the services, such as the average throughput, the mean response time, and the total percentage of requests rejected or not handled within a certain time limit. 
+	In a PaaS and SaaS, the infrastructure cost is associated with the number of active hardware components contributing to the cost of the electricity and cooling. 
+
+ This thesis addresses the following three issues:   
+  
+ (i) We propose a new approach for estimation of workloads of user classes and demands of services. An important issue in using the Bayesian approach is convergence.  In order for the model to converge, the number of classes relative to the monitored performance metrics should be kept under a certain limit. We present an algorithm to reduce the  classes by dynamically grouping while keeping the number of classes high enough to achieve the accuracy objective. A combination of clustering algorithm and filtering is proposed for effective grouping of classes of services. The grouping improves the earlier filter based approaches in terms of computational complexity and monitoring overhead. % We were able to successfully tune the number of clusters on the fly and identify most accurate model which was still identifiable.  
+       
+% (ii) We solve a version of OSP problem in which the deployment has already been decided and we only the site about the amount of resource shares for VMs of applications. This is inherently a long-term stochastic optimization problem involving time. However, we use using a set of optimizations that do not have the time aspect. This highly reduces the complexity of the planning.  
+%	 the allocation of limited resources to a set of applications where applications are deployed on virtual machines (VMs).
+(ii) We investigate if an empirical model, dynamically tuned through an Extended Kalman Filter, can outperform the one that is obtained by an off-line regression analysis of applications' performances. %, in terms of the overall performance of the allocation.  
+Our contribution is to increase the allocation performance, by tuning the empirical models and achieving a better accuracy using the measurement data at runtime.  
+
+(iii) In the presence of the reconfiguration cost, modeling the time is inevitable.
+We propose a novel solution for long-term OSP, considering the reconfiguration cost. The solution uses the Model Predictive Control (MPC) framework (i.e. a branch of control theory).
+Details of the contributions of this thesis are presented in the sections which follow.
+
+ \section{Contribution 1: Improving The Convergence of Performance Model Estimators using Dynamic Clustering of User Classes}
+% Tracking Adaptive Performance Models
+ Optimal allocation of computing resources typically requires some prior knowledge of the workload.
+The expected workload of user classes, and demands of services on infrastructure resources should be known beforehand. Usually these measurements are unknown because monitoring them would introduce lots of extra overhead. 
+Thus, there is a need for an estimator that derives these parameters using the data obtained from the service center in an ongoing fashion and with minimum overhead. Usually, the measured data includes the response times and throughputs of classes and per-server resource utilizations.
+
+% In this full information scenario, with some assumption such as single resource tier and open workload for user classes, 
+Least squares estimation (LSE) can be used to discover per-class resource demands. For example, having utilization and throughput, linear LSE \cite{pacifici_cpu_2008} and having response time and throughput, nonlinear LSE~\cite{menasce2008computing,rolia_parameter_1995,zhang_regression-based_2007,rolia_correlating_1998} has been used for estimation of service demands. The estimation process becomes more difficult if collected data is incomplete (with respect to
+the model), and in reality, this is usually the case. For example, response time metrics and the number of invocations for backend services may be missing. %, and the per-class response times might not be available.
+
+In the case of missing measurements, Bayes filters have been successfully applied before in~\cite{woodside_use_2005,xu_performance_2005,zheng_tracking_2005}. In the Bayesian approach, hidden performance parameters and missing data are both treated as unknown parameters to be estimated from observations. The probability estimates of the parameters and the missing data are updated as additional observations are made. In addition, the trade-off between trusting the old estimates and new measurements is addressed using control parameters of the filter. 
+
+An important issue in using the Bayesian approach is convergence. 
+According to \cite{zheng_performance_2008} a Kalman Filter\cite{watson_kalman_1983}\footnote{Kalman Filter is a Bayes filter with linear equations and normally distributed variables, and it is typically used in control systems for estimation.} adopted for performance estimation does not converge to a solution unless the model has more measured parameters than estimated state parameters\footnote{\cite{zheng_performance_2008} derives this as follows: the observability of the linear systems requires the matrix $C$ in the observation equation of the system to have row rank of $n$, where $n$ is the dimension of the state vector. Simply, $C$ has to have $n$ linearly independent rows, or LQM has to give $n$ independent equations whose left hand side are monitored metrics.}. 
+As will be discussed in detail in chapter \ref{ch:estimation}, this puts a hard constraint on the number of classes that can be modelled. 
+For each additional class, there needs to be some additional measurements from the system. 
+For a large-scale system with many classes, measuring and storing an excessive amount of monitoring information at all times for the filter is impractical.
+This reduces the applicability of the Bayes Filter estimation for large service centers.
+
+We propose the clustering of user classes into a smaller set with lower cardinality to reduce the measurement overhead and
+increase the scalability of the Bayesian performance model estimation. 
+By decreasing the number of classes, we also reduce the estimator computation.
+
+ However, we cannot cluster all the classes into one group  because then the model loses its detail and accuracy. 
+We propose an algorithm to determine the best choice of the number of clusters and the grouping of classes into these clusters.
+The derived number of clusters guarantees that the monitoring overhead is reduced and at the same time, the model's accuracy is maintained. 
+We use a concept called the \textit{modeling error}, which is a heuristic measure to compare two different groupings of classes in terms of estimation accuracy\footnote{Modeling error is the mismatch of model output and the monitored metrics. It comes from the fact that the service demands are now represented using fewer parametrized statistical distributions. Note that this modeling error is a measure that we introduced. 
+The Bayesian filter already tries to minimize the weighted cumulative sum of process noise and the observation noise over infinite horizon of time. However, the modeling error that we define here is more a heuristic measure to compare two different groupings of classes over a very limited time horizon. }.
+We then propose an algorithm  that reduces the estimation complexity and overhead by grouping the classes, while keeping enough classes to  maintain the modeling error above a prescribed threshold. The major contribution of our approach is this dynamic clustering of user classes, to reduce the estimation complexity yet leaving enough classes to satisfy the accuracy criterion.  
+
+
+ \section{Contribution 2: Optimal Resource Share Adjustment in Cloud Using Dynamically Tuned Empirical Models}    
+% Resource Share Adjustment in Cloud with no Reconfiguration Cost
+% Performance Model Estimation and Tracking using Optimal Filters
+\label{optimization_no_reconfiguration_cost} 
+ A major research problem in the area of application service centers involves the allocation of limited resources to a set of applications, deployed on virtual machines (VMs). In a virtualized data center, resource allocation can be done by tuning the fraction of resource capacity allocated to each application's VM. 
+Deriving the optimal set of resource fractions is usually done by optimizing a monolithic objective function based on the desired performance of applications. A model of the application service center is necessary for this optimization. The model can be either first principle (e.g. based on queuing theory) or be driven empirically from a data set.
+% In the empirical approach, the model is obtained by an off-line regression analysis of applications' performances. 
+ 
+A portion of the related work on optimal deployment such as those by Li et al.\cite{li_fast_2009,li_performance_2009} assumes that the system follows an accurate first principle model. Li et al. suggest using a filter-based approach such as \cite{zheng-integrated-2011} to estimate the parameters of this model adaptively. 
+However, there is no guarantee that these first principle models accurately represent a service center since service center modeling is complex. Such modeling can consider the software contention, concurrency, remote calls, a limited amount of memory, and a limited amount of the network bandwidth.  
+
+On the other hand, there is a major problem with the empirical regression-based models. 
+% In terms of related work, the empirical model based approaches use regression analysis to discover their parameters. 
+These empirical models do not typically use feedback of runtime performance data. 
+When applications are deployed in a production environment, the models gradually become inaccurate. The inaccuracy is mainly because the deployment conditions are different from the test environments, used to build the training data sets.  
+ 
+Our contribution is to increase the accuracy of the empirical models by dynamic tuning using the measurement data at runtime. We also trace the accuracy increase in the overall performance of the allocation. We investigate if a model, built off-line through a nonlinear regression and dynamically tuned through an Extended Kalman Filter, can outperform a model that is not tuned. The other differences between our approach and the related work are the use of the
+decomposed models\footnote{In decomposed models, the overall cloud model is decomposed into individual models for applications.}, and a customized optimization routine to optimize the defined utility functions.   
+
+% "`The primary requirement of filtering algorithms such as Particle Filter (PF), Unscented Kalman Filter (UKF) and Extended Kalman Filter (EKF) is the availability of an accurate nonlinear state space model."'
+
+We show that using static non-tuned application models results in suboptimal resource allocation for some applications, and leads to failure in meeting their SLAs. In contrast, dynamically tuned models result in more efficient resource allocations and better commitment to SLAs.%, and better utility. 
+
+
+% Our approach achieves the adaptation by tuning the model parameters using EKF.
+% We are aware of the Expectation Maximization (EM) approach that separates the hidden states and the unknown parameters of a parametric state-space model and estimates them in a joint framework. However, we have not seen any instance of resource allocation context that uses such approach. 
+
+% \cite{zheng-integrated-2011} for example this guy tries to estimate the parameters of (i.e. coefficients of) an state space model as well as estimating the hidden states at the same time. In this work, the parameters reside in the state transition equation rather than output equation. In the state space model, the state transition equation is linear but the parameters are unknown. The output equation, which is based on the first principle a queuing model, is nonlinear but the parameters are known. 
+
+% To derive the optimal fractions, one can model the whole service center as a LQM (taking each application as a class) and optimize over this model. Building such model requires estimating a large number of parameters proportional to the number of applications times number of services times number physical machines. Because of this, large monolithic models\footnote{A model that covers the whole data center, including all physical machines and services together.} cannot be really adapted in the scales of real service centers.
+% Our first contribution is to decompose the monolithic LQM by assuming an individual model for each application. This assumption transforms the problem of estimating a single large LQM into estimating a large number of single class LQMs, thus highly reducing the complexity of the estimation. We do this by assuming applications are isolated in terms of the services they use. In other words, the set of services deployed for an application stays exclusive to that application. Through experiments, we show that such approach can be utilized to allocate resources in a midsize service center to a number of locations.
+% Through experiments we had in \cite{ghanbari_feedback-based_????}, we successfully tested the use of a decomposed LQM for resource allocation. The relationship between the number of simulated VMs and optimization time per step was also considered and a non-linear relation was observed. 
+
+
+
+\section{Contribution 3: Optimal Service Replica Placement via Model Predictive Control} 
+
+Application optimization through service replication and allocation can yield frequent changes in deployments.
+The unnecessary frequent changes in the number of active servers or in the deployment of services on these servers can create overheads and perturbations for the running applications. 
+Thus, if one of the objectives is to minimize the reconfiguration, or service replica movement, a typical stepwise optimization (i.e. an optimization that does not consider the time and only target one interval) does not work well. 
+% It does not provide any way to distribute the changes over the next intervals to avoid reconfiguration, overhead, and failure.
+%Even if the reconfiguration cost is incorporated in such optimization, it either follows the workload with maximum reconfiguration or weights the reconfiguration so much that does not allocate any resource (depending on the weights assigned to the cost factors). 
+% As a solution, the control interval might be widened. However, in this case the service replacements might not be high enough to cope with the rate of changes in the workload of services.   
+% Also, they can argue that by expanding the length of the control interval, one can reduce reconfiguration. However, in that case responsiveness of the controller drops as well. 
+
+    To alleviate the excessive reconfiguration problem, we propose a dynamic service placement algorithm that considers the reconfiguration cost in calculating the optimal configuration using Model Predictive Control (MPC). The algorithm solves a finite-horizon deterministic control problem at each control step. The solution of the optimization problem includes the number of service replicas and optimal deployment of replicas on available hardware at each step. 
+
+   Through experiment, we validate our hypothesis that model predictive approach performs better than the simple stepwise optimization (i.e., the second contribution noted) when the objective functions are long term and when reconfiguration is taken into account.
+
+  \section{Dissertation Outline}
+% Introduction Chapter is not mentioned in the following outline
+ The remainder of the thesis is structured as follows:  
+
+  Chapter \ref{ch:background}, Background, introduces the necessary background, including elements of the autonomic computing and adaptive systems, MAPE-K loop, optimal control theory, cloud computing, LQM, Bayesian estimation, and Kalman filter. 
+	
+ % \item  \textbf{State of Art in Feedback Based Management of Multi-Service Information Systems}.  
+  Chapter \ref{ch:state-of-art}, Related Work, describes the state of the art for the problems of scalable performance parameter estimation, resource allocation using dynamically tuned application models, and service replica placement considering the reconfiguration cost. 
+ The related work for the first problem (i.e. service demand estimation), is classified into four categories: stepwise estimation, linear regression, nonlinear regression, and Bayesian estimation. We then provide a literature review of the second problem (i.e. optimal resource share adjustment in cloud using dynamically tuned empirical models). Third, we provide a literature review for the service replica placement problem considering the reconfiguration cost. Since this is a new research topic, the related work is quite limited. 
+  We also provide a review of other papers in computing resource management area that used the MPC framework. 
+	
+ % \item  \textbf{Models and State Estimation}.  
+  Chapter \ref{ch:estimation}, Tracking Adaptive Performance Models using Dynamic Clustering of User Classes, introduces the first contribution, improving the scalability of the estimator while minimizing the monitoring overhead. Improving the estimator scalability is done by dynamic grouping of the classes of service. 
+	% We introduce the concept of modeling error and propose a dynamic clustering algorithm to improve the convergence.
+	Then we prove the applicability of the approach through a set of tests which use standard industry benchmark data. We use the FIFA98 workload and the TPC-W benchmark for the experiments. We also perform a set of simulations to assess the result of the estimation and clustering algorithm for highly variable demands.  
+% \item \textbf{Optimal Resource Share Adjustment in Cloud Using Dynamically Tuned Empirical Models}. 
+
+Chapter \ref{ch:optimal_tuning_of_application_resource_shares}, Optimal Resource Share Adjustment in Cloud Using Dynamically Tuned Empirical Models, proposes the use of dynamically tuned empirical models within a resource share optimizer system. We first formulate the problem, introduce the modeling and estimation, and then introduce the optimization process. We claim that the dynamically tuning empirical performance models of the applications, despite their computational complexity, can improve the quality of the allocation.
+This claim will be assessed by two cases studies of different scales. 
+
+ %  \item  \textbf{Optimal Service Replica Placement via Model Predictive Control}. 
+ In chapter \ref{ch:replica_placement_through_mpc}, Optimal Service Replica Placement via Model Predictive Control, we target the optimal service placement problem considering the reconfiguration cost. We  propose a solution to the problem via the Model Predictive Control framework.  
+% In this chapter, we first introduced the notation and defined the problem. We elaborate on the cost elements. 
+There are a set of challenges in solving the introduced problem, including the non-linearity of the LQM and the non-linearity of the infrastructure cost. We provide a fast theoretical solution to the problem. The solution is transformed into a solver friendly format that can be handled by a common convex optimization solver such as \texttt{cvx}.
+% We then explain the solution that considers the effect of the contention.
+We show the behaviour of the resulting optimization in a set of experiments using the FIFA98 workload and a synthetic service center. In the second set of simulations, we investigate the effect of lookahead horizon in the performance of the allocation. The result will be presented as a set of cost trade-off curves that compare the variation of the cost factors (i.e. the cost of SLA violations, the cost of resource, and the cost of reconfiguration) for different lookahead horizons.
+
+  Chapter \ref{ch:conclusion}, Summary and Conclusion, concludes and provides possible future works.      
+%\end{enumerate}
+
+ %  \section{Thesis Organization} 
+ %  The remainder of the thesis is structured as follows.           
+%  Chapter \ref{ch:problems-to-solve}  describes state of the art in feedback based management of multi-service information systems. It also enumerates the weakness of existing approaches and describes the rationale behind the choice of using MPC.   
+% Chapter \ref{ch:optimization} discusses the solution to multi-service OSR and OSP via Model Predictive Control in a private data center where virtualization is not used. 
+%  Chapter \ref{ch:optimization-virtualized} discusses the solution to multi-service OSR and OSP via Model Predictive Control in virtualized environment through autoscaling. 
+% Chapter \ref{ch:estimation} introduces the estimation approach for discovering the latent variables of the model.  
+% Chapter \ref{ch:experiments} provides case studies and experiments on a real system used in the validation of the approach.  
+% Chapter \ref{ch:conclusion} concludes and provides the possible future work.  
+
+
