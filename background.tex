@@ -3,7 +3,7 @@
  \label{ch:background}  
   This chapter introduces the necessary theoretical background for the rest of the dissertation. First, we introduce autonomic computing and adaptive systems. These are explained in the context of  the MAPE-K loop, a guideline for designing autonomic systems.  
   %that suggests the integration of a monitoring systems,  analyzers, planners, and execution engines.      
-  We also introduce some necessary components from the control theory. We review optimal linearized control, policy iteration, sub-optimal heuristic control, steady-state equivalent problem and model predictive control (MPC) as different ways to construct control loops. Finally, we introduce Layered Queuing Model (LQM) as a tool to model the performance of clouds. We also provide an explanation about the way we map the cloud concepts (i.e. end-users,
+  We also introduce some necessary components from control theory. We review optimal linearized control, policy iteration, sub-optimal heuristic control, steady-state equivalent problems and model predictive control (MPC) as different ways to construct control loops. Finally, we introduce Layered Queuing Models (LQM) as a tool to model the performance of clouds. We also provide an explanation about the way we map the cloud concepts (i.e. end-users,
   services and  invocations, infrastructure, and replication)  to the model elements (i.e. user classes, delay and queuing centers, and service demands, etc.).  We then review the solution techniques for the closed queuing networks considering software contention and multiple resources. 
    
  \section{Elements of Autonomic Computing and Adaptive Systems}
@@ -30,9 +30,9 @@ The architecture used is the well-known Monitor-Analyze-Plan-Execute (MAPE)\nome
 \end{figure}
   
  Components of the autonomic loop have a specific interpretation when viewed in the control theory context. 
- The following is an enumeration(description) of autonomic loop components  considering control theory.
+ The following is an enumeration (description) of autonomic loop components  considering control theory.
  % Below, we enumerate components of the autonomic loop and describe them in the context of the control theory. % Figure \ref{fig:control-loop} presents a schematic structure of such control loop.
- In the control theory sense, the goal of any optimal control loop is to choose a sequence of feasible \textit{control actions} over time that maximize a defined \textit{performance criterion} (or objective function)\footnote{One can instead say the optimal control minimizes an expected total cost function.}.
+ In a control theory sense, the goal of any optimal control loop is to choose a sequence of feasible \textit{control actions} over time that maximize a defined \textit{performance criterion} (or objective function)\footnote{One can instead say the optimal control minimizes an expected total cost function.}.
 
 
  \subsection{Monitoring Subsystem} The monitoring subsystem is responsible for measuring inputs, and outputs of the managed system (system I/O in a control theory sense), quantifying system I/O, sometimes aggregating system I/O, and keeping system I/O as a history. In a closed-loop (or feedback based) control, the controller constantly considers the most recent monitored data for calculating the proper actions. 
@@ -44,7 +44,7 @@ The architecture used is the well-known Monitor-Analyze-Plan-Execute (MAPE)\nome
     The analyzer subsystem of the autonomic management loop, identifies and tunes a model of the system, and estimates the unobservable portion of the system state. The model enables the autonomic manager to project the system's behaviour and the state, from the current state under different actions.  A major concern is the ability to synchronize the model based on observed behaviour of the system. In our case, the analyzer is composed of a first principle mathematical model encoding the system's knowledge combined with statistical techniques to perform data-driven learning. 
 
  \subsection{Planner} 
- A planner uses the model to rapidly explore multiple decisions and find near-optimal solution \cite{litoiu_hierarchical_2005,aiber2004autonomic}. The search space is formed by the actions over time. The search for finding the proper actions can be based on a mathematical optimization in continuous space (e.g. methods such as primal decomposition, interior point methods, simulation annealing, etc.) or can be a search in the discrete space (e.g. a combinatorial optimization).
+ A planner uses the model to rapidly explore multiple decisions and find near-optimal solution \cite{litoiu_hierarchical_2005,aiber2004autonomic}. The search space is formed by the actions over time. The search for finding the proper actions can be based on a mathematical optimization in continuous space (e.g. methods such as primal decomposition, interior point methods, stimulated annealing, etc.) or can be a search in the discrete space (e.g. a combinatorial optimization).
   Whether the search is continuous or discrete, it is directed towards a goal or a set of goals.
 
 \section{Optimal Control Theory}  
@@ -56,13 +56,14 @@ The architecture used is the well-known Monitor-Analyze-Plan-Execute (MAPE)\nome
   \end{align}
   
   where $x_t$ is the system state,
-  $u_t$ the controlled input, 
+  $E[\ldots]$ denotes the expected value,  
+  $u_t$ is the controlled input, 
   $w_t$ is the uncontrolled stochastic input, 
   $T$ is the control interval, 
   $g$ is the (non)linear stage cost function, 
   $f$ is the (non)linear  state transition function  which maps the current state to the next one,   
   $h$ is the nonlinear function defining the limits of possible inputs and states.      
-  Equation \ref{eq:general-control-problem-1}  denotes that the objective is to minimize the overall cost of control, from the current time step to infinity (i.e. infinite horizon control), by choosing the optimal control inputs. The equation \ref{eq:general-control-problem-2}  is called the process model and determines how the system state moves from one step to the next. 
+  Equation \ref{eq:general-control-problem-1}  denotes that the objective is to minimize the overall cost, from the current time step to infinity (i.e. infinite horizon control), by choosing the optimal control inputs. The equation \ref{eq:general-control-problem-2}  is called the process model and determines how the system state moves from one step to the next. 
   The inequality \ref{eq:general-control-problem-3}  defines a set of possible state-input combinations at any given time. For example, if at state $x_1$  input $u_1$  is allowed,  then $(u_1,x_1)$  will be in the set representing the $h$.   
   
 In a feedback based scheme or a \textbf{closed loop control}, at any given time, the controller makes its decisions (i.e., to allocate resources) based on the information available from the system up to that time. %  and the information deduced and maintained by the controller itself.  
@@ -94,12 +95,12 @@ In some control problems, the optimal control policy has static state feedback c
    &  F_x x_t + F_u u_t < f  \label{eq:linear-control-problem-3}      
   \end{align} 
    Here the symbols  $x_t$, $u_t$, $w_t$, $T$  have the same meaning as equations  \ref{eq:general-control-problem-1}  to \ref{eq:general-control-problem-3}; they subsequently denote the system state, control input, stochastic input, and system lifetime. 
-$l$ denotes the second norm function. 
+   $l$ denotes the Euclidean (or second) norm function (i.e. $\|\boldsymbol{x}\| := \sqrt{x_1^2 + \cdots + x_n^2}$). 
 $F_x$  and $F_u$ are convex functions of $x$ and $u$.
 $f$  is a convex function.
 Finally, $A$ and $B$ are matrices.  
 
-The equation \ref{eq:linear-control-problem-1}  denotes that the objective is to minimize the overall cost of control from the current time step to infinity (i.e. infinite horizon control), by choosing the optimal control inputs.  The only difference with \ref{eq:general-control-problem-1} is that here the stage cost function is quadratic.
+The equation \ref{eq:linear-control-problem-1}  denotes that the objective is to minimize the overall cost from the current time step to infinity (i.e. infinite horizon control), by choosing the optimal control inputs.  The only difference with \ref{eq:general-control-problem-1} is that here the stage cost function $l$ is quadratic.
 Note that, the process model denoted by the equation \ref{eq:linear-control-problem-2}   has a linear form. Also note that, the set of possible state-input combinations,  defined by  the inequality constraint \ref{eq:linear-control-problem-3},  is guaranteed to be convex. 
   
  The solution (i.e. the control signal) for this problem, has a feedback form, and is itself a linear system called Linear Quadratic Regulator\cite{lqr}. It takes the output of the system under control ($y_t$) as input and generates the proper input to be applied to the system ($u_t$). 
@@ -115,8 +116,8 @@ Note that, the process model denoted by the equation \ref{eq:linear-control-prob
    % In this solution, function $mu$, which maps every state to an optimal action, is identified by a LQ\nomenclature[A]{LQ}{Linear Quadratic.} optimal gain and is obtained by directly solving the associated Riccatti equation. 
 
 \subsection{Policy Iteration}  
-When the model underlying the system is Markovian with finite states $X$, the problem of finding an optimal policy that maximizes a long-term cost function, has a solution; investigated under the umbrella of the Markov Decision Process (MDP)\nomenclature[A]{MDP}{Markov Decision Process}. 
-Computing the optimal value function and policy requires solving a nonlinear system of equations. When the underlying state of the system is hidden (Hidden Markov Model or HMM)\nomenclature[A]{HMM}{Hidden Markov Model}, which is usually the case, solving the problem is not quite so simple. The solution is then investigated under the Partially Observable Markov Decision Process (POMDP)\nomenclature[A]{POMDP}{Partially Observable Markov Decision Process}. Unlike LQG, in POMDP, there is no separation principle. Meaning that, one cannot estimate the state distribution and perform optimal control on the known state.\footnote{In LQG the state distribution is Gaussian, and thus, the mean value can be easily used for projecting to future.}
+When the model underlying the system is Markovian with finite states $X$, the problem of finding an optimal policy that maximizes a long-term cost function, has a solution; investigated under the umbrella of Markov Decision Processes (MDP)\nomenclature[A]{MDP}{Markov Decision Process}. 
+Computing the optimal value function and policy requires solving a nonlinear system of equations. When the underlying state of the system is hidden (Hidden Markov Model or HMM)\nomenclature[A]{HMM}{Hidden Markov Model}, which is usually the case, solving the problem is not quite so simple. The solution can then be investigated as a Partially Observable Markov Decision Process (POMDP)\nomenclature[A]{POMDP}{Partially Observable Markov Decision Process}. Unlike LQG, in a POMDP, there is no separation principle. Meaning that, one cannot estimate the state distribution and perform optimal control on the known state.\footnote{In LQG the state distribution is Gaussian, and thus, the mean value can be easily used for projecting to future.}
  The solution, in this case, is to pick a policy format and gradually improve the stationary policy using the observed result of the controller. The \textit{policy iteration algorithm} generates a sequence of improving stationary policies. Similarly, the \textit{value iteration algorithm} is then used to converge iteratively towards an optimal cost $J^*$. 
  
  \subsection{Sub-optimal Control}
@@ -130,7 +131,7 @@ Computing the optimal value function and policy requires solving a nonlinear sys
         
   A feedback loop for this purpose can be constructed by feeding back the control error (the difference between a set-point and a measured output) as an input to the system (often with some intermediate processing). 
 For a system whose dynamics are known
-\footnote{Dynamics of a system can be represented in several mathematical forms such as transfer functions, state-space models, difference equations, etc. Depending on the form used, the controller might be designed using the same mathematical method (e.g. a transfer function). }(e.g. through system identification techniques), proper feedback based regulator can be designed to make system output achieve a degree of the following properties:  
+\footnote{The dynamics of a system can be represented in several mathematical forms such as transfer functions, state-space models, difference equations, etc. Depending on the form used, the controller might be designed using the same mathematical method (e.g. a transfer function). }(e.g. through system identification techniques), a proper feedback based regulator can be designed to make the system output achieve a degree of the following properties:  
 (i) responsiveness to an error, 
 (ii) the degree to which it overshoots the set-point, 
 (iii) the degree of oscillation. 
@@ -155,7 +156,7 @@ In Model Predictive Control (MPC) (also referred to as Limited Lookahead Control
 The search space includes a set of future states within a lookahead horizon. Controller then selects a path that minimizes a cumulative cost while satisfying both state and input constraints within the lookahead horizon
 $u^*_j|j\in [t , t + N-1]$. 
 
-In Certainly Equivalent Controller (CEC)  implementation,  at each time step $t$, one
+In a Certainly Equivalent Controller (CEC)  implementation,  at each time step $t$, one
  makes a set of forecasts $\hat{w}_{t|t} ,\ldots,\hat{w}_{t+N-1|t}$ for future steps based on the observed state trajectory $x_{0},...,x_{t}$. 
 % in fact, the only way in which capital Xt comes into this is through $\hat{w}_{j|t}$
  % the observed state trajectory $x_{0},...,x_{t}$ is irrelevant, except in $x_{j+1}$. You’ve  that, 
@@ -186,7 +187,7 @@ In Certainly Equivalent Controller (CEC)  implementation,  at each time step $t$
  \footnote{Ultra Large Scale systems (ULS)\nomenclature[A]{ULS}{Ultra Large Scale systems}, is a closely related term coined by researchers at Carnegie Mellon's Software Engineering Institute, referring to a system composed of a large set of systems with a variety of stakeholders communicating and operating to satisfy separate (possibly conflicting) goals.}
 Current examples of such system include grid computing~\cite{foster1997globus,foster2002grid} and cloud computing~\cite{BHayesACMComm2008,MArmbrustEtAlTR2009,BRochwergerEtALIBM2009,RBuyyaEtAlFGCS2009}. 
     
-Grid, risen from high-performance computing (HPC)\nomenclature[A]{HPC}{high performance computing}  community near 2000, targets delivering on-demand computational power using a unified network of loosely coupled computers in the form of ``super virtual computer". The aim of designers was to let users plug their own programs into the infrastructure, and use resources for a desired duration. 
+Grid computing, having arisen from the high-performance computing (HPC)\nomenclature[A]{HPC}{high performance computing}  community near 2000, targets the delivery of on-demand computational power using a unified network of loosely coupled computers in the form of ``super virtual computer". The aim of designers was to let users plug their own programs into the infrastructure, and use resources for a desired duration. 
 Current implementations of computing grids usually target long-running resource intensive applications (or jobs) that are submitted by a few users. Examples of these applications are distributed simulation \cite{ddsos,ddsos2},
 scientific visualization \cite{wolf2002smartpointers}, 
 continual queries \cite{babu2001continuous,kumar2005resource}, 
@@ -195,17 +196,17 @@ and transcoding \cite{radiantGrid}.
 
 Cloud computing is another manifestation of LSSC  that, according to many, has caught on in mainstream enterprises.
 In the cloud, there is usually a clear distinction between a provider and a customer, and the extent of sharing is governed by economic rules and pricing (usually pay-as-you-go). 
-In cloud computing, large condensed data centers, possibly operated by multiple stakeholders, are offered at different levels of abstraction (e.g. infrastructure (IaaS), platform (PaaS) and software (SaaS)) on-demand as commodities to a large community of users. While IaaS focuses on offering virtualized hardware, PaaS hosts applications composed of services, which make use of other infrastructure services. In PaaS, usually specific programming language and API for infrastructure services is enforced. 
-In SaaS, there is a more customized set of APIs for specific type of applications (for example, accounting), shared by all applications of that type. 
+In cloud computing, large condensed data centers, possibly operated by multiple stakeholders, are offered at different levels of abstraction (e.g. infrastructure (IaaS), platform (PaaS) and software (SaaS)) on-demand as commodities to a large community of users. While IaaS focuses on offering virtualized hardware, PaaS hosts applications composed of services, which make use of other infrastructure services. In PaaS, usually a specific programming language and API for infrastructure services is enforced. 
+In SaaS, there is a more customized set of APIs for specific types of applications (for example, accounting), shared by all applications of that type. 
  
-  The cloud model we consider in this thesis is composed of a set of applications, offering services that are used by end-users. The end-users are usually service consumers around the globe accessing the services through Internet Protocol (IP), and most probably Hypertext Transfer Protocol (HTTP). End-users, in our cloud model, are divided into a set of classes, where each class has a certain population and behaviour (in terms of accessing the cloud resources).
+  The cloud model we consider in this thesis is composed of a set of applications, offering services that are used by end-users. The end-users are usually service consumers around the globe accessing the services through Internet Protocol (IP), and most often Hypertext Transfer Protocol (HTTP). End-users, in our cloud model, are divided into a set of classes, where each class has a certain population and behaviour (in terms of accessing the cloud resources).
   The services are either generic and offered by the cloud provider (such as naming, storage, etc.) or application-specific and developed by cloud consumers. Both services are hosted and administered on the available infrastructure. % The multiplicity of application services is a lot more than the cloud services. 
  Some services developed by the consumers are frontend, meaning that they are the first point of interaction with the end-user, other services are backend, meaning that they are invoked by frontend services.   
   
      In our cloud model, the relationship between classes and applications is one-to-one:  (i) each class uses the limited set of services offered by a single application (ii) there is only one class of users associated with each application.  
      Thus, in this thesis, we can use the concepts of an application and class of users interchangeably. 
     
-\section{Service Center as a Layered Queuing Models (LQM)}  
+\section{Service Centers as a Layered Queuing Models (LQM)}  
 \label{sec:layered-queuing-models-introduction}   
 Queuing theory based models \cite{petriu_approximate_1994,petriu_approximate_2004,badidi-queuing-2005} and Layered Queuing Models (LQM) \cite{rolia_method_1995,ramesh_multi-layer_1998} developed upon Mean Value Analysis (MVA)\nomenclature[A]{MVA}{Mean Value Analysis} of queuing networks have been used to capture the behaviour of multi-tier distributed applications \cite{litoiu_hierarchical_2005, xu_performance_2006,hamoun_ghanbari_tuning,liu_layered_????}. 
 Queuing Models can be utilized to describe the expected performance of service centers (i.e. response time and throughput) in relation to various inputs. In the following subsections, we review the components of the queuing models.  
@@ -248,10 +249,10 @@ of users. In the case of open multi-class models (with say $C$\nomenclature[M]{$
   by a single request of class $c$\nomenclature[M]{$d_{c,s,k}$}{the total service demand made on service $s$, by a single request of class $c$.}. 
  % The actual number of accesses for a customer of each class can be represented in the model by appropriate values of the  $V_{c,s}$ for each class $c$. 
  \subsection{Deriving Visit Ratios}    
- For some service-oriented systems, there is a systematic way to calculate  $V_{c,s}$ as follows: $V_{c,s}$ for front-end services can be calculated by Consumer Behaviour Model Graph (CBMG)\nomenclature[A]{CBMG}{Consumer Behaviour Model Graph}\footnote{CBMG is presented as a state transition graph in workload characterization process.}  \cite{menasce2004composing}. 
+ For some service-oriented systems, there is a systematic way to calculate  $V_{c,s}$ as follows: $V_{c,s}$ for front-end services can be calculated by Consumer Behaviour Model Graph (CBMG)\nomenclature[A]{CBMG}{Consumer Behaviour Model Graph}\footnote{CBMG is presented as a state transition graph in the workload characterization process.}  \cite{menasce2004composing}. 
     For backend services  $V_{c,s}$ are obtained using the visit ratio of front-end services, and \textit{call multiplicities}  on the edges of \textit{service call graph}. 
        %:cite  the paper composing Web services: a QOS view
-      Service call graph is an acyclic directed graph where each edge represents the number of calls from a caller service to a callee and each edge is annotated by a call multiplicity. 
+      A service call graph is an acyclic directed graph where each edge represents the number of calls from a caller service to a callee and each edge is annotated by a call multiplicity. 
     % 
 Using the call graph one can calculate the visit ratios.
 Let $\servMeanReq_{es}$\nomenclature[M]{$\servMeanReq_{es}$}{Mean requests made directly from any service $e$ to service $s$} be the mean requests made directly (i.e. call multiplicity) from service $e$ to service $s$. 
@@ -272,7 +273,7 @@ Let $\servMeanReq_{es}$\nomenclature[M]{$\servMeanReq_{es}$}{Mean requests made 
 & con^{(i)}= con^{(i-1)}+ \servMeanReq^i  \text{ for } i \in 1\ldots \text{levels}   \nonumber \\ 
 &V=con^\text{levels}_{1\ldots \numClasses, \numClasses+1\ldots \numClasses+\numService} \nonumber 
 \end{align}  
-where  $con^{(i)}$ represents the \textit{contact level} of services and classes at $i$'th iteration, taking $\servMeanReq$ as the adjacency matrix and $\servMeanReq^i$ is the power of $\servMeanReq$, or in simple words it is the contact level of each node to its $i$'th further away node.  
+where  $con^{(i)}$ represents the \textit{contact level} of services and classes at the $i$'th iteration, taking $\servMeanReq$ as the adjacency matrix and $\servMeanReq^i$ is the power of $\servMeanReq$, or in simple words it is the contact level of each node to its $i$'th further away node.  
 % \textit{contact level} of  any front-end service  to a backend service. 
 For example, if web service B and C provide services to A, and services B and C both use web service E, then the $con^2$ from A to E  is calculated as $y_{AB}y_{BE}+y_{AC}y_{CE}$.  
 
@@ -280,7 +281,7 @@ For example, if web service B and C provide services to A, and services B and C 
      
  \subsection{Replication} 
  When services are replicated, multiple instances are deployed on multiple hosts. Each replica is indexed by $j=(s,h)$ where $s$ represents the service and $h$ represents the host for the replica. Here the load of the original service is distributed between the replicas.
- One can adjust the load on each replica by distributing the accesses to replicas in a desired proportion. This distribution can be modelled by changing the call multiplicities in call graph in the edges between the callers and the callee service replicas, or by directly considering the call multiplicities in visit ratios $V_{c,s}$.  
+ One can adjust the load on each replica by distributing the accesses to replicas in a desired proportion. This distribution can be modelled by changing the call multiplicities in the call graph in the edges between the callers and the callee service replicas, or by directly considering the call multiplicities in visit ratios $V_{c,s}$.  
   Note that in case of the replication, service demands between replicas are shifted based on $V$ as the equation \ref{eq:new-demands} can be written as:
   % the sum of visit ratios for replicas of the same service is preserved: 
    \[ d_{c,s,k,h}=  V_{c,s,h} D_{s,k} \] 
@@ -290,7 +291,7 @@ For example, if web service B and C provide services to A, and services B and C 
    \[ d_{c,k,h}=\sum_s d_{c,s,k,h} \]  
  % For onote that according to equations ....  this will eventually change that demand on resources. 
  \nomenclature[M]{$d_{c,k,h}$}{The total service demand made by a single request of class $c$ on resource $k$ of host $h$.} 
-  Here, it is assumed that service demands are independent of class of service and the host where the service is deployed. Essentially, it is separating the servers and the resources such as CPU. 
+  Here, it is assumed that service demands are independent of the class of service and the host where the service is deployed. Essentially, it is separating the servers and the resources such as CPU. 
 %In this case the total number of visits on each resource type  $\sum_{k\in \text{same resource}} V_{c,k}$ and  the service time on each replica $S_{c,k}$
 % stays the same.  %(for example v1+v2=110). 
 %  however, unless the service times of all the replicas  are identical there is no guarantee that  the total service demand is preserved after reconfiguration; Meaning that there is no  notion of preservation of  service demands.
@@ -324,7 +325,7 @@ For example, if web service B and C provide services to A, and services B and C 
     \nomenclature[M]{$\speedFactor_k$}{The speed factor of resource $k$} 
     Here, $X_c(\vec{N})$ denotes the average system throughput for the class $c$ customers for the workload $\vec{N}$.
   $R_{c,k}(\vec{N})$ denotes the average delay for the class $c$ customer at the center $k$ for workload $\vec{N}$.
-   $Q_{c,k}(\vec{N})$ denotes average number of requests of the class $c$ in queue of the resource $k$ for the workload $\vec{N}$.
+   $Q_{c,k}(\vec{N})$ denotes average number of requests of the class $c$ in the queue of the resource $k$ for the workload $\vec{N}$.
     $Q_k(\overrightarrow{N-1_c})$ is the total queue length of the resource $k$ for the predecessor workloads $\overrightarrow{N-1_c}$ with one class $c$ customer less than $\vec{N}$. 
  $\speedFactor_k$ denotes the \textit{speed factor} of the resource $k$. 
  Here, the speed factor is used to standardize different resources in terms of the speed. This is to make the demands machine and application independent. Demand is described in terms of number of compute seconds for a standard CPU. Transferring a class's workload to different resources is assumed to preserve the standardized resource demand, although the final demand on the resource (i.e. $\frac{D_{c,k}}{\speedFactor_k}$) would depend on the resource's speed factor.  
@@ -334,7 +335,7 @@ For example, if web service B and C provide services to A, and services B and C 
    \begin{equation}\label{eq:queue-length-rt}\begin{split}  
        R_{k}(N) &= D_{k}\left(1+\left[\frac{N_c-1}{N_c}Q_{k}(N)\right]\right)   \\
   \end{split}\end{equation} 
-One needs to initialize each $Q_{k}(N)=N/K$ for all $k$ and iterate through the formulas until $Q_k$'s converge to a solution\footnote{Agrees to the last iteration within some tolerance (e.g., 0.1\%). }.  
+  One needs to initialize each $Q_{k}(N)=N/K$ for all $k$ and iterate through the formulas until the $Q_k$'s converge to a solution\footnote{Agrees to the last iteration within some tolerance (e.g., 0.1\%). }.  
 
 %
 % Here the first formula is the approximate arrival instant queue length at center $k$ seen by an arriving customer.  
@@ -352,10 +353,10 @@ One needs to initialize each $Q_{k}(N)=N/K$ for all $k$ and iterate through the 
  
  \subsection{Software Contention and Layered Queuing Networks} 
   % Software Resources}   
- A method to consider software contention is to use the extensions such as the Layered Queuing Model (LQM) and the Method of Layers (MOL)\nomenclature[A]{MOL}{Method of Layers} \cite{rolia_method_1995}. In these models, software and hardware resources are mapped to separate networks of queues. The software QN\nomenclature[A]{QN}{Queuing Network} \cite{rolia_method_1995} (SQN)\nomenclature[A]{SQN}{Software Queuing Network} is constructed from the software call graph and hardware is derived from the computer architecture. 
+ A method for considering software contention is to use the extensions such as the Layered Queuing Model (LQM) and the Method of Layers (MOL)\nomenclature[A]{MOL}{Method of Layers} \cite{rolia_method_1995}. In these models, software and hardware resources are mapped to separate networks of queues. The software queuing network \nomenclature[A]{QN}{Queuing Network} \cite{rolia_method_1995} (SQN)\nomenclature[A]{SQN}{Software Queuing Network} is constructed from the software call graph and hardware is derived from the computer architecture. 
  The way SQNs are derived from call graph is as follows:  
  \begin{enumerate} 
- \item For the software service that is not a critical section or is not governed by a thread pool there will be a delay centre in the SQN whose delay depends on the resources the service uses from HQN\nomenclature[A]{HQN}{Hardware Queuing Network}. 
+     \item For the software service that is not a critical section or is not governed by a thread pool there will be a delay centre in the SQN whose delay depends on the resources the service uses from hardware queuing network (HQN)\nomenclature[A]{HQN}{Hardware Queuing Network}. 
  \item For every critical section code (i.e. governed by a semaphore or a monitor) there is going to be a single queuing centre in the SQN.
  \item For every software resource governed by a thread pool there is going to be a multi-server in the SQN. 
   \item For every call between a software service $a$ and software service $b$, there will be a connection between the corresponding centres in SQN. Moreover, a call multiplicity is associated with every call.  
@@ -396,7 +397,7 @@ The actual algorithm providing the solution to LQN is provided in chapter \ref{c
 
 
   \section{Summary}  
-   In this chapter, we reviewed the necessary theoretical background. We introduced the autonomic computing and the IBM's MAPE-K loop guideline.  We also reviewed the mathematics behind several controllers. Finally, we described  the mathematics of performance models for modelling software and hardware  components. We explained how, different applications are modelled using customer classes, and how services are modelled using queuing and delay centres. 
+   In this chapter, we reviewed the necessary theoretical background. We introduced the autonomic computing and the IBM's MAPE-K loop guideline.  We also reviewed the mathematics behind several types of controllers. Finally, we described  the mathematics of performance models for modelling software and hardware  components. We explained how, different applications are modelled using customer classes, and how services are modelled using queuing and delay centres. 
    
    
 

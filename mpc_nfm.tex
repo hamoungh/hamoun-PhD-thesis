@@ -7,7 +7,7 @@
 %\end{center}
 
 This chapter presents a dynamic service placement algorithm for Optimal Service Placement (OSP) of a set of N-tire software applications. The algorithm solves an optimization problem in each control step. 
-The solution of the optimization suggests some service replicas to be added or removed from the available hosts. These deployment changes are optimal with regards to overall long-term objectives. In addition, the optimization considers the restrictions imposed on the number of possible service migrations at each time interval.  
+The solution of the optimization suggests that some service replicas be added or removed from the available hosts. These deployment changes are optimal with regards to overall long-term objectives. In addition, the optimization considers restrictions imposed on the number of possible service migrations at each time interval.  
 
 %In the second part of this chapter, we propose a technique to for finding the optimal of reservation actions to minimize cost in a public IaaS cloud environment. The problem here was to reserve enough number of hosts preemptively to accommodate the workloads. The optimality of our approach is only guaranteed if the hosts are homogeneous, that is the cloud only offers one type of resource.\footnote{Note that this differentiates this problem from the optimal selection of active hardware components.}  With more types of hosts, the optimization problem becomes an integer programming. Thus, we use a heuristic in case of multiple resource types that only achieves a sub-optimal solution.
 
@@ -34,10 +34,10 @@ The solution of the optimization suggests some service replicas to be added or r
 %\end{spacing}  
 
 \section{Problem Components}  
-The definition of the OSP problem includes five components: hardware structure, software structure, workload, infrastructure cost, and QoS related Service Level Objectives (SLOs). The solution of the problem is an optimal set of placement changes at each timestep during the lifetime of a cloud provider. 
+The definition of the OSP problem includes five components: hardware structure, software structure, workload, infrastructure cost, and QoS related Service Level Objectives (SLOs). The solution to the problem is an optimal set of placement changes at each timestep during the lifetime of a cloud provider. 
 Each placement change is an addition or deletion of a service replica to or from a host in a data center. In the rest of this section, components of the problem are briefly discussed:  
   
-\subsection{Hardware structure} We assume a cloud with heterogeneous resources composed of $H$\nomenclature[M]{$H$}{Number of hosts in a data center} hosts. Each host has a number of resources such as disks, random access memory (RAM), and processors. We assume there are $K$\nomenclature[M]{$K$}{Number of different types of resources in a data center (i.e. the CPU, disk, and the network)}\footnote{We use an uppercase letter to denote the number of onstances of an entity while using lowercase letters for indexing individual instances.} of these types of resources within the data center\footnote{Note that besides hosts, a data center is also composed of a network and a storage fabric. Although the theory developed here can be tailored for those as well, these resources are not addressed in this chapter. }. The multiplicity of resource $k$\nomenclature[M]{$k$}{Index of type of resource} of a host $h$\nomenclature[M]{$h$}{Index of a host}
+\subsection{Hardware structure} We assume a cloud with heterogeneous resources composed of $H$\nomenclature[M]{$H$}{Number of hosts in a data center} hosts. Each host has a number of resources such as disks, random access memory (RAM), and processors. We assume there are $K$\nomenclature[M]{$K$}{Number of different types of resources in a data center (i.e. the CPU, disk, and the network)}\footnote{We use an uppercase letter to denote the number of instances of an entity while using lowercase letters for indexing individual instances.} of these types of resources within the data center\footnote{Note that besides hosts, a data center is also composed of a network and a storage fabric. Although the theory developed here can be tailored for those as well, these resources are not addressed in this chapter. }. The multiplicity of resource $k$\nomenclature[M]{$k$}{Index of type of resource} of a host $h$\nomenclature[M]{$h$}{Index of a host}
  is denoted by $\capp_{h,k}$\nomenclature[M]{$\capp_{h,k}$}{The multiplicity of resource type $k$ of host $h$}. If the only resource under consideration is the CPU, then the multiplicity can be simply written as $\capp_{h}$. Each host resource is also associated with speed factor $\speedFactor_{h,k}$. If the only resource of consideration is the CPU, then speed factors are written as $\speedFactor_{h}$. 
 
 \subsection{Software structure} We assume the system is composed of $S$\nomenclature[M]{$S$}{The number of services in the data center. } services. The software structure is modelled based on interactions of these services. We quantify these interactions using two sets (also elaborated in subsection \ref{sec:workload-demands-background}):  
@@ -283,7 +283,7 @@ Inequality \ref{eq:util-capacity-inequality2} is concerned with the heavy load (
 It states ``each hardware component limits the maximum possible throughput that the system can achieve. Since the bottleneck center is the first to saturate, it restricts the system's throughput most severely"\cite{lazowska1984quantitative}.
 
 It is important to note that in case of a lightly loaded (non-saturated) system, there is another tighter upper-bound for throughput. 
-``The largest possible throughput for a lightly loaded system occurs when each additional request is not delayed at all by any other requests in the system. In this case for each class $c$, no time is a spent queuing, $d_c=\sum_{h=1}^H \sum_{k=1}^K \sum_{s=1}^S d_{c,s,k} \theta_{s,h,t}$ time units are spent in service, and $Z_c$ time units are spent thinking, so the each class throughput is $N_c/(Z_c+d_c)$"\cite{lazowska1984quantitative}.
+``The largest possible throughput for a lightly loaded system occurs when each additional request is not delayed at all by any other requests in the system. In this case for each class $c$, no time is spent queuing, $d_c=\sum_{h=1}^H \sum_{k=1}^K \sum_{s=1}^S d_{c,s,k} \theta_{s,h,t}$ time units are spent in service, and $Z_c$ time units are spent thinking, so the each class throughput is $N_c/(Z_c+d_c)$"\cite{lazowska1984quantitative}.
  The upper bound can thus be derived from the following equation:
    \begin{align}
    \label{eq:natural-throughput-upper-bound}
@@ -327,7 +327,7 @@ Usually contention happens where resources are highly utilized. Keeping the syst
 where $L$ is a constant usually set to the value between 0.6 and 0.8. 
 
 \subsection{Non-linearity in the Resource Cost}
-The function $\lambda_\text{resource}$ introduced in the equation \ref{eq:placement-infra-cost} is nonlinear Because it has a discontinuity at $U=0$ (i.e. when and a physical machine is in standby mode). 
+The function $\lambda_\text{resource}$ introduced in the equation \ref{eq:placement-infra-cost} is nonlinear because it has a discontinuity at $U=0$ (i.e. when a physical machine is in standby mode). 
 We approximate this function, based on the utilization law of the equation \ref{eq:utilization-law-theta} as:
  \[
 	 f(h)=\sum^S_{s=1}  \sigma^*_{s,h} \sum_{c=1}^C X_{c,t} d_{c,s} \theta_{s,h,t}
@@ -355,7 +355,7 @@ In this formula, $rand_{H,1}$ are sampled from a random variable with the unifor
   \theta_t = \theta_{t-1} +  u_t   
   \end{align}     
 Equation \ref{eq:placement-changes-difference} represents the dynamics of the placement or the state transition.  
- Note that $\theta_{t}$ is solely driven by the placement decisions ($\{u_0,...,u_{T-1}\}$) deterministically (i.e., service center is fully predictable). The constraints resemble an ordinary difference equation with $\theta_{t}$ as a state. 
+ Note that $\theta_{t}$ is solely driven by the placement decisions ($\{u_0,...,u_{T-1}\}$) deterministically (i.e., service center is fully predictable). The constraints resemble an ordinary differential equation with $\theta_{t}$ as a state. 
 	We redefine the reconfiguration cost of equation \ref{eq:placement-trashing-cost}, over the placement decisions ($\{u_0,...,u_{T-1}\}$) using the following stage cost function:
 	\begin{align}
 	\lambda_\text{dep}(\theta_{s,h,t-1},\theta_{s,h,t}) =|u_{s,h,t} |
@@ -609,7 +609,7 @@ using equations \ref{eq:recover-theta} and \ref{eq:recover-X}.
   %\end{array} \right)
   %\] 
   %
- \section{Placement, Considering the Effect of the Contention}  
+ \section{Placement and Considering the Effect of the Contention}  
 
   The assumption of deterministic workloads will result in an underestimation of response times and overestimation of throughputs. This is because random arrivals generate queues, which in turn decreases the throughputs and increases the response times.   Depending on the distribution of the arrival rates or think times and the demands, the system queues will be stabilized in different queue lengths. 
   Thus there are situations where the constraint $R_c\le R_{c}^\text{SLA}$ is satisfied but, the response time of the class $c$ requests considering the contention (denoted by $R^Q_c$) is not less than the specified SLA (i.e. $R^Q_c \le R_{c}^\text{SLA}$ does not hold).
@@ -664,7 +664,7 @@ solve the following optimization problem:
 \end{algorithm}
 \end{spacing}   
 	
-  To offset this underestimation, the constraint $X_c \ge X_{c}^\text{SLA}$ is substituted with a tighter bound: $X_c \ge X_{c}^\text{target}$ than the SLA one. This bound represents a reservation for the processing capacity needed to support SLAs, despite stochastic arrival. The stochastic model is used to compute the throughputs in presence of contention in the system, given a placement $\theta$. One needs to set the target high enough that the solution through the deterministic model satisfies the stochastic SLA target. The iterative algorithm \ref{contention-mpc-algorithm1} finds the optimal placement sequence considering the contention in the system using the above technique. It is an adaptation of the algorithm proposed in \cite{li2011fast} modified to work in the context of MPC. It iteratively switches between the optimization of the deterministic model and solving the stochastic one.   
+  To offset this underestimation, the constraint $X_c \ge X_{c}^\text{SLA}$ is substituted with a tighter bound: $X_c \ge X_{c}^\text{target}$ than the SLA one. This bound represents a reservation for the processing capacity needed to support SLAs, despite stochastic arrival. The stochastic model is used to compute the throughputs in presence of contention in the system, given a placement $\theta$. One needs to set the target high enough that the solution through the deterministic model satisfies the stochastic SLA target. The iterative Algorithm \ref{contention-mpc-algorithm1} finds the optimal placement sequence considering the contention in the system using the above technique. It is an adaptation of the algorithm proposed in \cite{li2011fast} modified to work in the context of MPC. It iteratively switches between the optimization of the deterministic model and solving the stochastic one.   
 
  $X^Q_c(\theta^i)$ in the algorithm, denotes the throughput solution of the queuing model for a class $c$ when the placement is $\theta^i$, obtained from LQN solution of chapter  \ref{ch:appendix1}  or HQN solution through equation \ref{eq:queuing-model1} to \ref{eq:queuing-model4}. \nomenclature[M]{$X^Q_c(\theta^i)$}{The throughput solution of the queuing model for a class $c$ considering the contention when the placement is $\theta^i$.}        
 
@@ -979,7 +979,7 @@ solve the following optimization problem:
   
  \section{Case Study: The Controller Response to a Realistic Workload} 
  \label{sec:cases-study}  
-  In this case study, we assess the reaction of the controller to a stochastic workload taken from a real application. The main objective is test the behaviour of the controller in terms of the ability to navigate the trade-off among SLA violations, resource cost, and the thrashing cost.  The structure of the services, the call graph, and the classes are the same as ones used in the motivating example (section~\ref{sec:motivating-examples}, Figure~\ref{fig:service_call_graph}).
+  In this case study, we assess the reaction of the controller to a stochastic workload taken from a real application. The main objective is to test the behaviour of the controller in terms of its ability to navigate the trade-off among SLA violations, resource cost, and the thrashing cost.  The structure of the services, the call graph, and the classes are the same as ones used in the motivating example (section~\ref{sec:motivating-examples}, Figure~\ref{fig:service_call_graph}).
    There are 14 services deployed on 6 hosts, possibly giving 84 service replicas. There are two classes of service utilizing the services.
 
 	The workload for classes is a portion of the well-known FIFA98's workload obtained by processing the Web server logs. We processed the workload of the day 42 of FIFA98 to obtain the number of users for each five-minute interval. This gave 288 samples for the whole day (let us denote these by $N_t$).  We then constructed two 12 hour workloads for two class of users based on this as:
@@ -994,7 +994,7 @@ The random cost coefficients are $\sigma^*_{s,h}=rand_{H,1}*\textbf{1}_{1,S}+10$
 
  The system was simulated using the SimPy \cite{Mueller2003SimPy} simulator. The optimization problem was described using the \texttt{cvx} framework \cite{cvx} in Matlab where the problem is delegated to the SeDuMi \cite{sturm1999using} solver.  
 
- In this case study we performed two sets of experiments. In the first set we investigated the effect of different cost coefficients on the behaviour of the controller. In the second set of experiments, we investigate the effect of changing the length of lookahead horizon on the achievable cost trade-offs. 
+ In this case study we performed two sets of experiments. In the first set, we investigated the effect of different cost coefficients on the behaviour of the controller. In the second set of experiments, we investigate the effect of changing the length of lookahead horizon on the achievable cost trade-offs. 
 
 \subsection{First Set of Experiments: Different Cost Coefficients}
 We performed several experiments to test the response of the controller over time.
@@ -1002,8 +1002,7 @@ Here we show the detailed results for two simulations as representatives.
 The lookahead horizon for MPC controller is five steps ($J=5$) for both experiments. 
 	In the first simulation, we set the cost coefficients as follows: $[\rSLA=50,  \rResource=10, \rDeployment=4]$. 
 In the second set, we set cost coefficients to: $[\rSLA=50,  \rResource=1, \rDeployment=40]$. Thus, intuitively the controller in the first configuration cares more about the cost of resources, while in the second configuration it cares more about the cost of reconfiguration. Let us call these controller configurations resource-precedent and reconfiguration-precedent controllers.
-The result of simulations is depicted in figures \ref{fig:case_study_one_relocations}  
- to \ref{fig:case_study_one_response_time_cdf}.
+The result of simulations is depicted in Figures \ref{fig:case_study_one_relocations}  to \ref{fig:case_study_one_response_time_cdf}.
 
  \begin{figure}[h]
 \centering 
@@ -1013,7 +1012,7 @@ The result of simulations is depicted in figures \ref{fig:case_study_one_relocat
 		\label{fig:case_study_one_relocations} 
 \end{figure}
 Figure \ref{fig:case_study_one_relocations}  represents the cumulative distribution function (CDF) of the number of relocations done for each time step for the resource-precedent controller (\ref{fig:relocations_10_4}) and the reconfiguration-precedent (\ref{fig:relocations_1_40}).
-As can be noted, in Figure \ref{fig:relocations_10_4} the $Y$ value of the resource-precedent graph (red solid line) at 0 jumps to 0.6. This means 60\% of the area under the PDF curve is placed at 0. In other words, in 60\% of steps, there is no relocation. Compared to this, the CDF of the reconfiguration-precedent controller (blue dashed line) shows a lot fewer relocations per step; it has no relocation in almost 82\% of the steps.
+As can be noted, in Figure \ref{fig:relocations_10_4} the $Y$ value of the resource-precedent graph (blue solid line) at 0 jumps to 0.6. This means 60\% of the area under the PDF curve is placed at 0. In other words, in 60\% of steps, there is no relocation. Compared to this, the CDF of the reconfiguration-precedent controller (blue dashed line) shows a lot fewer relocations per step; it has no relocation in almost 82\% of the steps.
 %The rest of the steps have 1 to 20 relocations. 
 %Only the first step has 70 relocations (not in the diagram), which is why the distribution is long tail. 
 
@@ -1048,7 +1047,7 @@ The figure is consistent with our assumption: the resource-precedent controller 
 \end{figure}
  However, it is not very easy to see their difference. In Figures~\ref{fig:rtcdf_10_4} and~\ref{fig:rtcdf_1_40} we represent the difference between the response time and the response time SLA (i.e. $RT_c - RT_c^\text{SLA}$) as a CDF, taking each time step as one sample. 
  %As can be observed, in both scenarios there is no shortage of throughput from the one specified in the SLA.
- In \ref{fig:rtcdf_10_4}, there were some points where the SLA is breached, and that is why the CDF increases into the region $RT_{c}>RT^\text{SLA}_c$. In \ref{fig:rtcdf_1_40}, the response time did not breach the SLA, and the CDF reaches 1 before the region $RT_{c}>RT^\text{SLA}_c$. 
+ In \ref{fig:rtcdf_10_4}, there were some points where the SLA is breached, and that is why the CDF increases into the region $RT_{c}>RT^\text{SLA}_c$. In \ref{fig:rtcdf_1_40}, the response time did not breach the SLA, and the CDF reaches 1 before the region where $RT_{c}>RT^\text{SLA}_c$. 
 
 %
 %
@@ -1172,7 +1171,7 @@ To verify this, we tuned the cost coefficients several times (not represented in
 In this chapter, we introduced a new optimization model and a simple fast algorithm for the optimal service placement (OSP) of a set of N-tier software systems, subject to changes in the workloads, SLAs, and the administrators preferences. The model captures the reconfiguration cost, and the algorithm uses the MPC paradigm. 
 	
 	We first formulated the OSP as a stochastic model predictive control problem. We enumerated several subtleties with the formulated problem. These subtleties include nonlinear queuing model and nonlinear and discontinuous cost elements. 
-	We then addressed these subtleties and proposed a fast solution to the proposed problem. The solution deals with the non-linearity of the LQM, non-linearity of the resource cost and reconfiguration cost, and the stochastic nature of the workloads. A solver friendly format of the solution was also derived. We also provided an algorithm that takes the contention into account more accurately. However, it requires solving the actual LQM multiple times to derive an OSP solution for a single step.  
+	We then addressed these subtleties and proposed a fast solution to the proposed problem. The solution deals with the non-linearity of the LQM, non-linearity of the resource cost and reconfiguration cost, and the stochastic nature of the workloads. A solver friendly format of the solution was also derived. We also provided an algorithm that takes contention into account more accurately. However, it requires solving the actual LQM multiple times to derive an OSP solution for a single step.  
 	
 		The described experiments validated our hypothesis that model predictive approaches perform better than simple stepwise optimization when the objective functions are long term and when reconfiguration is taken into account. 
 

@@ -55,8 +55,8 @@ Assuming Gaussian noise, subject to model and domain constraints, the estimation
 \end{align*} 
 %% One of the benefits of this approach is the fact that we can specify dynamics of the state transition explicitly. 
 where 
- $k$ denotes the discrete time. 
- $\tilde{x}_t$ is used to represent the known portion of $LQM$ parameters such as multiplicity of resources at time $t$. In other words, every value of $\tilde{x}_t$ defines a function a function of $x_t$, denoted $LQM_{\tilde{x}_t}$. 
+ $t$ denotes the discrete time. 
+ $\tilde{x}_t$ is used to represent the known portion of $LQM$ parameters such as multiplicity of resources at time $t$. In other words, every value of $\tilde{x}_t$ defines a function of $x_t$, denoted by $LQM_{\tilde{x}_t}$. 
  $w_t$ is the process noise with a normal distribution, zero mean, and the covariance of $Q_t$ (i.e. $N(0,Q_t)$),  
  $v_t$ is the observation noise with a normal distribution, zero mean, and the covariance of $R_t$ (i.e. $N(0,R_t)$).  
  $x_t$ is the state to be estimated, composed of unobserved LQM parameters, with the mean of $\hat{x}_t$ and covariance matrix of $P_t$ (i.e. $N(\hat{x}_t,P_t)$).
@@ -148,7 +148,7 @@ Each recursive step can be summarized as follows:
  (iii) the number of users in each class ($N_c$).  
  
 	  
- Thus $\text{dim}(x)$ based on the number of classes ($C$), the types of resources available in each server ($K$), and the number of service replicas in the deployment ($J$) is as follows\footnote{The dot sign was used to represent the multiplication.}:                
+ Thus $\text{dim}(x), based on the number of classes ($C$), the types of resources available in each server ($K$), and the number of service replicas in the deployment ($J$) is as follows\footnote{The dot sign was used to represent the multiplication.}:                
  \[ \text{dim}(x)=C\cdot J\cdot K +  C + C = C\cdot (J\cdot K+2) \]
  
 In the case of $K=1$ (i.e. only one resource type), we have: \[\text{dim}(x)=C\cdot (J+2)\] 
@@ -221,7 +221,7 @@ $\{d_{c,j,k}\} \gets$ Estimate $d_{c,j,k}$, the service demand of class $c$, ser
 \BlankLine 
 
 \Repeat{$E(C') < A$}{
-$\psi_{\{d_{c,j,k}\},C'} \gets$ Cluster the URLs based on the $d_{c,j,k}$'s into $C'$ clusters. 
+$\psi_{\{d_{c,j,k}\},C'} \gets$ Cluster the services based on the $d_{c,j,k}$'s into $C'$ clusters. 
 
 
 $\{d_{c',j,k}\} ,\{R_{c'}\} \gets$ Estimate the parameters
@@ -242,7 +242,7 @@ $d_{c',j,k}$ ($\forall j\in\{1,\dots,J\}$, $\forall c'\in\{1,...,C'\}$, $\forall
 \label{algorithm-estimation}
 \end{algorithm}
 
-In our investigation, the workload is time varying. The autonomic control loop is executed at regular intervals. If the modeling error of the existing grouping configuration is less than $A$, only the regular estimation is performed using the Kalman filter. On the other hand, if modelling error is greater than $A$, our clustering algorithm is invoked to obtain a new clustering of classes such that the modelling error becomes less than $A$.     
+In our investigation, the workload is time varying. The autonomic control loop is executed at regular intervals. If the modeling error of the existing grouping configuration is less than $A$, only the regular estimation is performed using the Kalman filter. On the other hand, if modelling error is greater than $A$, our clustering algorithm is invoked to obtain a new clustering of classes such that the modelling error becomes less than $A$ (see algorithm \ref{algorithm-estimation}). 
 
 The clustering algorithm starts by estimating the service demands of all the service replicas from the measured response times using the original model with no clustering (Step 1). The estimation at this step is done by using either an Extended Kalman filter or the linear or non-linear least squares methods described in chapter 2.
 Note that this is different from the estimation that is done at each step. The purpose of this estimation is solely for clustering the classes. 
@@ -254,13 +254,13 @@ The modeling error $E(C')$ is calculated at Step 5 using the $R_{c'}$, that was 
  If the modelling error $E(C')$ is larger than the acceptable error $A$ (i.e. due to a gradual change in service demands over time) the algorithm increases the number of clusters and performs another iteration. Steps 3, 4 and 5 are then repeated to compute $E(C')$ for the new number of clusters. Note that a larger number of clusters would increase the measurement overhead and the computational cost of estimation, but it will decrease $E(C')$. 
 
 \section{Experiment 1: TPC-W benchmark and FIFA98 workload}    
-To show the applicability of the method, we performed our first experiment on the estimation of service demands of TPC-W benchmark \cite{garcia2003tpc} implementation. We deployed the Java implementation of TPC-W \cite{volker_turau_tpc-w_????} with some modification, on a cluster of four Tomcat web servers and one single MySQL database server, with Linux as the operating system. 
+To show the applicability of the method, we performed our first experiment on the estimation of service demands of the TPC-W benchmark \cite{garcia2003tpc} implementation. We deployed the Java implementation of TPC-W \cite{volker_turau_tpc-w_????} with some modification, on a cluster of four Tomcat web servers and one single MySQL database server, with Linux as the operating system. 
 
-TPC-W is an e-commerce web application composed of 14 URLs, namely admin confirmation, admin request, bestsellers, buy confirm, buy request, registration, home, new product, order display, order inquiry, product detail, search request, search result, shopping cart. Each of the URLs has a different service demands on web and database servers. 
+TPC-W is an e-commerce web application composed of 14 URLs, namely 'admin confirmation, admin request, bestsellers, buy confirm, buy request, registration, home, new product, order display, order inquiry, product detail, search request, search result, shopping cart'.  Each of the URLs has a different service demands on web and database servers. 
 
- The application also comes with a workload generator, which takes as input: (i) the number of users over time and (ii) a CBMG, given to the workload generator as  a transition probability  matrix of a Markov chain. This workload is generated using Emulated Browsers (EB) whose behaviour and navigation is controlled by the Markov chain.  
+The application also comes with a workload generator, which takes as input: (i) the number of users over time and (ii) a Customer Behavior Model Graph (CBMG), given to the workload generator as  a transition probability  matrix of a Markov chain. This workload is generated using Emulated Browsers (EB) whose behaviour and navigation is controlled by the Markov chain.  
 
-Number of users over time are derived from FIFA98's workload \cite{arlitt_workload_2000}. This workload reflects variations that servers might experience at runtime. We picked a portion of the day 21st's workload (See Figure 6), extracted the web pages, lowered the number of requests with the factor of 2 (to factor in our smaller scale deployment topology), and finally used Little's law \cite{little1961proof}  (i.e. $N=X(R+Z)$) to convert the obtained throughput ($X$) to the number of users ($N$) and think time ($Z$) used by the emulated browsers of TPC-W. We assumed that the FIFA98 website had maintained the same response time over the sampling period. % We then used the obtained number of users to the TPC-W benchmark using equal mix of buying, browsing, and ordering scenarios. 
+The number of users over time are derived from FIFA98's workload \cite{arlitt_workload_2000}. This workload reflects variations that servers might experience at runtime. We picked a portion of the day 21's workload (see Figure 6), extracted the web pages, lowered the number of requests by the factor of 2 (to factor in our smaller scale deployment topology), and finally used Little's law \cite{little1961proof}  (i.e. $N=X(R+Z)$) to convert the obtained throughput ($X$) to the number of users ($N$) and think time ($Z$) used by the emulated browsers of TPC-W. We assumed that the FIFA98 website had maintained the same response time over the sampling period. % We then used the obtained number of users to the TPC-W benchmark using equal mix of buying, browsing, and ordering scenarios. 
 
  \begin{figure}[hp]
 	\centering
@@ -269,10 +269,10 @@ Number of users over time are derived from FIFA98's workload \cite{arlitt_worklo
 	\label{fig:fig2}
 \end{figure}
 For obtaining data, we monitored one of the web servers and the database and logged 
-Data collected from one of the web servers and the database included: response times, throughputs, and utilizations. Each sample represented a minute of work, and the total length of the experiment was 1 hour resulting into 60 samples.
+data collected from one of the web servers and the database; these included: response times, throughputs, and utilizations. Each sample represented a minute of work, and the total length of the experiment was 1 hour resulting into 60 samples.
 
  \textbf{Estimation.} 
-    The application was modeled as two services, web and database. Each service only has one replica placed on a separate server. We also take the users accessing the system through each individual URL as a class of users. 
+    The application was modeled as two services, web and database. Each service only has one replica placed on a separate server. We also took the users accessing the system through each individual URL as a class of users. 
     
 		The average number of visits to web and database services are different for each class depending on the CBMG. This makes the average web and database service demands for each URL different, and subject to estimation. This leaves us with 28 parameters to estimate, 14 web service demands $d_{c,\text{w}}$ and 14 database service demands $d_{c,\text{db}}$. Note that there is only one service replica for each of the services in the system, each installed on a different host.
 		
@@ -285,9 +285,9 @@ Data collected from one of the web servers and the database included: response t
 	\caption[A sample example of estimated service demand of 14 classes on a single service.]{Estimated service demand for 14  URLs on Web server service.}
 	\label{fig:estimated-demands-casestudy1}
 \end{figure}
-Note in the diagram that, the demands do not change frequently. We suspected that this is mainly because (i) the workload is unable to fully saturate the system or (ii) the combination of workload mixes are the same.
+Note that in the diagram the demands do not change frequently. We suspected that this is mainly because (i) the workload is unable to fully saturate the system or (ii) the combination of workload mixes are the same.
       
-  Our analysis on this experiment had three parts. First, we ran the algorithm statically with a different number of clusters and measured the modelling error. In our evaluation, we used an expanded definition of the modeling error metric given by its average over the duration of the experiment (from $t_1$ to $t_2$): 
+  Our analysis on this experiment had three parts. First, we ran the algorithm statically with a different number of clusters and measured the modelling error. In our evaluation, we used an expanded definition of the modeling error metric given by its average over the duration of the experiment (from $1$ to $T$): 
  \begin{align} 
  E=\frac{\sum^T_{t=1}{E(C')_{t}}}{T} 
   \end{align} 
@@ -307,7 +307,7 @@ where $t$ ranges over the estimation steps. $E(C)$ is the modelling error define
 	\label{fig:minimal-number-needed-clusters}      
 \end{figure}
 
-In the second part, we applied our estimation and clustering algorithm to find the minimal number of needed clusters to reach a certain modelling error. The algorithm is applied at each sampling period and, as a result, the clusters change dynamically. As Figure \ref{fig:minimal-number-needed-clusters} shows, we can reach 17\% error using between 7 and 12 clusters for the duration of the experiment. For a modelling error less than 40\% we need 9 clusters on average. In order to reach 5\%, there are sampling periods in which we need maximum number of classes.
+In the second part, we applied our estimation and clustering algorithm to find the minimal number of needed clusters to reach a certain modelling error. The algorithm is applied at each sampling period and, as a result, the clusters change dynamically. As Figure \ref{fig:minimal-number-needed-clusters} shows, we can reach 17\% error using between 7 and 12 clusters for the duration of the experiment. For a modelling error less than 40\% we need 9 clusters on average. In order to reach 5\%, there are sampling periods in which we need maximum number of classes, which is 14.
 
 In the third part of the analysis, we observed the correlation between the \textit{within cluster sum-of-squares} (WCSS) for demands and the modelling error achieved using the estimation and clustering algorithm. We chose 140 different groupings. For each number of clusters, we generated 10 random combinations. This let us navigate all possible WCSS's that could result from different groupings. Figure \ref{fig:cluster-sum-of-squares} shows that, on average we experienced a larger modelling error for the clusters with higher WCSS errors. In other words, the modelling error is minimized, whenever the WCSS is minimized. As a result, our assumption is validated since K-means is exactly the algorithm to minimize the WCSS. 
 \begin{figure}[h]
@@ -322,11 +322,11 @@ Our TPC-W experiment covered a short interval; so the service demands did not va
 
 A simulated experiment to investigate the effectiveness of the algorithm under non-uniform variations in demands was performed. This experiment showed the efficiency of the clustering and estimation for a web-based application where the estimated parameters change at different rates and phases. 
  The simulator software used was the CSim discrete event-based simulator. 
-To keep the presentation simple but also to highlight the merits of the proposed method, in the simulation, we varied $Z_c$ and the CPU demands, and kept $N_c$ constant.        
+To keep the presentation simple but also to highlight the merits of the proposed method, in the simulation, we varied the think time $Z_c$ and the CPU demands, and kept $N_c$ constant.        
 
 
 % This web-based application is an e-commerce site with 8 URLs (browse, buy, checkout, admin, login, logout, add, and remove). 
-The system has 8 classes (c1-c8), two services (s1,s2), and two servers (w,d). Each service has only one replica, and each replica is placed on an individual server. Replicas are referred to as $j1$ and $j2$ or web and database.        
+The system has 8 classes (c1-c8), two services (s1,s2), and two servers (w,d). Each service has only one replica, and each replica is placed on an individual server. Replicas are referred to as $j1$ and $j2$, or web and database.        
 \begin{figure}[htbp]
 	\centering
 	%width=0.7\textwidth
@@ -337,9 +337,9 @@ The system has 8 classes (c1-c8), two services (s1,s2), and two servers (w,d). E
 	\label{fig:service-demands-different-classes}   
 \end{figure}
  
- The classes are associated with a number of users ($N_c$), a mean user think time ($Z_c$), and time variant service demands $d_{c,\text{w}}$ and $d_{c,\text{db}}$. The service demands follow a sine curve with the same period, but different phases (see Figure \ref{fig:service-demands-different-classes}). Because of demand variations, classes migrate from one cluster to another, and the clusters evolve over time. In real applications, the service demands are not likely to change that dramatically, we consider those variations as a stress load on the algorithm. Because of the variation of the service demands, we expect that the different classes will be re-clustered periodically.                                                                     
+ The classes are associated with a number of users ($N_c$), a mean user think time ($Z_c$), and time variant service demands $d_{c,\text{w}}$ and $d_{c,\text{db}}$. The service demands follow a sine curve with the same period, but different phases (see Figure \ref{fig:service-demands-different-classes}). Because of demand variations, classes migrate from one cluster to another, and the clusters evolve over time. In real applications, the service demands are not likely to change that dramatically, and we consider those variations as a stress load on the algorithm. Because of the variation of the service demands, we expect that the different classes will be re-clustered periodically.                                                                     
 
- Table \ref{tab:changes-clustering-structure} shows the clusters suggested by the K-means algorithm. The acceptable modeling error $A$ is set to 8\% over 421 simulation steps. The column `Action Nature' indicates the kind of change that has occurred when the past and current clusterings are compared. Ag, Br, Re, and Mv stand for aggregation, breaking, re-structuring, and movement respectively. The columns, grouping(pre-event) and grouping(post-event) represent the shape of the clusters before and after the re-clustering. % Note that in each re-clustering, the clusters are re-computed from scratch.  % ; meaning that the algorithm oblivious to `Action Nature.' 
+ Table \ref{tab:changes-clustering-structure} shows the clusters suggested by the K-means algorithm. The acceptable modeling error $A$ is set to 8\% over 421 simulation steps. The column `Action Nature' indicates the kind of change that has occurred when the past and current clusterings are compared. Ag, Br, Re, and Mv stand for aggregation, breaking, re-structuring, and movement respectively. The columns, "grouping (pre-event)" and "grouping (post-event)" represent the shape of the clusters before and after the re-clustering. % Note that in each re-clustering, the clusters are re-computed from scratch.  % ; meaning that the algorithm oblivious to `Action Nature.' 
 \begin{table}
 	\centering
 \begin{tabular}{|p{0.3in}|p{0.8in}|p{2in}|p{2in}|} \hline 
@@ -371,7 +371,7 @@ Figure \ref{fig:tracked-demands}(a) shows the variation of the service demands i
 
 According to Figure \ref{fig:tracked-demands}(a),  at step 50, $(d_{c1,\text{w}},d_{c1,\text{d}})$ and $(d_{c2,\text{w}},d_{c2,\text{d}})$ get close. This suggests that c1 and c2 should be in the same cluster near that step. At step 150, the service demands of c1 and c2 are quite different, indicating that these two classes are more likely in different clusters. These observations are consistent with our results where the clustering at step 50 is [c1,c2,c7,c8][c3][c4][c5,c6] and [c1,c5,c6,c8][c2,c7] [c3][c4] at step 150. Note that c1 and c8 are shown in Figure \ref{fig:tracked-demands}(a) only when they are part of the cluster [c2,c7,...]. This explains the step-function-like behaviour of the estimated demand for the changing cluster in Figure \ref{fig:tracked-demands}(b).
 
-Based on Figure \ref{fig:tracked-demands}(c), during the simulation the modelling error exceeds the threshold A, 7 times. This means the classification algorithm described in Section III.B is activated 7 times among the 421 steps. One could see that not every re-clustering necessarily results into a different number of clusters. For example, at step 147, the clustering changes from [c1,c2,c7,c8][c3][c4][c5,c6] to [c1,c5,c6,c8][c3][c4][c2,c7]. The number of clusters remains the same, but c1 and c8 have been moved to a different cluster. Figure \ref{fig:number-clusters-over-time} shows that the total number of clusters changes only 4 times over the 400 steps.
+Based on Figure \ref{fig:tracked-demands}(c), during the simulation the modelling error exceeds the threshold A, 7 times. This means the classification algorithm described in Section III.B is activated 7 times among the 421 steps. One can see that not every re-clustering necessarily results into a different number of clusters. For example, at step 147, the clustering changes from [c1,c2,c7,c8][c3][c4][c5,c6] to [c1,c5,c6,c8][c3][c4][c2,c7]. The number of clusters remains the same, but c1 and c8 have been moved to a different cluster. Figure \ref{fig:number-clusters-over-time} shows that the total number of clusters changes only 4 times over the 400 steps.
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.7\textwidth]{image/number-clusters-versus-simulation-steps.eps}
