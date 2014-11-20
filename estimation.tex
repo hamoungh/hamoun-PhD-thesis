@@ -27,12 +27,12 @@ gmach_capacity_2007}.
 	  % --------------------------------------------------
   \section{Bayesian Estimation of Hidden LQN Parameters Using Extended Kalman Filter Estimator}    
   \label{sec:bayesian-estimation}  
-   In the Bayesian approach, the probability estimate for a hypothesis is updated as additional evidence is learned; this makes Bayesian approach a good fit for estimation tasks on sequential data. One can look at performance data as a sequence of measurements, where the unknown performance parameters are changing parameters to be estimated from observations  \cite{woodside_use_2005,xu_performance_2005,zheng_tracking_2005}.
+   In the Bayesian approach, the probability estimate for a hypothesis is updated as additional evidence is learned; this makes Bayesian approach a good fit for estimation tasks on sequential data. One can look at performance data as a sequence of measurements, where the unknown performance parameters are changing parameters to be estimated from observations \cite{woodside_use_2005,xu_performance_2005,zheng_tracking_2005}.
    
    All parameters are taken as latent variables. So it is assumed that the parameters distributions also vary over time, and there exists a \textit{state-space model} that specifies the dynamics of latent variables and the relation among the latent variables and the observations. 
 Assuming that one knows the state and the measurement noise covariance structures, one can estimate the model parameters by solving the associated optimization. 
 Assuming Gaussian noise, subject to model and domain constraints, the estimation problem can be described using the following optimization expression:  
-    % \footnote{Note that with the assumption that $x$ has multi-variate Gaussian distribution, at any given point in time $\hat{x}_t$ and $P_t$ fully present the state vector distribution. This also applies to $\hat{x}_0$ and $P_0$.}
+    % \footnote{Note that with the assumption that $x$ has multivariate Gaussian distribution, at any given point in time $\hat{x}_t$ and $P_t$ fully present the state vector distribution. This also applies to $\hat{x}_0$ and $P_0$.}
   \footnote{Note that, determining the optimal parameter estimates cannot be done using a weighted least squares optimization of the measurement residuals (i.e. $y_t - h(x_t)$) with respect to the model parameters $\theta$, since the process equation in the model is non-deterministic.} 
   
   
@@ -114,7 +114,7 @@ Each recursive step can be summarized as follows:
  $H_t$ is the matrix of sensitivity values or partial derivatives of the model function (i.e. $LQM_{\tilde{x}_t}(x_t)$) with respect to the parameters at their current values $x_{k}$,  whose $j$th column is the derivative of $LQM_{\tilde{x}_t}(x)$ with respect to $x_j$. 
  Essentially, this Extended Kalman filter (EKF) [25] linearizes $LQM_{\tilde{x}_t}(x_{t-1})$ by a first order Taylor series around the state estimate and does not take linearization errors into account. 
 
- Also note that here we assumed the process model chosen to describe the state is a ``random walk."  In this scheme the system state  $x_t$ (here demand and workload) is assumed to evolve due to random drift $w$ as: $x_{k+1}= x_t+ w_t$. This means that a minimal assumption is made during the estimation of hidden parameters of this model: that the covariance matrix for $w_t$ is known (we denote it by $Q_t$). 
+ Also note that here we assumed the process model chosen to describe the state is a ``random walk."  In this scheme the system state $x_t$ (here demand and workload) is assumed to evolve due to random drift $w$ as: $x_{k+1}= x_t+ w_t$. This means that a minimal assumption is made during the estimation of hidden parameters of this model: that the covariance matrix for $w_t$ is known (we denote it by $Q_t$). 
  Usually the covariance matrix is diagonal since workload components (number of users and think time) and user demands are assumed to change independently. The values are sometimes set according to $Q_{i,i} = \alpha  x_0(i)$, where $x_0(i)$ is the initial value of the $i$-th state variable to be estimated, and $\alpha$ is the ratio of expected changes for $x_i$'s,  (e.g. 0.02) with respect to their initial values.   
 
  The optimality and the convergence properties of the Kalman filter depend on the way the functions are linearized around the current estimate of x.   
@@ -156,7 +156,7 @@ In the case of $K=1$ (i.e. only one resource type), we have: \[\text{dim}(x)=C\c
  Note that in reality, the services can be classified into two kinds: the application-specific services, and the generic services.
    The relationship between classes and application specific services is a sparse one; meaning that there is a small number of application services used exclusively by each class of users. On the other hand, the relationship between the classes and the generic services is very dense because almost all the classes make use of some primary core services. 
    This sparsity and uniqueness, which constitutes an N-to-1 relationship between application services and classes, is a great help when it comes to estimation of the demands on user services. 
- In a sparse deployment, the term $C\cdot J\cdot K$ will be hugely decreased due to the fact that  not every class $c$ makes use of a service replica $j$. 
+ In a sparse deployment, the term $C\cdot J\cdot K$ will be hugely decreased due to the fact that not every class $c$ makes use of a service replica $j$. 
  
   The measured parameters are most likely the mean response time and throughput of each class and the utilization of each server. If we also have a number of other measurements denoted by $\phi$ (for example the response time of each class at a service replica gives us another $C$ measurements) it results into: \[ \text{dim}(y) = \phi+2C + H\]  and the identifiability condition \ref{eq:identifiability} reduces to:
  \begin{align}  
@@ -174,7 +174,7 @@ We should, therefore, keep the number of classes small, if possible.
 %Suppose the tensor $d$ assigns a value to every triple $<c,s,k>$. 
 % Remember that $d_{c,s,k}=V_{c,s}D_{s,k}$. In order to make the number of unknowns smaller than dimensions of the tensor $d$ must be aggregated into a set of clusters.     
 %In the rest of this section we propose a combination of clustering algorithm and bayesian method for effective grouping of classes. The clustering uses the K-means algorithm. 
-%convergence: start from 1 class and go up untill it does not converge because it  is too many unknowns 
+%convergence: start from 1 class and go up until it does not converge because it is too many unknowns 
 %Accuracy: how to measure accuracy? from the optimization. Every number of clusters corresponds to a different cost function (see \ref{eq:mhe-cost-function} ) and consequently different minimization problem, and different optimal trade-off curve.  Thus the measure of accuracy is actually the tradeoff curve or the $J$ that is achieved. f  
 %Suppose there are $L$ services (i.e. $i=1,\dots,L$) in the system. 
 %Let $R_{c(i)}$ be the predicted mean response time of class $c(i)$ requests. 
@@ -268,8 +268,7 @@ The number of users over time are derived from FIFA98's workload \cite{arlitt_wo
 	\caption[FIFA98 workload, day 21, over an hour, used in demonstration of the estimation algorithm.]{FIFA98 workload, day 21, over an hour.}
 	\label{fig:fig2}
 \end{figure}
-For obtaining data, we monitored one of the web servers and the database and logged 
-data collected from one of the web servers and the database; these included: response times, throughputs, and utilizations. Each sample represented a minute of work, and the total length of the experiment was 1 hour resulting into 60 samples.
+For obtaining data, we monitored one of the web servers and the database and logged data collected from one of the web servers and the database; these included: response times, throughputs, and utilizations. Each sample represented a minute of work, and the total length of the experiment was 1 hour resulting into 60 samples.
 
  \textbf{Estimation.} 
     The application was modeled as two services, web and database. Each service only has one replica placed on a separate server. We also took the users accessing the system through each individual URL as a class of users. 
@@ -278,11 +277,11 @@ data collected from one of the web servers and the database; these included: res
 		
 		The monitored metrics include the throughput and response time of each class (28 measurements) and the utilization of each server (2 measurements). Since number of measurements is already more than the number of unknowns (28 versus 30), the convergence criterion is met even with no clustering.
 
-		Figure \ref{fig:estimated-demands-casestudy1} represents the estimated  service demands for 13 classes for the web service. One service demand is removed  from the diagram to increase the clarity. 
+		Figure \ref{fig:estimated-demands-casestudy1} represents the estimated service demands for 13 classes for the web service. One service demand is removed from the diagram to increase the clarity. 
  \begin{figure}[htbp]
 	\centering
 	\includegraphics[width=0.7\textwidth]{image/demand13_estimated_kamlan.eps}
-	\caption[A sample example of estimated service demand of 14 classes on a single service.]{Estimated service demand for 14  URLs on Web server service.}
+	\caption[A sample example of estimated service demand of 14 classes on a single service.]{Estimated service demand for 14 URLs on Web server service.}
 	\label{fig:estimated-demands-casestudy1}
 \end{figure}
 Note that in the diagram the demands do not change frequently. We suspected that this is mainly because (i) the workload is unable to fully saturate the system or (ii) the combination of workload mixes are the same.
@@ -381,8 +380,7 @@ Based on Figure \ref{fig:tracked-demands}(c), during the simulation the modellin
 
 We can conclude that our estimation and classification algorithm works quite well, since it is able to keep the error below $A$=0.08 with the smallest number of clusters and acceptable frequency of re-clustering. 
 
-The algorithm also satisfies our claim: being able to exploit the complexity-accuracy trade-off and to keep both the modeling error and the monitoring and computational cost low. In terms of cost, our algorithm yielded half the required clusters (See Figure \ref{fig:number-clusters-over-time}) compared to full classes estimation, which from the theory reduces the estimation cost by a factor $2^3$ ($\frac{1}{2^3}$ of the original cost) and reduces the number of needed
-measurements by $4J$ (i.e. four fewer metrics for each replica). This is due to the fact that, the cost of the Kalman estimation in each step is dominated by Kalman gain calculation, which is $O(l^3)$ while $l$ is the number of measured variables. The reason is that the dominating term during gain calculation is an inversion of a matrix of size $l\times l$:
+The algorithm also satisfies our claim: being able to exploit the complexity-accuracy trade-off and to keep both the modeling error and the monitoring and computational cost low. In terms of cost, our algorithm yielded half the required clusters (See Figure \ref{fig:number-clusters-over-time}) compared to full classes estimation, which from the theory reduces the estimation cost by a factor $2^3$ ($\frac{1}{2^3}$ of the original cost) and reduces the number of needed measurements by $4J$ (i.e. four fewer metrics for each replica). This is due to the fact that, the cost of the Kalman estimation in each step is dominated by Kalman gain calculation, which is $O(l^3)$ while $l$ is the number of measured variables. The reason is that the dominating term during gain calculation is an inversion of a matrix of size $l\times l$:
 \begin{equation}
 	K_n=P^-_nH^T_n{(H_nP^-_nH^T_n+\ R_n)}^{-1}
 \end{equation} 

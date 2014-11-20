@@ -65,11 +65,9 @@ If response time metrics are available, the service demands problem can be posed
 
     \subsection{Bayesian Approach}   
    %  The Bayesian posterior estimation was thoroughly described in \ref{sec:bayesian-estimation}.
-		Papers \cite{woodside_use_2005,xu_performance_2005,zheng_tracking_2005} use Bayesian estimation to effectively deal with the problems of regression-based approaches enumerated earlier. They treat all unknown parameters as variables that vary over time. Thus, they can deal with the addition of a missing data measurement to unknown parameters without extra complexity. They also reduce the amount of computation by solving the associated problem analytically and deriving a
-        filter for it (i.e. Kalman type). This filter greatly reduces the estimation cost by doing step-by-step computation based only on the measurements of the current step and the state of the previous step, thus reducing computations to $O((C\cdot K)^3)$. Using a Kalman filter, they also specify the rate of change of the unknown parameters by specifying the process noise and the measurement noise covariance matrices. 
+		Papers \cite{woodside_use_2005,xu_performance_2005,zheng_tracking_2005} use Bayesian estimation to effectively deal with the problems of regression-based approaches enumerated earlier. They treat all unknown parameters as variables that vary over time. Thus, they can deal with the addition of a missing data measurement to unknown parameters without extra complexity. They also reduce the amount of computation by solving the associated problem analytically and deriving a filter for it (i.e. Kalman type). This filter greatly reduces the estimation cost by doing step-by-step computation based only on the measurements of the current step and the state of the previous step, thus reducing computations to $O((C\cdot K)^3)$. Using a Kalman filter, they also specify the rate of change of the unknown parameters by specifying the process noise and the measurement noise covariance matrices. 
 
-        The only issue in using the Bayesian approach is convergence. Convergence requires that at minimum, we have more measured parameters than estimated ones. As will be discussed in chapter \ref{ch:estimation} in detail, this convergence condition either puts a limit on the number of classes whose demands are to be estimated or requires a considerable number of parameters to be measured. The major contribution of our approach is dynamic clustering of user
-  classes, to minimize the number of unknown variables. Yet, we leave enough classes to satisfy the accuracy criterion.  
+        The only issue in using the Bayesian approach is convergence. Convergence requires that at minimum, we have more measured parameters than estimated ones. As will be discussed in chapter \ref{ch:estimation} in detail, this convergence condition either puts a limit on the number of classes whose demands are to be estimated or requires a considerable number of parameters to be measured. The major contribution of our approach is dynamic clustering of user classes, to minimize the number of unknown variables. Yet, we leave enough classes to satisfy the accuracy criterion.  
 
   To the best of our knowledge, the combination of dynamic clustering and performance model parameter estimation for multi-class models has never been investigated. The only close reference to our work in terms of the final goal is \cite{sharma_automatic_2008}. 
 In \cite{sharma_automatic_2008}, Sharma et al. try to categorize requests based on resource usage characteristics. However, \cite{sharma_automatic_2008} ignores the prior knowledge about requests in the system and classifies the requests on-the-fly. Also, they use a machine learning technique called Independent Component Analysis (ICA). Of course, ICA will alleviates the need for server instrumentation, but might affect the accuracy due to not using the extra available information (i.e. of the classes of users).
@@ -80,32 +78,17 @@ In \cite{sharma_automatic_2008}, Sharma et al. try to categorize requests based 
  	%As examples of this contribution, \cite{li_fast_2009,li_performance_2009} attempt to find the minimum infrastructure cost deployment, subject to processing capacities and application SLAs. SLAs are described in terms of constraints on the average delay and throughput for each application.  
 %\cite{li_sla-driven_2010} attempts to simultaneously minimize cost while maximizing QoS attributes, through multi-objective optimization or MOO. A Pareto-optimal solution can find a good trade-off between conflicting performance and cost-saving goals rather than finding a single global optimum~\cite{soror_automatic_2010}. Geometrically these well-balanced solutions concentrate around the ``knee'' of a multi-objective trade-off curve. 
 
-Maintaining application level QoS  guarantees has been the
-subject of much investigation. Recently satisfying the dual objectives of
-QoS guarantees and server consolidation in cloud computing environments has
-received considerable attention. Current approaches formulate the optimization
-problem in different forms.
+Maintaining application level QoS guarantees has been the subject of much investigation. Recently satisfying the dual objectives of QoS guarantees and server consolidation in cloud computing environments has received considerable attention. Current approaches formulate the optimization problem in different forms.
 
 One approach attempts to minimize cost subject to performance constraints
-\cite{li_fast_2009,li_performance_2009}. In this approach, the SLA represents
-constraints rather than flexible goals. Constraints could be based on response
-time or throughput. For example \cite{li_fast_2009} finds the minimum cost
-deployment subject to processing capacity and user throughput constraints. It
-seeks deployments which minimize the overall cost of the hosts used, subject to meeting average delay and
-throughput constraints for each application as posed by its SLA. 
+\cite{li_fast_2009,li_performance_2009}. In this approach, the SLA represents constraints rather than flexible goals. Constraints could be based on response time or throughput. For example \cite{li_fast_2009} finds the minimum cost deployment subject to processing capacity and user throughput constraints. It seeks deployments which minimize the overall cost of the hosts used, subject to meeting average delay and throughput constraints for each application as posed by its SLA. 
 
-The second approach attempts to minimize cost while maximizing QoS
-attributes simultaneously, through multi-objective optimization or
-MOO~\cite{li_sla-driven_2010}. For example, Pareto-optimal solutions can find a
-good trade-off between conflicting performance and cost-saving goals rather than
- finding a single global optimum~\cite{soror_automatic_2010}. Geometrically,
- these well-balanced solutions concentrate around the ``knee'' of a
- multi-objective curve.
+The second approach attempts to minimize cost while maximizing QoS attributes simultaneously, through multi-objective optimization or
+MOO~\cite{li_sla-driven_2010}. For example, Pareto-optimal solutions can find a good trade-off between conflicting performance and cost-saving goals rather than finding a single global optimum~\cite{soror_automatic_2010}. Geometrically, these well-balanced solutions concentrate around the ``knee'' of a multi-objective curve.
 
  % The purpose of this work was to demonstrate the advantage of ``adaptive'' models relative to 
 % ``static'' models in optimization.
-The main difference between our approach and the related work is the use of dynamic empirical models (for each application) within the
-global optimization loop. These models update themselves at runtime in order to adapt to perturbations in the environment not captured in initial model specification.  This results in more accurate models being passed to the optimizer, allowing for better resource utilization on a global scale.  
+The main difference between our approach and the related work is the use of dynamic empirical models (for each application) within the global optimization loop. These models update themselves at runtime in order to adapt to perturbations in the environment not captured in initial model specification.  This results in more accurate models being passed to the optimizer, allowing for better resource utilization on a global scale.  
 
 % huse of the decomposed model for better convergence, a custom optimization routine, and the use of utility functions. The works \cite{li_fast_2009,li_performance_2009} find the minimum cost deployment subject to processing capacity and user throughput constraints. However, they assume a monolithic model has already been built.
 % \cite{soror_automatic_2010} targets a Pareto-optimal solution, a good trade-off between conflicting performance and cost-saving goals. Also the idea of dynamically adjusting the resource shares of multiple applications in order to meet a specified level of service differentiation, was used in \cite{liu_optimal_2007} and \cite{lim_automated_2009}, although using adaptive multivariate controller and for a more limited scenario than ours (i.e. maximum one PM per application layer).
@@ -114,7 +97,7 @@ global optimization loop. These models update themselves at runtime in order to 
 \label{sec:service_replica_placement_considering_trhing_cost} 
  Static or one step ahead optimizations are the main tool to target minimization of infrastructure cost for private clouds while meeting applications QoS guarantees. But, when one takes into account the cost of reconfiguration, one has to add the time dimension into the optimization. This makes the optimization very complicated, and this complexity should be dealt with using the proper method. The approach we take here is using the Model Predictive Control (MPC) framework.  
 
-In terms of related work, there are only a couple of papers that  target the same kind of problem.
+In terms of related work, there are only a couple of papers that target the same kind of problem.
 Paper \cite{zhang2012dynamicPlacement} discusses the service placement in geographically distributed clouds through MPC. However, \cite{zhang2012dynamicPlacement} defers from our approach in two ways: (i) it uses a single class open queuing network model, which is much simpler than the closed multi-class model we use, and (ii) it derives an analytical solution to a SSEC version of the problem first and then targets this solution as a desired state through MPC, considering the
 quadratic reconfiguration stage cost. In our case, this was not possible because we needed a sparse deployment at each step. From the same authors, paper \cite{zhang2012dynamicProvisioning} discusses controlling the optimal number of active servers for Google clusters where web applications and data processing jobs are both considered as generic jobs treated under scheduling policies. In this paper, they also use MPC, similar to our approach. They first found the optimal steady-state solution through a single class queuing model and then reached a solution considering the reconfiguration cost through MPC.
 
@@ -125,12 +108,12 @@ They were able to use a very small lookahead horizon and a simple model, and cal
 In \cite{bhat2006enabling} MPC is used to decide about the amount of data each node of a cluster should send through a set of data streams, and the amount to cache to disks. The proposed solution maximizes the throughput up to the network congestion point. In this paper the cost function was quadratic, which greatly aids with solving the MPC problem (heuristics not needed).   
 
   \section{Summary}   
- In this chapter, we discussed related work for the problems we introduced in chapter 1. The first problem we targeted is scaling up the EKF based estimation of service demands for large-scale service centres without increasing the monitoring overhead. Currently, there are two sets of techniques for service demand estimation:  regression-based approaches and Bayesian filtering approaches. The Bayesian approach addresses the existing issues with regression-based approaches, such as  the ability to tune the expected rate of parameter changes over time.
+ In this chapter, we discussed related work for the problems we introduced in chapter 1. The first problem we targeted is scaling up the EKF based estimation of service demands for large-scale service centres without increasing the monitoring overhead. Currently, there are two sets of techniques for service demand estimation:  regression-based approaches and Bayesian filtering approaches. The Bayesian approach addresses the existing issues with regression-based approaches, such as the ability to tune the expected rate of parameter changes over time.
  However, the Bayesian approach suffers from a lack of convergence when the number of missing data items and hidden parameters exceeds the number of monitored metrics. Our proposal improves the Bayesian estimation in terms of convergence. It reduces the proportion of unknown parameters and metrics to measured ones by grouping user classes, giving the filter a chance to converge with less monitoring overhead, and less computational complexity. 
  
- The second problem we target in this thesis is using dynamically tuning to improve the accuracy of the empirical models; we then trace this accuracy in the overall performance improvement in the allocation. We try to adjust the resource shares of a set of virtual machines that run on behalf of a set of applications. These VMs are deployed on a limited number of physical machines. The goal is to best satisfy the overall application performance, performance being
- described in terms of a set of utility functions. Our approach is based on point-wise stationary approximation (PSA) and solved for a set of the steps separately.
+ The second problem we target in this thesis is using dynamically tuning to improve the accuracy of the empirical models; we then trace this accuracy in the overall performance improvement in the allocation. We try to adjust the resource shares of a set of virtual machines that run on behalf of a set of applications. These VMs are deployed on a limited number of physical machines. The goal is to best satisfy the overall application performance, performance being described in terms of a set of utility functions. Our approach is based on point-wise stationary approximation (PSA) and solved for a set of the steps separately.
 	   
 	The third problem was the placement of services considering the reconfiguration cost. MPC is used to derive an optimal action at any time step based on the amount of workload to the services experienced to that point. This let us take the reconfiguration cost into account and minimize it.
+
 
 

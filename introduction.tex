@@ -1,4 +1,4 @@
-\chapter{Introduction}  
+\chapter{Introduction}   
  \section{Motivation and Approach}   
  Cloud computing provides the computational power of data centers (e.g., the network, storage, computational devices, and services) to a large user community over the Internet. 
 
@@ -53,16 +53,15 @@ For each additional class, there needs to be some additional measurements from t
 For a large-scale system with many classes, measuring and storing an large amount of monitoring information at all times for the filter is impractical.
 This reduces the applicability of the Bayes Filter estimation for large service centers.
 
-We propose the clustering of user classes into a smaller set with lower cardinality to reduce the measurement overhead and
-increase the scalability of the Bayesian performance model estimation. 
+We propose the clustering of user classes into a smaller set with lower cardinality to reduce the measurement overhead and increase the scalability of the Bayesian performance model estimation. 
 By decreasing the number of classes, we also reduce the estimator computation.
 
- However, we cannot cluster all the classes into one group  because then the model loses its detail and accuracy. 
+ However, we cannot cluster all the classes into one group because then the model loses its detail and accuracy. 
 We propose an algorithm to determine the best choice of the number of clusters and the grouping of classes into these clusters.
 The derived number of clusters guarantees that the monitoring overhead is reduced and at the same time, the model's accuracy is maintained. 
-We use a concept called the \textit{modeling error}, which is a heuristic measure to compare two different groupings of classes in terms of estimation accuracy\footnote{Modeling error is the mismatch of model output and the monitored metrics. It comes from the fact that the service demands are now represented using fewer parametrized statistical distributions. Note that this modeling error is a measure that we introduced. 
+We use a concept called the \textit{modeling error}, which is a heuristic measure to compare two different groupings of classes in terms of estimation accuracy\footnote{Modeling error is the mismatch of model output and the monitored metrics. It comes from the fact that the service demands are now represented using fewer parameterized statistical distributions. Note that this modeling error is a measure that we introduced. 
 The Bayesian filter already tries to minimize the weighted cumulative sum of process noise and the observation noise over an infinite horizon of time. However, the modeling error that we define here is more a heuristic measure to compare two different groupings of classes over a very limited time horizon. }.
-We then propose an algorithm  that reduces the estimation complexity and overhead by grouping the classes, while keeping enough classes to  maintain the modeling error below a prescribed threshold. The major contribution of our approach is this dynamic clustering of user classes, to reduce the estimation complexity yet leaving enough classes to satisfy the accuracy criterion.  
+We then propose an algorithm that reduces the estimation complexity and overhead by grouping the classes, while keeping enough classes to maintain the modeling error below a prescribed threshold. The major contribution of our approach is this dynamic clustering of user classes, to reduce the estimation complexity yet leaving enough classes to satisfy the accuracy criterion.  
 
 
  \section{Contribution 2: Optimal Resource Share Adjustment in Cloud Using Dynamically Tuned Empirical Models}    
@@ -81,8 +80,7 @@ On the other hand, there is a major problem with the empirical regression-based 
 These empirical models do not typically use feedback of runtime performance data. 
 When applications are deployed in a production environment, the models gradually become inaccurate. The inaccuracy is mainly because the deployment conditions are different from the test environments, used to build the training data sets.  
  
-Our contribution is to increase the accuracy of the empirical models by dynamic tuning using the measurement data at runtime. We also trace the accuracy increase in the overall performance of the allocation. We investigate if a model, built off-line through a nonlinear regression and dynamically tuned through an Extended Kalman Filter, can outperform a model that is not tuned. The other differences between our approach and the related work are the use of 
-decomposed models\footnote{In decomposed models, the overall cloud model is decomposed into individual models for applications.}, and a customized optimization routine to optimize the defined utility functions.   
+Our contribution is to increase the accuracy of the empirical models by dynamic tuning using the measurement data at runtime. We also trace the accuracy increase in the overall performance of the allocation. We investigate if a model, built off-line through a nonlinear regression and dynamically tuned through an Extended Kalman Filter, can outperform a model that is not tuned. The other differences between our approach and the related work are the use of decomposed models\footnote{In decomposed models, the overall cloud model is decomposed into individual models for applications.}, and a customized optimization routine to optimize the defined utility functions.   
 
 % "`The primary requirement of filtering algorithms such as Particle Filter (PF), Unscented Kalman Filter (UKF) and Extended Kalman Filter (EKF) is the availability of an accurate nonlinear state space model."'
 
@@ -92,7 +90,7 @@ We show that using static non-tuned application models results in suboptimal res
 % Our approach achieves the adaptation by tuning the model parameters using EKF.
 % We are aware of the Expectation Maximization (EM) approach that separates the hidden states and the unknown parameters of a parametric state-space model and estimates them in a joint framework. However, we have not seen any instance of resource allocation context that uses such approach. 
 
-% \cite{zheng-integrated-2011} for example this guy tries to estimate the parameters of (i.e. coefficients of) an state space model as well as estimating the hidden states at the same time. In this work, the parameters reside in the state transition equation rather than output equation. In the state space model, the state transition equation is linear but the parameters are unknown. The output equation, which is based on the first principle a queuing model, is nonlinear but the parameters are known. 
+% \cite{zheng-integrated-2011} for example this guy tries to estimate the parameters of (i.e. coefficients of) a state space model as well as estimating the hidden states at the same time. In this work, the parameters reside in the state transition equation rather than output equation. In the state space model, the state transition equation is linear but the parameters are unknown. The output equation, which is based on the first principle a queuing model, is nonlinear but the parameters are known. 
 
 % To derive the optimal fractions, one can model the whole service center as a LQM (taking each application as a class) and optimize over this model. Building such model requires estimating a large number of parameters proportional to the number of applications times number of services times number physical machines. Because of this, large monolithic models\footnote{A model that covers the whole data center, including all physical machines and services together.} cannot be really adapted in the scales of real service centers.
 % Our first contribution is to decompose the monolithic LQM by assuming an individual model for each application. This assumption transforms the problem of estimating a single large LQM into estimating a large number of single class LQMs, thus highly reducing the complexity of the estimation. We do this by assuming applications are isolated in terms of the services they use. In other words, the set of services deployed for an application stays exclusive to that application. Through experiments, we show that such approach can be utilized to allocate resources in a midsize service center to a number of locations.
@@ -134,7 +132,7 @@ Chapter \ref{ch:optimal_tuning_of_application_resource_shares}, Optimal Resource
 This claim will be assessed by two cases studies of different scales. 
 
  %  \item  \textbf{Optimal Service Replica Placement via Model Predictive Control}. 
- In chapter \ref{ch:replica_placement_through_mpc}, Optimal Service Replica Placement via Model Predictive Control, we target the optimal service placement problem considering the reconfiguration cost. We  propose a solution to the problem via the Model Predictive Control framework.  
+ In chapter \ref{ch:replica_placement_through_mpc}, Optimal Service Replica Placement via Model Predictive Control, we target the optimal service placement problem considering the reconfiguration cost. We propose a solution to the problem via the Model Predictive Control framework.  
 % In this chapter, we first introduced the notation and defined the problem. We elaborate on the cost elements. 
 There is a set of challenges in solving the introduced problem, including the non-linearity of the LQM and the non-linearity of the infrastructure cost. We provide an efficient solution to the problem. The solution is transformed into a solver friendly format that can be handled by a common convex optimization solvers such as \texttt{cvx}.
 % We then explain the solution that considers the effect of the contention.
@@ -151,5 +149,6 @@ We examine the behaviour of the resulting optimization in a set of simulated exp
 % Chapter \ref{ch:estimation} introduces the estimation approach for discovering the latent variables of the model.  
 % Chapter \ref{ch:experiments} provides case studies and experiments on a real system used in the validation of the approach.  
 % Chapter \ref{ch:conclusion} concludes and provides the possible future work.  
+
 
 

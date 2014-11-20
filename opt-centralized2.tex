@@ -8,7 +8,7 @@
 %\end{center}
 
 In order to allocate a set of limited resources to a set of applications optimally, there is a need for a model of the application service center. 
-A portion of the related work on optimal deployment such as \cite{li_fast_2009,li_performance_2009} assumes that the service center follows an accurate first principle model. They suggest using a filter-based approach such as \cite{zheng-integrated-2011} to estimate the parameters of this model adaptively (i.e.  through unsupervised learning).   
+A portion of the related work on optimal deployment such as \cite{li_fast_2009,li_performance_2009} assumes that the service center follows an accurate first principle model. They suggest using a filter-based approach such as \cite{zheng-integrated-2011} to estimate the parameters of this model adaptively (i.e. through unsupervised learning).   
 However, there is no guarantee that these first principle models accurately represent a service center. It is usually very hard to model all aspects of a service center such as software contention, concurrency, remote calls, a limited amount of memory, and a limited amount of network bandwidth.  
 
 In contrast to the first principle approach, an empirical approach can use a model obtained by regression analysis of application performances. The major problem with present empirical models, is the lack of tuning, based on actual measurement data (e.g. resource utilizations).  
@@ -24,9 +24,9 @@ Each application's performance is modelled based on the amount of resources allo
 We assume that the cloud provider only tries to optimize the applications' performances by tuning the amount of resources allocated to the existing fixed set of VMs.  Directly changing ``relative share'' of the allocated resource to each single VM can be done through the hypervisor's scheduler parameters. In addition, the assumption is that the cloud provider can monitor the performance metrics of the applications and thus build models based on the performance metrics and the given resources.
  
 Our approach is presented in Figure~\ref{fig:feedback-based-optimization}. 
-In this approach, for each application, the  cloud provider maintains a dynamically updated performance model. 
+In this approach, for each application, the cloud provider maintains a dynamically updated performance model. 
 A utility function based on a specific service level objective (e.g., response time) is also maintained for each application.    
-The  performance model for each application is updated periodically based on the measured performance attributes.  The cloud provider then performs a system-wide global optimization (see Section~\ref{sec:optimization-through-subgradient}) using the performance models and determines new resource allocations for each application for the following period. 
+The performance model for each application is updated periodically based on the measured performance attributes.  The cloud provider then performs a system-wide global optimization (see Section~\ref{sec:optimization-through-subgradient}) using the performance models and determines new resource allocations for each application for the following period. 
 \begin{figure}[h]
 	\centering
 		\includegraphics[width=0.45\textwidth]{image/centralized1/image2new}
@@ -181,7 +181,7 @@ where $t$ denotes a discrete time index, $K_{c,t}$, the dynamically computed
 ``Kalman Gain'' matrix and $z_{c,t}-R_{c,t}$ denotes the prediction error\footnote{Note that $R_{c,t}$ was calculated using equation~\ref{eq:kalman-model}.}. With assumptions of system linearity and Gaussian noise, the calculated Kalman gain $K_{c,t}$, is guaranteed to minimize the 
 estimation errors for $\boldsymbol\beta_{c,t}$. The updated state will result in a dynamic
 model $f(\left[\mu^{\theta,\text{Agg}}_{c,t},\tau_{c,t},d_{c,t}\right],\boldsymbol\beta_{c,t})$ that will be accessed multiple times during optimization cycles. 
-Function $f$ and its non-measurable and  measurable parameters can have many representations (as shown in Section \ref{sec:case-studies}). 
+Function $f$ and its non-measurable and measurable parameters can have many representations (as shown in Section \ref{sec:case-studies}). 
 
 \section{Optimization}
 \label{sec:optimization-through-subgradient}
@@ -298,16 +298,11 @@ $\mu^\theta_{\text{opt}} = \mu^\theta_{c,h}$\;
 
 \begin{enumerate}
 
-\item  Computes the constraint values (a constraint is violated if its value is
-less than 0). A constraint for each physical machine (PM) is the sum of all
-resources given to VMs deployed on that PM minus the PM's total capacity (step
-1).
+\item  Computes the constraint values (a constraint is violated if its value is less than 0). A constraint for each physical machine (PM) is the sum of all resources given to VMs deployed on that PM minus the PM's total capacity (step 1).
 \item  If the current allocation point is feasible (i.e. no constraint is violated) the algorithm re-calculates the objective function value $U_0$ using the current allocation ($\mu^{\theta,\text{Agg}}$), performance model $f$ from equation~\ref{eq:perf-model_general}, and utility model $u_j$ defined by the administrator (step \ref{al1-step_2.1} ). 
 \item If the objective value was greater than the currently reached maxima, it would be recorded (step \ref{al1-step_2.2}).
-\item Then the algorithm calculates the objective subgradient using numerical differentiation (i.e. solving the current performance model
- multiple times for near values of the current point) as if the problem were unconstrained (step \ref{al1-step_2.3}).
-\item Finally, a new allocation matrix is calculated, by moving towards the objective function subgradient 
-with a fixed step size (optimality update, step \ref{al1-step_2.4}).
+\item Then the algorithm calculates the objective subgradient using numerical differentiation (i.e. solving the current performance model multiple times for near values of the current point) as if the problem were unconstrained (step \ref{al1-step_2.3}).
+\item Finally, a new allocation matrix is calculated, by moving towards the objective function subgradient with a fixed step size (optimality update, step \ref{al1-step_2.4}).
 \item If the current allocation point is infeasible the algorithm chooses the most violated constraint\footnote{Actually, this can be any violated constraint.} (step \ref{al1-step_3.1}).
 \item Then the algorithm projects the current point onto the set (half-space) of points that satisfy that inequality constraint. 
  Projection is done by moving towards the opposite direction of the constraint function subgradient, $g_i$ (step \ref{al1-step_3.4}).
@@ -365,7 +360,7 @@ Equation 1 states that the value of the constraint\footnote{Value of a constrain
 Equation 2 gives the global utility function $U_0$.
 Formula 3 is the incremental recording of objective value.
 Equation 4 is used to calculate the objective subgradient as if the problem were unconstrained.
-Equation 5 indicates moving towards the objective function subgradient  with a fixed step size (i.e. optimality update).
+Equation 5 indicates moving towards the objective function subgradient with a fixed step size (i.e. optimality update).
 Equation 6 is projecting the current point onto the set of points that satisfy the inequality constraint $i$.
 Equation 7 denotes choosing the most violated constraint. 
 Equation 8 is calculating the subgradient $g_i$ of a constraint $i$ (i.e. $\partial U_i(\mu^\theta)/\partial \mu^\theta$) while $i>0$. 
@@ -375,8 +370,7 @@ Equation 10 checks that each allocated capacity is feasible and is between the l
 To illustrate the optimization algorithm, we consider a pre-built model of one physical machine hosting two applications, each running on a single VM. Both applications have CPU demands of 5100 and 4100 MIPS per request respectively, and response time thresholds of 16 and 7 respectively. The request inter-arrival time of both applications is 22 seconds, and their $u_{\text{max}}$ is 10.  A single PM's CPU, which is used to host these applications, has a total capacity of 1200 MIPS.
  Assumed capacities $\mu^\theta_{11}$ and $\mu^\theta_{21}$ are the CPU allocation for VM1 and VM2. Figure~\ref{fig:sample-config-space-for-subgradient-optimization} shows the entire configuration space over these capacity allocations, constrained by inequalities:
  $\mu^\theta_{11}+\mu^\theta_{21}<1200$, $\mu^\theta_{11}>280$, and $\mu^\theta_{21}>280$.
-Note how the optimizer climbs up the global utility function, hits the
-constraint (i.e., $\mu^\theta_{11}+\mu^\theta_{21}<1200$) then continues to climb and reach the maximum.
+Note how the optimizer climbs up the global utility function, hits the constraint (i.e., $\mu^\theta_{11}+\mu^\theta_{21}<1200$) then continues to climb and reach the maximum.
 
 \begin{figure}[h]
 	\centering
@@ -446,7 +440,7 @@ In contrast, using dynamic models results in more efficient resource allocations
 \subfloat[][]{\includegraphics[width=0.5\textwidth]{image/centralized1/exp_simple_deploy-utility} 	
 \label{fig:1}}% (a)
  \subfloat[][]{\includegraphics[width=0.5\textwidth]{image/centralized1/exp_simple_deploy_track-utility}\label{fig:2}}% (b) 
-\caption[The  measured and  modelled	gained global utility using static  and dynamic  models over time.]{The  measured and  modelled	gained global utility using \protect\subref{fig:1} static  and \protect\subref{fig:2} dynamic  models over time. } 
+\caption[The measured and modelled gained global utility using static and dynamic models over time.]{The measured and modelled	gained global utility using \protect\subref{fig:1} static and \protect\subref{fig:2} dynamic models over time. } 
 \end{figure}
 
 \begin{figure}
