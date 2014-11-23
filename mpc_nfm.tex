@@ -1172,7 +1172,7 @@ To verify this, we tuned the cost coefficients several times (not represented in
 
 \subsection{Scalability and Computational Complexity} 
   The computational complexity of our approach can be quantified in terms of the number of variables passed to the optimization solver. The number of variables passed to the solver has a linear relationship with the number of hosts, the number of services, and the size of lookahead horizon. For a small data center with 10 hosts, 10 services, and the lookahead horizon of 10 seconds we had roughly 1400 variables passed to the optimizations engine. Solving an instance of this problem on a quad core i5 Intel processor using Matlab and SeDuMi solver roughly took 4 to 5 seconds. 
-We expect that, for a large service center with 10000 hosts and lookahead horizon of 5 (i.e. five minutes) and a dedicated server for solving the optimization problem it should not take more than 5 minutes to solve an instance of the problem. Since the time step granularity at that scale is at least 10 minutes, the the algorithm should be able to finish its calculation in before moving on to the next step. 
+We expect that, for a large service center with 10000 hosts and lookahead horizon of 5 (i.e. five minutes) and a dedicated server for solving the optimization problem it should not take more than 5 minutes to solve an instance of the problem. Since the time step granularity at that scale is at least 10 minutes, the algorithm should be able to finish its calculation in before moving on to the next step. 
 
 
 \section{Summary}  
