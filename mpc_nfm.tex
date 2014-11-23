@@ -997,8 +997,9 @@ The random cost coefficients are $\sigma^*_{s,h}=rand_{H,1}*\textbf{1}_{1,S}+10$
  In this case study we performed two sets of experiments. In the first set, we investigated the effect of different cost coefficients on the behaviour of the controller. In the second set of experiments, we investigate the effect of changing the length of lookahead horizon on the achievable cost trade-offs. 
 
 \subsection{First Set of Experiments: Different Cost Coefficients}
-We performed several experiments to test the response of the controller over time.
-Here we show the detailed results for two simulations as representatives.
+In the first set of experiments we qualitatively show the ability of the controller to achieve different trade-offs between number of relocations and the number of SLA violations. Different trade-off points will be achieved by changing the cost coefficients. 
+
+We performed several experiments where we tweaked the cost coefficients and simulated the controller and the system. Here we show the detailed results for two simulations as representatives.
 The lookahead horizon for MPC controller is five steps ($J=5$) for both experiments. 
 	In the first simulation, we set the cost coefficients as follows: $[\rSLA=50,  \rResource=10, \rDeployment=4]$. 
 In the second set, we set cost coefficients to: $[\rSLA=50,  \rResource=1, \rDeployment=40]$. Thus, intuitively the controller in the first configuration cares more about the cost of resources, while in the second configuration it cares more about the cost of reconfiguration. Let us call these controller configurations resource-precedent and reconfiguration-precedent controllers.
@@ -1087,7 +1088,11 @@ The figure is consistent with our assumption: the resource-precedent controller 
 %\end{figure}
 
 \subsection{Second Set of Experiments: Different Lookahead Horizons} 
-  We performed several experiments to test (i) the effect of the lookahead horizon on the performance of the controller, (ii) the trade-off between different cost components.
+In this set of experiments we investigate the effect of length of lookahead horizon on the properties of the controller. 
+We also justify our hypothesis that controller with a longer lookahead horizon can achieve more trade-off points in terms of resource, SLA violation, and reconfiguration costs. 
+
+  
+  % We performed several experiments to test (i) the effect of the lookahead horizon on the performance of the controller, (ii) the trade-off between different cost components.
 \begin{figure*}
 \begin{center} 
 \subfloat[two-step lookahead (T=1)]{\includegraphics[width=0.3\linewidth]{image/horizon/trade_off_mpc1_5_1_abs}
@@ -1127,7 +1132,7 @@ The cost of infrastructure (middle green bar) is also calculated based on the or
 Finally, the cost of reconfiguration (right red bar) is based on the actual number of service additions/deletions at each interval based on the equation \ref{eq:placement-trashing-cost}. 
 % In this figure, the trade-off is between the cost of violating the SLAs and the cost of reconfiguration. With less reconfiguration allowed, the controller is unable to satisfy the SLA requirements.
 
-After performing several tests, we realized that with low lookahead horizons, certain trade-off points could not be achieved.  In the extreme case of $T=1$, the controller either did not follow the workload, resulting into a very high SLA cost and close to zero resource and reconfiguration costs or the solver failed to find a solution. For $T=2$ (see Figure \ref{fig:trade_off_mpc2_5_1_abs}) the controller fails to achieve a reconfiguration cost within (100,700) range or an SLA cost  within (100,1000) range. 
+After performing several tests, we observed that with low lookahead horizons, certain trade-off points could not be achieved.  In the extreme case of $T=1$, the controller either did not follow the workload, resulting into a very high SLA cost and close to zero resource and reconfiguration costs or the solver failed to find a solution. For $T=2$ (see Figure \ref{fig:trade_off_mpc2_5_1_abs}) the controller fails to achieve a reconfiguration cost within (100,700) range or an SLA cost  within (100,1000) range. 
 To verify this, we tuned the cost coefficients several times (not represented in figure \ref{fig:trade_off_mpc2_5_1_abs}) but we were unable to achieve any cost within these ranges. 
  With $T=7$, the controller is roughly able to achieve all the regions that the optimal controller is able to achieve (see Figure \ref{fig:trade_off_mpc7_5_1_abs} and \ref{fig:trade_off_opt_5_1_abs}). %of course with some extra cost in each component.
 %
@@ -1165,6 +1170,10 @@ To verify this, we tuned the cost coefficients several times (not represented in
 %\end{center}
 %\end{figure*}
 
+\subsection{Scalability and Computational Complexity} 
+  The computational complexity of our approach can be quantified in terms of the number of variables passed to the optimization solver. The number of variables passed to the solver has a linear relationship with the number of hosts, the number of services, and the size of lookahead horizon. For a small data center with 10 hosts, 10 services, and the lookahead horizon of 10 seconds we had roughly 1400 variables passed to the optimizations engine. Solving an instance of this problem on a quad core i5 Intel processor using Matlab and SeDuMi solver roughly took 4 to 5 seconds. 
+We expect that, for a large service center with 10000 hosts and lookahead horizon of 5 (i.e. five minutes) and a dedicated server for solving the optimization problem it should not take more than 5 minutes to solve an instance of the problem. Since the time step granularity at that scale is at least 10 minutes, the the algorithm should be able to finish its calculation in before moving on to the next step. 
+
 
 \section{Summary}  
 	\label{sec:conclusion-future-work}
@@ -1176,56 +1185,3 @@ In this chapter, we introduced a new optimization model and a simple fast algori
 		The described experiments validated our hypothesis that model predictive approaches perform better than simple stepwise optimization when the objective functions are long term and when reconfiguration is taken into account. 
 
  % The solution provided performs well if the system is not saturated; this is part of the inequality constraints encoded in the optimization. As a result, the solution provided always tries to push the system to an un-saturated region. If this is not desired, one should remove these constraints and form some equality constraints based on the LQM equations. Such things have been done in \cite{li2011fast} but only in the context of one-step-ahead optimization, which iteratively switches between the optimization of the fluid-flow model and solving the QNM.   
-
-
-%one sample every five minutes
-%twelve samples per hour 
-%
-%the model I use is tao s 
-%arima can be used 
-%
-%In our experiment, we set the con-
-%trol frequency to once every 5 minutes to match Google’s
-%Cluster measurements frequency [4].
-%
-%The number of active servers
-%provisioned over the 24-hour duration is shown in Figure 11
-%(for R = 0.1).
-%
-%workload is non-stationary
-%I have to add that
-%you cannot like the workload itself as an input to the system because then 
-%it does not have any mean
-
-%there are two interpretations
-%1) integrated workload model:   workload is modelled as a autonomous linear dynamic system
- %with a stationary noise as its input. 
- %This linear system is combined with deference equation
-%regarding resource allocation. 
-%thus, the mean of the noise (which is zero?) 
-%is plugged into each step's optimization 
-%and the current value of the noise is monitored
-%and put as a initial condition into the equations
-%while the mean is used for the rest of the optimization. 
-%While in this case, the error does not necessarily have to have any meaning
-%It is just an stationary process with mean value that can be either monitored 
-%or estimated. 
-%Thus it's more about having an accurate model of the workload 
-%And reducing it to a system with a stationary noise input
-%than predicting the workload itself.  
- %It actually does not matter what the values of those noise would be 
-%We just insert the mean and  calculate for the model 
-
-%
-%2) external workload model: workload is modelled externally using any a statistical model
-%and the result of the prediction is used as the future values
-%in the optimization. In other words, the a statistical model
-%is used externally to compute the future values
-%and those values are placed in into the optimization.
-%The current value is used as a initial condition, 
-%the same way as integrated model case. 
-
-% In presence of random think times (in a case of closed workload) and random arrival rates (in a case of open workload) queues build up at resources. We refer to this as the hardware contention. This contention reduces the classes throughputs, increases the response times and might even shift the bottleneck from one resource to another. Note that the upper bound from the equation \ref{eq:util-capacity-inequality} might not be the smallest one. This is because in presence of random arrivals, hardware and software contentions lead to more restrictive utilization bounds.  
-% Instead of evaluating the effect of contention, we try to move the system in a region where the effect of the contention is minimized. Usually a contention happens where resources are highly utilized. 
-
-

@@ -468,13 +468,14 @@ The second case study was performed to demonstrate the ability of our approach t
 \end{figure}
 Figure~\ref{fig:case-study2} presents both before (a) and after (b) snapshots of resource allocations.  Note that both \texttt{app1} (dark blue) and \texttt{app7} (yellow) are resident on the same PM.  Initially, \texttt{app1} is allocated approximately 300 MIPS while \texttt{app7} is allocated approximately 310 MIPS. After the increase in the workload, \texttt{app1} is allocated approximately 510 MIPS while \texttt{app7} is allocated approximately 100 MIPS.
 
-%\subsection{Assessing the Scalability}
- %In addition to the experiments performed in cases studies one and two, the relationship between the number of simulated VMs and the optimization time per step was also considered and a non-linear but polynomial relation was observed (see Figure \ref{fig:scalability}). 
-	%\centering
-	  %\includegraphics[width=0.8\textwidth]{image/centralized1/scalability}		
-	%\caption{The relationship between the number of simulated VMs and the optimization time for each optimization step.}%
-	%\label{fig:scalability} 
-%\end{figure}
+\subsection{Assessing the Scalability}
+ In addition to the experiments performed in cases studies one and two, the relationship between the number of simulated VMs and the optimization time per step was also considered and a non-linear but polynomial relation was observed (see Figure \ref{fig:scalability}). 
+\begin{figure} 
+	\centering
+	  \includegraphics[width=0.8\textwidth]{image/centralized1/scalability}		
+	\caption{The relationship between the number of simulated VMs and the optimization time for each optimization step.}%
+	\label{fig:scalability} 
+\end{figure}
 
 \section{Summary}  
 \label{sec:future-work}

@@ -260,7 +260,9 @@ TPC-W is an e-commerce web application composed of 14 URLs, namely 'admin confir
 
 The application also comes with a workload generator, which takes as input: (i) the number of users over time and (ii) a Customer Behavior Model Graph (CBMG), given to the workload generator as  a transition probability  matrix of a Markov chain. This workload is generated using Emulated Browsers (EB) whose behaviour and navigation is controlled by the Markov chain.  
 
-The number of users over time are derived from FIFA98's workload \cite{arlitt_workload_2000}. This workload reflects variations that servers might experience at runtime. We picked a portion of the day 21's workload (see Figure 6), extracted the web pages, lowered the number of requests by the factor of 2 (to factor in our smaller scale deployment topology), and finally used Little's law \cite{little1961proof}  (i.e. $N=X(R+Z)$) to convert the obtained throughput ($X$) to the number of users ($N$) and think time ($Z$) used by the emulated browsers of TPC-W. We assumed that the FIFA98 website had maintained the same response time over the sampling period. % We then used the obtained number of users to the TPC-W benchmark using equal mix of buying, browsing, and ordering scenarios. 
+The number of users over time are derived from FIFA98's workload \cite{arlitt_workload_2000}\footnote{The reason we chose FIFA98's workload over some other workloads commonly used in computing systems performance community (e.g. Google Workload Traces \cite{reiss2011google}) is that the workload includes very detailed information about access patterns of a web application by online users. Basically the workload is the detailed log of Apache web servers.
+Google Workload Traces is mostly concerned with the amount of time it takes it Google cloud to complete a job and the performance of the scheduling. The trace also includes hardware level information about the resource usage on the physical machines. }.
+This workload reflects variations that servers might experience at runtime. We picked a portion of the day 21's workload (see Figure 6), extracted the web pages, lowered the number of requests by the factor of 2 (to factor in our smaller scale deployment topology), and finally used Little's law \cite{little1961proof}  (i.e. $N=X(R+Z)$) to convert the obtained throughput ($X$) to the number of users ($N$) and think time ($Z$) used by the emulated browsers of TPC-W. We assumed that the FIFA98 website had maintained the same response time over the sampling period. % We then used the obtained number of users to the TPC-W benchmark using equal mix of buying, browsing, and ordering scenarios. 
 
  \begin{figure}[hp]
 	\centering
@@ -401,6 +403,11 @@ In terms of accuracy, it was able to keep the error near zero compared to the ca
 We applied the clustering and tracking algorithm to two scenarios: 
 (i) In the first experiment, we used our technique on the TPC-W benchmark deployed on a cluster of web servers. The workload was obtained from the well-known FIFA98 archives. In this experiment, first, we observed that the modelling error is reduced as the number of clusters increases. Second, we tested 140 different random ways to cluster the classes and computed their average error values ($E$). We observed that a clustering with a smaller average distance of classes to centroids (i.e., with smaller cluster sum-of-squares) has less error. Thus, we showed the usefulness of the K-means algorithm. Moreover, we dynamically computed the number of needed clusters that keep the modelling error under a threshold. For example, if one can accept 17\% error, the number of needed clusters for estimation would be dropped from 14 to 9 on average.
 (ii) In the second experiment, we deployed our algorithm on a system with 8 classes. It was shown that our Extended Kalman filter could track hidden states successfully, and the correctness of the filter rose as it tried more classes and re-estimated service demands.
+
+Our algorithm also satisfies our claim: being able to exploit the complexity-accuracy trade-off and to keep both the modeling error and the monitoring and computational cost low. 
+
+In terms of cost, our algorithm yielded half the required clusters compared to full classes estimation, which from the theory reduces the estimation cost by a factor $2^3$ ($\frac{1}{2^3}$ of the original cost). 
+
 
 
 

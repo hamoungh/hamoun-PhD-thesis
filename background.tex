@@ -377,8 +377,17 @@ The actual algorithm providing the solution to LQN is provided in chapter \ref{c
 
   %  Also note that in hardware layer the resource utilization has a linear relationship with demand. In software layer, the demands are the associated response times from the hardware layer resources, and since the response time of the hardware layer has a non-linear relationship with the demands the software resource utilization has a non-linear relationship as well. 
   
-  
-  
+	\subsection{Model Granularity and Modeling Complexity} 
+	In this thesis we mainly associate queuing and delay centers in our models with computing resources of servers (i.e. CPUs). However, during the estimation process, the service demands capture a lot of details other than just the CPUs’ processing rate or delay. 
+	
+	In a typical data center, there are far more elements than just server CPUs. Some of these elements are physical machine's RAM and hard drives, storage area networks, communication network switches (i.e. top of the rack and aggregate switches), and server caches. 	
+
+	Although it is possible to model a large subset of these entities using queuing network models, this might not be useful in the later stages when one tries to estimate the model’s unknowns or optimize over controllable parameters of the model. 
+
+	When each component of the data center is modeled using a separate queuing center, the estimation of parameters of such model becomes extremely hard. This is due to the fact that not all of data centers components provide measurements that can be used in the estimation process. For example physical level network links (i.e. wires), and data link layer Ethernet switches might not provide resource utilization information. This means that, we would not be able to know what percentage of the capacity of a physical wire is used or unused, and thus we have to incorporate this in the model as unknown parameters. 
+		
+		In our approach, each queuing center not only models the CPUs, but also abstracts a set of physical resources that the workload passes through while executing a specific service. For example, the delay of a queuing center that models a Web server, already includes the delay added by the physical machines hard disks, remote storage, or virtual memory management unit (which itself is affected by the amount of RAM). In conclusion, the demands of this queuing centers capture a lot of details that might not be limited to host CPUs.
+		
 
 %  \subsection{Expectation Maximization}. 
 %
