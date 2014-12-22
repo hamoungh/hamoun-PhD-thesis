@@ -181,9 +181,9 @@
   \pagestyle {empty}
   \pagenumbering {roman}
   \maketitlepage
-  \pagestyle {empty}  \makecopyrightpage
-  \pagestyle {empty}  \makeauthenticitypage
-  \setcounter {page} {3}
+  %  \pagestyle {empty}   \makecopyrightpage
+  % \pagestyle {empty}   \makeauthenticitypage
+  \setcounter {page} {2}
   \@ifdefined {@abstractfile}{\makeabstract}
   \@ifdefined {@coauthorshipfile}{\makecoauthorship}
    \pagestyle {fancy}
@@ -191,15 +191,16 @@
   \@ifdefined {@acknowledgementsfile}{\makeacknowledgements}
   \tableofcontents
   \ifthenelse{\boolean{hastables}}{\listoftables}{}
-  \ifthenelse{\boolean{hasfigures}}{\listoffigures}{}
+  \ifthenelse{\boolean{hasfigures}}{\listoffigures}{} 
   \@ifdefined{@prefacefile}{\makepreface}
  % \@ifdefined{@coauthorshipfile}{\makecoauthorship}
-  \@ifdefined{@abbreviationsfile}{\makeabbreviations}
+ % \@ifdefined{@abbreviationsfile}{\makeabbreviations}
+	\printnomenclature
   \newpage
   \pagenumbering {arabic}
   \setcounter {page}{1}}
 \def\maketitlepage{
-  \vspace*{.85in}
+  \vspace*{.65in}
   \begin{center}
     \spacing{1}
     \textbf{\MakeUppercase{\@title}}
@@ -208,14 +209,14 @@
     \hugeskip
     {\bigskip \MakeUppercase{\@author}}
   \end{center}
-  \hugeskip \hugeskip \hugeskip \hugeskip \hugeskip \hugeskip
+  \hugeskip \hugeskip \hugeskip 
   {\spacing{1}
     \begin{center}
       \ifmasters A THESIS \else A DISSERTATION \fi
       SUBMITTED TO THE FACULTY OF GRADUATE STUDIES \\
       IN PARTIAL FULFILMENT OF THE REQUIREMENTS \\
       FOR THE DEGREE OF \\
-      \hugeskip \hugeskip \hugeskip
+      \hugeskip 
       \ifmasters \MakeUppercase{\@degreename} OF
       \MakeUppercase{\@masterof}
       \else
@@ -224,7 +225,10 @@
       GRADUATE PROGRAM IN \MakeUppercase{\@department} \\
       YORK UNIVERSITY \\
       TORONTO, ONTARIO \\
-      \MakeUppercase{\@date}
+			\hugeskip  \hugeskip 
+      \MakeUppercase{\@date} \\
+			 \hugeskip  \hugeskip 
+			 $\copyright$ \@author, \number\year 
     \end{center}}
   \newpage }
 \def\makecopyrightpage{%

@@ -27,7 +27,7 @@
 %========= package setup ================
 \setboolean{masters}{false}      % set true for a Master's thesis;
                                 % false for a PhD dissertation
-\setboolean{hasfigures}{false}  % set true if you have figures
+\setboolean{hasfigures}{true}  % set true if you have figures
 \setboolean{hastables}{false}   % set true of you have tables
 
 \title{Model-based Dynamic Resource Management for Service Oriented Clouds}     
@@ -47,11 +47,11 @@
                           % false, this has no effect. 
 \degreename{Doctorate} % put the actual name of the degree you are
                           % attempting 
-\date{August 2014}     % this is the month and year of defence
+\date{September 2014}     % this is the month and year of defence
 
 %========== preliminary matter =================
-
-\coauthorshipfile{coauthorship.tex} 
+\abstractfile{abstract1.tex}
+% \coauthorshipfile{coauthorship.tex} 
 \dedicationfile{dedications.tex}
 \acknowledgementsfile{acknowledgments.tex}
 %\prefacefile{preface.tex}
@@ -104,10 +104,11 @@
 \usepackage{subfig}
 \usepackage{ctable}
 \usepackage{listings} 
-%  
+
  \usepackage{acronym}
    \usepackage{xcolor} 
   \usepackage[refpage]{nomencl}
+
   \usepackage[pdftex,     % sets up hyperref to use pdftex driver
             plainpages=false,   % allows page i and 1 to exist in the same document
             breaklinks=true,    % link texts can be broken at the end of line
@@ -115,6 +116,8 @@
             pdftitle=My Document
             pdfauthor=My Good Self
            ]{hyperref} 
+	\usepackage{breakurl}
+	
  \usepackage{ifthen} 
  %
  \usepackage{tikz}
@@ -245,7 +248,7 @@
 %%}
 %%%------
 %
-%
+%s
 %%\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 %% \doublespace 
 
@@ -257,9 +260,8 @@
 \begin{document}
 \hypersetup{linkcolor = black}
  \makefrontmatter
-\listoffigures 
-\hypersetup{linkcolor = red}   
-\printnomenclature
+
+
 
   \input{introduction}
  \input{background} 

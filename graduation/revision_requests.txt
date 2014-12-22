@@ -1,0 +1,23 @@
+
+- Discuss the scalability of the your approaches, you can do it in conclusion or at the end of the chapter
+estimation chapter, complexity  is already discussed, page 87 
+static opt chapter, section 5.5.3 is added called "Assessing the Scalability" 
+dynamic opt chapter, subsection 6.6.3 was added 
+
+- Justify the simplifications in your model ( why not model everything)...Service demands capture a lot of details.
+section 2.4.7 was added to cover this issue 
+
+- DESCRIBE the EVALUATION Goals and then discuss the graphs with regards to GOALS
+a paragraph is added in the beginning of sections  6.6.1 and 6.6.2 
+
+- Justify the methods that you used (e.g. Kalaman filter..., least square..)
+this is clearly addressed in page 8 paragraph 2
+
+- Justify the use of FIFA workload --- as opposed to  Amazon and Google ( add references....)
+I added a paragraph in a footnote in page 74 and described it.
+
+- Fix typos, check grammar 
+all were fixed 
+
+-yves comments
+All the comments are addressed
